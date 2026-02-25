@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model categories {
+  id                String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String
+  owner_id          String?             @db.Uuid
+  created_at        DateTime            @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime            @default(now()) @db.Timestamptz(6)
+  users             users?              @relation(fields: [owner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  recipe_categories recipe_categories[]
+}
+
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model ingredients {
+  id                 String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String
+  owner_id           String?              @db.Uuid
+  created_at         DateTime             @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime             @default(now()) @db.Timestamptz(6)
+  users              users?               @relation(fields: [owner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  recipe_ingredients recipe_ingredients[]
+}
+
+model recipe_categories {
+  recipe_id   String     @db.Uuid
+  category_id String     @db.Uuid
+  categories  categories @relation(fields: [category_id], references: [id], onUpdate: NoAction)
+  recipes     recipes    @relation(fields: [recipe_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([recipe_id, category_id])
+  @@index([category_id], map: "ix_recipe_categories_category")
+}
+
+model recipe_ingredients {
+  id               String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  recipe_id        String      @db.Uuid
+  ingredient_id    String      @db.Uuid
+  unit_id          String      @db.Uuid
+  amount           Decimal     @db.Decimal
+  on_shopping_list Boolean     @default(false)
+  ingredients      ingredients @relation(fields: [ingredient_id], references: [id], onUpdate: NoAction)
+  recipes          recipes     @relation(fields: [recipe_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  units            units       @relation(fields: [unit_id], references: [id], onUpdate: NoAction)
+
+  @@index([recipe_id], map: "ix_recipe_ingredients_recipe")
+}
+
+model recipe_steps {
+  id         String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  recipe_id  String  @db.Uuid
+  step_index Int
+  text       String
+  hint       String?
+  recipes    recipes @relation(fields: [recipe_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([recipe_id, step_index])
+  @@index([recipe_id], map: "ix_recipe_steps_recipe")
+}
+
+model recipes {
+  id                 String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String
+  subtitle           String
+  owner_id           String?              @db.Uuid
+  is_public          Boolean              @default(false)
+  image_uri          String?
+  created_at         DateTime             @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime             @default(now()) @db.Timestamptz(6)
+  recipe_categories  recipe_categories[]
+  recipe_ingredients recipe_ingredients[]
+  recipe_steps       recipe_steps[]
+  users              users?               @relation(fields: [owner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([owner_id], map: "ix_recipes_owner")
+}
+
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model units {
+  id                 String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String
+  owner_id           String?              @db.Uuid
+  created_at         DateTime             @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime             @default(now()) @db.Timestamptz(6)
+  recipe_ingredients recipe_ingredients[]
+  users              users?               @relation(fields: [owner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model users {
+  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clerk_user_id String        @unique
+  email         String        @unique @db.Citext
+  name          String
+  created_at    DateTime      @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime      @default(now()) @db.Timestamptz(6)
+  categories    categories[]
+  ingredients   ingredients[]
+  recipes       recipes[]
+  units         units[]
+}
