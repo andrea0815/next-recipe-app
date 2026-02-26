@@ -11,6 +11,9 @@ export default function Home() {
 
       <div className="flex flex-col">
         <SignedIn>
+          <Link href="/user-profile" className="text-[var(--foreground)] hover:text-[var(--primary)]">
+            Profile
+          </Link>
           <SignOutButton><button>Sign out</button></SignOutButton>
           <h1>Welcome back!</h1>
           <Link href="/shopping-list">Go to your shopping list</Link>
@@ -18,7 +21,6 @@ export default function Home() {
 
           <div>
             <RecipeList />
-
           </div>
         </SignedIn>
 

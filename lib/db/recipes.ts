@@ -1,19 +1,21 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export async function getRecipes(query?: string) {
+export async function getRecipes(query?: string, userId?: string) {
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    if (query) {
-        return prisma.recipes.findMany({
-            where: {
-                OR: [
-                    { name: { contains: query } },
-                    { subtitle: { contains: query } },
+
+    return prisma.recipes.findMany({
+        where: {
+            ...(userId && { owner_id: userId }), // filter by userId if provided
+
+            ...(query && { // filter by query if provided
+                OR: [ 
+                    { name: { contains: query, mode: "insensitive" } }, 
+                    { subtitle: { contains: query, mode: "insensitive" } },
                 ],
-            },
-        });
-    }
-    return prisma.recipes.findMany();
+            }),
+        },
+    });
 }
 
 export async function getRecipe(id: string) {
