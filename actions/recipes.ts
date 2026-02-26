@@ -50,6 +50,8 @@ export async function createRecipe(prevState: FormState, formData: FormData
 export async function editRecipe(id: string, prevState: FormState, formData: FormData
 ): Promise<FormState> {
 
+    const user = await getCurrentDbUser();
+
     const name = formData.get("name") as string;
     const subtitle = formData.get("subtitle") as string;
     const image_uri = formData.get("image_uri") as string;
@@ -72,11 +74,12 @@ export async function editRecipe(id: string, prevState: FormState, formData: For
         return { errors };
     }
 
-    await updateRecipe(id, name, subtitle, image_uri);
+    await updateRecipe(id, name, subtitle, image_uri, user.id);
     redirect('/recipes-db');
 }
 
 export async function removeRecipe(id: string) {
+
     const user = await getCurrentDbUser();
 
     await deleteRecipe(id, user.id);

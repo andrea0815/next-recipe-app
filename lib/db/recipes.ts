@@ -46,11 +46,15 @@ export async function updateRecipe(
     id: string,
     name: string,
     subtitle: string,
-    image_uri: string
+    image_uri: string,
+    userId: string
 ) {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     return prisma.recipes.update({
-        where: { id },
+        where: {
+            id,
+            owner_id: userId,
+        },
         data: { name, subtitle, image_uri },
     });
 }

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SignUp, SignedIn, SignOutButton, SignedOut } from '@clerk/nextjs';
+import RecipeList from "@/components/RecipeList";
 
 
 export default function Home() {
@@ -14,8 +15,13 @@ export default function Home() {
           <h1>Welcome back!</h1>
           <Link href="/shopping-list">Go to your shopping list</Link>
           <Link href="/create-recipe">Create a new recipe</Link>
+
+          <div>
+            <RecipeList />
+
+          </div>
         </SignedIn>
-        
+
         <SignedOut>
           <Link href="/sign-in">Sign in</Link>
           <Link href="/sign-up">Sign up</Link>
