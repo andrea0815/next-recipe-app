@@ -1,20 +1,22 @@
 "use client";
 
 import { useActionState } from 'react';
-import { FormState, createRecipe } from '@/actions/recipes';
+import { FormState, createIngredient } from '@/actions/ingredients';
+import Navbar from '@/components/Navbar';
 
-export default function AddProductPage() {
+export default function AddIngredientPage() {
 
   const initialState: FormState = {
     errors: {}
   }
 
   const [state, formAction, isPending] = useActionState(
-    createRecipe,
+    createIngredient,
     initialState
   );
 
-  return (
+  return (<>
+    <Navbar />
     <form action={formAction} className="p-4 space-y-4 max-w-96">
 
       <div>
@@ -29,29 +31,16 @@ export default function AddProductPage() {
         {state.errors.name && <p className="text-red-500">{state.errors.name}</p>}
       </div>
 
-      <div>
+       <div>
         <label className="text-white">
-          Subtitle
+          Plural
           <input
             type="text"
             className="block w-full p-2 bg-white text-black border rounded"
-            name="subtitle"
+            name="plural"
           />
         </label>
-        {state.errors.subtitle && <p className="text-red-500">{state.errors.subtitle}</p>}
-      </div>
-
-      <div>
-        <label className="text-white">
-          Image
-          <input
-            type="text"
-            className="block w-full p-2 bg-white text-black border rounded"
-            name="image_uri"
-            defaultValue={"/images/placeholder.png"}
-          />
-        </label>
-        {state.errors.image_uri && <p className="text-red-500">{state.errors.image_uri}</p>}
+        {state.errors.plural && <p className="text-red-500">{state.errors.plural}</p>}
       </div>
 
       <button
@@ -59,8 +48,9 @@ export default function AddProductPage() {
         className="block w-full p-2 text-white bg-blue-500 rounded disabled:bg-gray-500 cursor-pointer"
         disabled={isPending}
       >
-        Create Recipe
+        Create Ingredient
       </button>
     </form>
+  </>
   );
 }

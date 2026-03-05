@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { SignUp, SignedIn, SignOutButton, SignedOut } from '@clerk/nextjs';
 import RecipeList from "@/components/RecipeList";
+import UnitList from "@/components/UnitList";
+import CategoryList from "@/components/CategoryList";
+import IngredientList from "@/components/IngredientList";
 
 
 export default function Home() {
@@ -18,8 +21,16 @@ export default function Home() {
           <h1>Welcome back!</h1>
           <Link href="/shopping-list">Go to your shopping list</Link>
           <Link href="/create-recipe">Create a new recipe</Link>
+          <Link href="/create-unit">Create a new unit</Link>
+          <Link href="/create-category">Create a new category</Link>
+          <Link href="/create-ingredient">Create a new ingredient</Link>
 
           <div>
+            <div className="flex mt-10 gap-3">
+              <UnitList />
+              <CategoryList />
+              <IngredientList />
+            </div>
             <RecipeList />
           </div>
         </SignedIn>

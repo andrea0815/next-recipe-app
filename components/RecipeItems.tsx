@@ -1,17 +1,12 @@
 "use client";
 
 import { removeRecipe } from "@/actions/recipes";
-import { getRecipes } from "@/lib/db/recipes";
+import { getUserRecipes } from "@/lib/db/recipes";
 import Link from "next/dist/client/link";
 import Form from "next/form";
 import { useOptimistic } from "react";
 
-type Recipe = {
-    id: string;
-    name: string;
-    subtitle: string;
-    image_uri: string | null;
-}
+import type { Recipe } from '@/types/recipe';
 
 export default function RecipeItems({ recipes }: { recipes: Recipe[] }) {
 
@@ -28,7 +23,7 @@ export default function RecipeItems({ recipes }: { recipes: Recipe[] }) {
     }
 
     return (
-        <ul className="space-y-4 p-4 flex gap-2">
+        <ul className="space-y-4 p-4 flex flex-wrap gap-2">
             {optimisticRecipes.map((recipe) => (
                 <li
                     key={recipe.id}
@@ -39,6 +34,8 @@ export default function RecipeItems({ recipes }: { recipes: Recipe[] }) {
                     </h2>
 
                     <p>{recipe.subtitle}</p>
+                    
+                    <p>{recipe.is_public ? 'Public' : 'Private'}</p>
 
                     {recipe.image_uri && (
                         <img src={recipe.image_uri} alt={recipe.name} className="w-full h-48 object-cover rounded-lg mt-2" />
