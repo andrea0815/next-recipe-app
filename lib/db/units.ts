@@ -1,18 +1,27 @@
 import { prisma } from "@/lib/prisma";
 
 export async function getUnits(query?: string, userId?: string) {
-    // await new Promise((resolve) => setTimeout(resolve, 1500));
-
     return prisma.units.findMany({
         where: {
-            ...(userId && { owner_id: userId }), // filter by userId if provided
+            AND: [
+                userId
+                    ? {
+                        OR: [
+                            { owner_id: userId },
+                            { owner_id: null }
+                        ],
+                    }
+                    : {},
 
-            ...(query && { // filter by query if provided
-                OR: [
-                    { name: { contains: query, mode: "insensitive" } },
-                    { abbreviation: { contains: query, mode: "insensitive" } },
-                ],
-            }),
+                query
+                    ? {
+                        OR: [
+                            { name: { contains: query, mode: "insensitive" } },
+                            { abbreviation: { contains: query, mode: "insensitive" } },
+                        ],
+                    }
+                    : {},
+            ],
         },
     });
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { removeRecipe } from "@/actions/recipes";
-import { getUserRecipes } from "@/lib/db/recipes";
 import Link from "next/dist/client/link";
 import Form from "next/form";
 import { useOptimistic } from "react";
@@ -29,28 +28,31 @@ export default function RecipeItems({ recipes }: { recipes: Recipe[] }) {
                     key={recipe.id}
                     className="p-4 bg-gray-700 shadow-md rounded-lg text-white"
                 >
-                    <h2 className="text-xl font-semibold">
-                        <Link href={`/recipes/${recipe.name}`}>{recipe.name}</Link>
-                    </h2>
+                    <Link href={`/recipes/${recipe.slug}`}>
+                        <h2 className="text-xl font-semibold">
+                            {recipe.name}
+                        </h2>
 
-                    <p>{recipe.subtitle}</p>
-                    
-                    <p>{recipe.is_public ? 'Public' : 'Private'}</p>
+                        <p>{recipe.subtitle}</p>
 
-                    {recipe.image_uri && (
-                        <img src={recipe.image_uri} alt={recipe.name} className="w-full h-48 object-cover rounded-lg mt-2" />
-                    )}
+                        <p>{recipe.is_public ? 'Public' : 'Private'}</p>
 
-                    <Form action={removeRecipeById.bind(null, recipe.id)}>
-                        <button
-                            type="submit"
-                            className="p-2 text-white bg-red-500 rounded disabled:bg-gray-500"
-                        >
-                            Delete
-                        </button>
-                    </Form>
+                        {recipe.image_uri && (
+                            <img src={recipe.image_uri} alt={recipe.name} className="w-full h-48 object-cover rounded-lg mt-2" />
+                        )}
+
+                        <Form action={removeRecipeById.bind(null, recipe.id)}>
+                            <button
+                                type="submit"
+                                className="p-2 text-white bg-red-500 rounded disabled:bg-gray-500"
+                            >
+                                Delete
+                            </button>
+                        </Form>
+                    </Link>
                 </li>
-            ))}
-        </ul>
+            ))
+            }
+        </ul >
     );
 }

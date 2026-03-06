@@ -2,6 +2,7 @@
 
 import { addRecipe, deleteRecipe, updateRecipe } from '@/lib/db/recipes';
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
+import { parseRecipeAmount } from "@/actions/utils/parseRecipeAmount";
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -15,6 +16,8 @@ export type Errors = {
     ingredient_ids?: string;
     unit_ids?: string;
     amounts?: string;
+    text?: string;
+    hint?: string;
 }
 
 export type FormState = {
@@ -34,12 +37,9 @@ export async function createRecipe(prevState: FormState, formData: FormData
     const ingredient_ids = formData.getAll("ingredient_ids") as string[];
     const unit_ids = formData.getAll("unit_ids") as string[];
     const amounts = formData.getAll("amounts") as string[];
-
-    const ingredient_lines = ingredient_ids.map((ingredient_id, i) => ({
-        ingredient_id,
-        unit_id: unit_ids[i],
-        amount: amounts[i], // keep as string; convert to Decimal in addRecipe
-    }));
+    const parsedAmounts = amounts.map((amount) => parseRecipeAmount(amount));
+    const step_texts = formData.getAll("step_texts") as string[];
+    const step_hints = formData.getAll("step_hints") as string[];
 
     const errors: Errors = {};
 
@@ -65,11 +65,36 @@ export async function createRecipe(prevState: FormState, formData: FormData
 
     if (!amounts || amounts.length === 0) {
         errors.amounts = "Amount is required";
+    } else {
+        const hasInvalidAmount = parsedAmounts.some(
+            (amount) => amount === null || !Number.isFinite(amount)
+        );
+
+        if (hasInvalidAmount) {
+            errors.amounts =
+                "One or more amounts are invalid. Use values like 2, 0.5, 1/2 or 1 1/2";
+        }
+    }
+
+    if (ingredient_ids.length !== unit_ids.length || ingredient_ids.length !== amounts.length) {
+        errors.amounts = "Ingredient data is incomplete";
     }
 
     if (Object.keys(errors).length > 0) {
         return { errors };
     }
+
+    const ingredient_lines = ingredient_ids.map((ingredient_id, i) => ({
+        ingredient_id,
+        unit_id: unit_ids[i],
+        amount: parsedAmounts[i] as number,
+    }));
+
+    const steps = step_texts.map((step_text, i) => ({
+        step_index: i,
+        text: step_text,
+        hint: step_hints[i]
+    }))
 
     await addRecipe(
         name,
@@ -78,9 +103,11 @@ export async function createRecipe(prevState: FormState, formData: FormData
         image_uri,
         user.id,
         category_ids,
-        ingredient_lines
-    )
-    redirect('/');
+        ingredient_lines,
+        steps
+    );
+
+    redirect("/");
 }
 
 export async function editRecipe(id: string, prevState: FormState, formData: FormData

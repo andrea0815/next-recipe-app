@@ -1,6 +1,30 @@
 import { prisma } from "@/lib/prisma";
 
 export async function getIngredients(query?: string, userId?: string) {
+    return prisma.ingredients.findMany({
+        where: {
+            AND: [
+                userId
+                    ? {
+                        OR: [
+                            { owner_id: userId },
+                            { owner_id: null }
+                        ],
+                    }
+                    : {},
+                query
+                    ? {
+                        OR: [
+                            { name: { contains: query, mode: "insensitive" } },
+                        ],
+                    }
+                    : {},
+            ],
+        },
+    });
+}
+
+export async function getIngredientsByUserId(query?: string, userId?: string) {
 
     return prisma.ingredients.findMany({
         where: {
@@ -14,6 +38,8 @@ export async function getIngredients(query?: string, userId?: string) {
         },
     });
 }
+
+
 
 export async function getIngredient(id: string) {
     return prisma.ingredients.findUnique({

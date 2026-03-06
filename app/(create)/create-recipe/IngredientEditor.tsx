@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { Unit } from "@/types/unit";
 import type { Ingredient } from "@/types/ingredient";
 

@@ -9,6 +9,7 @@ import type { Ingredient } from '@/types/ingredient';
 import Navbar from '@/components/Navbar';
 import { CategoryMultiSelect } from './CategoryMultiSelect';
 import IngredientEditor from './IngredientEditor';
+import StepEditor from './StepEditor';
 
 export default function RecipeForm({ categories, ingredients, units }: { categories: Category[], ingredients: Ingredient[], units: Unit[] }) {
 
@@ -77,6 +78,8 @@ export default function RecipeForm({ categories, ingredients, units }: { categor
                 <CategoryMultiSelect categories={categories} />
 
                 <IngredientEditor state={state} ingredients={ingredients} units={units} />
+
+                <StepEditor state={state} />
 
                 <button
                     type="submit"

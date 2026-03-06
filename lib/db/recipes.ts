@@ -1,6 +1,8 @@
 import { Prisma } from "@/app/generated/prisma/wasm";
 import { prisma } from "@/lib/prisma";
-import type { IngredientLineInput } from "@/types/recipe";
+import { generateUniqueRecipeSlug } from "@/lib/db/utils/generateSlug";
+
+import type { IngredientLineInput, RecipeStep } from "@/types/recipe";
 
 export async function getUserRecipes(query?: string, userId?: string) {
     return prisma.recipes.findMany({
@@ -17,9 +19,39 @@ export async function getUserRecipes(query?: string, userId?: string) {
     });
 }
 
-export async function getRecipe(id: string) {
+export async function getRecipeById(id: string) {
     return prisma.recipes.findUnique({
         where: { id },
+    });
+}
+
+export async function getRecipeBySlug(slug: string, userId?: string) {
+    return prisma.recipes.findFirst({
+        where: {
+            slug,
+            OR: [
+                { is_public: true },
+                ...(userId ? [{ owner_id: userId }] : []),
+            ],
+        },
+        include: {
+            recipe_categories: {
+                include: {
+                    categories: true,
+                },
+            },
+            recipe_ingredients: {
+                include: {
+                    ingredients: true,
+                    units: true,
+                },
+            },
+            recipe_steps: {
+                orderBy: {
+                    step_index: "asc",
+                },
+            },
+        },
     });
 }
 
@@ -30,21 +62,24 @@ export async function addRecipe(
     image_uri: string,
     userId: string,
     categoryIds: string[],
-    ingredient_lines: IngredientLineInput[]
+    ingredient_lines: IngredientLineInput[],
+    steps: RecipeStep[]
 
 ) {
+    const slug = await generateUniqueRecipeSlug(name, userId);
+
     return prisma.recipes.create({
         data: {
             name,
             subtitle,
             is_public,
             image_uri,
+            slug,
             users: {
                 connect: { id: userId },
             },
             recipe_categories: {
                 create: categoryIds.map((categoryId) => ({
-                    // recipe_id is implied because we're inside recipes.create()
                     categories: { connect: { id: categoryId } },
                 }))
             },
@@ -54,6 +89,13 @@ export async function addRecipe(
                     unit_id: line.unit_id,
                     amount: new Prisma.Decimal(line.amount), // safe Decimal
                     on_shopping_list: line.on_shopping_list ?? false,
+                })),
+            },
+            recipe_steps: {
+                create: steps.map((step) => ({
+                    step_index: step.step_index,
+                    text: step.text,
+                    hint: step.hint,
                 })),
             },
         },
