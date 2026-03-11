@@ -13,7 +13,9 @@ export type Recipe = {
 export type IngredientLineInput = {
     ingredient_id: string;
     unit_id: string;
-    amount: number; // best practice: string for Decimal
+    amount: number;
+    group_name: string;
+    position: number;
     on_shopping_list?: boolean | null;
 };
 

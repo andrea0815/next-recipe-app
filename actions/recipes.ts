@@ -37,6 +37,8 @@ export async function createRecipe(prevState: FormState, formData: FormData
     const ingredient_ids = formData.getAll("ingredient_ids") as string[];
     const unit_ids = formData.getAll("unit_ids") as string[];
     const amounts = formData.getAll("amounts") as string[];
+    const ingredient_groups = formData.getAll("group_names") as string[];
+    const positions = formData.getAll("positions").map((p) => Number(p));
     const parsedAmounts = amounts.map((amount) => parseRecipeAmount(amount));
     const step_texts = formData.getAll("step_texts") as string[];
     const step_hints = formData.getAll("step_hints") as string[];
@@ -88,6 +90,8 @@ export async function createRecipe(prevState: FormState, formData: FormData
         ingredient_id,
         unit_id: unit_ids[i],
         amount: parsedAmounts[i] as number,
+        group_name: ingredient_groups[i],
+        position: positions[i] as number,
     }));
 
     const steps = step_texts.map((step_text, i) => ({
