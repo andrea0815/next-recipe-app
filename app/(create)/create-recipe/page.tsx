@@ -7,7 +7,7 @@ import type { Category } from '@/types/category';
 import type { Ingredient } from "@/types/ingredient";
 import type { Unit } from "@/types/unit";
 
-import RecipeForm from './RecipeForm';
+import RecipeForm from '@/components/recipe/RecipeForm';
 
 export default async function AddRecipePage() {
 
@@ -18,7 +18,10 @@ export default async function AddRecipePage() {
   const units: Unit[] = await getUnits(undefined, user?.id ?? undefined);
 
   return (
-    <RecipeForm categories={categories} ingredients={ingredients} units={units}></RecipeForm>
+    <main>
+      <h1>Create Recipe</h1>
+      <RecipeForm categories={categories} ingredients={ingredients} units={units}></RecipeForm>
+    </main>
   );
 }
 

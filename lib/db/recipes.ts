@@ -135,10 +135,14 @@ export async function updateRecipe(
     id: string,
     name: string,
     subtitle: string,
-    is_public: boolean,
-    image_uri: string,
     userId: string,
-    categoryIds: string[]
+    portions: string,
+    image_uri: string,
+    is_public: boolean,
+    groups_enabled: boolean,
+    categoryIds: string[],
+    ingredient_lines: IngredientLineInput[],
+    steps: RecipeStep[],
 ) {
     return prisma.recipes.update({
         where: {
@@ -150,10 +154,32 @@ export async function updateRecipe(
             subtitle,
             is_public,
             image_uri,
+            groups_enabled,
+            portions,
+            users: {
+                connect: { id: userId },
+            },
             recipe_categories: {
-                deleteMany: {}, // deletes all joins for this recipe (scoped by parent)
                 create: categoryIds.map((categoryId) => ({
                     categories: { connect: { id: categoryId } },
+                }))
+            },
+            recipe_ingredients: {
+                create: ingredient_lines.map((line) => ({
+                    ingredient_id: line.ingredient_id,
+                    unit_id: line.unit_id,
+                    owner_id: line.owner_id,
+                    amount: new Prisma.Decimal(line.amount),
+                    group_name: line.group_name,
+                    position: new Prisma.Decimal(line.position),
+                    on_shopping_list: line.on_shopping_list ?? false,
+                })),
+            },
+            recipe_steps: {
+                create: steps.map((step) => ({
+                    step_index: step.step_index,
+                    text: step.text,
+                    hint: step.hint,
                 })),
             },
         },
