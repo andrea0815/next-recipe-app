@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import type { Unit } from "@/types/unit";
 import type { Ingredient } from "@/types/ingredient";
+import UnitDisplay from "@/components/unit/UnitDisplay";
+import InrgredientDisplay from "@/components/ingredient/InrgredientDisplay";
 
 type Line = {
   amount: string;
@@ -28,7 +30,7 @@ export default function IngredientEditor({
 
   const [groups, setGroups] = useState<Group[]>([{
     group_name: "",
-    draft: { amount: "", unit_id: "", ingredient_id: "" },
+    draft: { amount: "1", unit_id: "", ingredient_id: "" },
     lines: []
   }]);
 
@@ -54,7 +56,7 @@ export default function IngredientEditor({
         return {
           ...group,
           lines: [...group.lines, draft],
-          draft: { amount: "", unit_id: "", ingredient_id: "" },
+          draft: { amount: "1", unit_id: "", ingredient_id: "" },
         };
       })
     );
@@ -96,7 +98,7 @@ export default function IngredientEditor({
   function addGroup() {
     setGroups((prev) => [
       ...prev,
-      { group_name: "", lines: [], draft: { amount: "", unit_id: "", ingredient_id: "" } }
+      { group_name: "", lines: [], draft: { amount: "1", unit_id: "", ingredient_id: "" } }
     ]);
   }
 
@@ -146,16 +148,17 @@ export default function IngredientEditor({
 
       {(groupsEnabled ? groups : [groups[0]]).map((group, index) => (
         <div key={index} className="bg-gray-800 p-5 rounded-2xl">
-          {groupsEnabled &&
 
+          {groupsEnabled &&
             <label className="text-white w-28 pt-5">
               Group name
               <input
                 type="text"
-                value={groupsEnabled ? group.group_name : "General"}
+                name="all_group_names"
+                value={group.group_name}
                 onChange={(e) => updateGroupName(index, e.target.value)}
                 className="block w-full p-2 bg-white text-black border rounded"
-                placeholder="group name"
+                placeholder="Group Name"
               />
             </label>
           }
@@ -169,7 +172,6 @@ export default function IngredientEditor({
                 type="number"
                 step="0.5"
                 min="0"
-                defaultValue="1"
                 value={group.draft.amount}
                 onChange={(e) => updateDraft(index, "amount", e.target.value)}
                 className="block w-full p-2 bg-white text-black border rounded"
@@ -219,18 +221,10 @@ export default function IngredientEditor({
               className="px-3 py-2 rounded bg-blue-500 text-white disabled:bg-gray-500"
               disabled={!group.draft.amount || !group.draft.unit_id || !group.draft.ingredient_id}
             >
-              Add
+              Add Line
             </button>
           </div>
 
-          {/* Show server-side validation errors (if you keep them) */}
-          {(state?.errors?.amounts || state?.errors?.unit_ids || state?.errors?.ingredient_ids) && (
-            <div className="space-y-1">
-              {state.errors.amounts && <p className="text-red-500">{state.errors.amounts}</p>}
-              {state.errors.unit_ids && <p className="text-red-500">{state.errors.unit_ids}</p>}
-              {state.errors.ingredient_ids && <p className="text-red-500">{state.errors.ingredient_ids}</p>}
-            </div>
-          )}
 
           {/* Added lines list */}
           <div className="space-y-2">
@@ -245,8 +239,8 @@ export default function IngredientEditor({
                 >
                   <div className="text-white">
                     <span className="font-semibold">{line.amount}</span>{" "}
-                    {unit ? unit.abbreviation : line.unit_id}{" "}
-                    {ing ? ing.name : line.ingredient_id}
+                    <UnitDisplay amount={Number(line.amount)} unit={unit} />{" "}
+                    <InrgredientDisplay amount={Number(line.amount)} ingredient={ing} />
                   </div>
 
                   <button
@@ -264,7 +258,6 @@ export default function IngredientEditor({
                   <input type="hidden" name="ingredient_ids" value={line.ingredient_id} />
                   <input type="hidden" name="group_names" value={group.group_name} />
                   <input type="hidden" name="positions" value={lineIndex} />
-
                 </div>
               );
             })}
@@ -295,6 +288,17 @@ export default function IngredientEditor({
         <button type="button" onClick={addGroup}>Add group</button>
       }
 
+      {(state?.errors?.amounts ||
+        state?.errors?.unit_ids ||
+        state?.errors?.ingredient_ids ||
+        state?.errors?.group_names) && (
+          <div className="space-y-1">
+            {state.errors.amounts && <p className="text-red-500">{state.errors.amounts}</p>}
+            {state.errors.unit_ids && <p className="text-red-500">{state.errors.unit_ids}</p>}
+            {state.errors.ingredient_ids && <p className="text-red-500">{state.errors.ingredient_ids}</p>}
+            {state.errors.group_names && <p className="text-red-500">{state.errors.group_names}</p>}
+          </div>
+        )}
     </div>
   );
 }

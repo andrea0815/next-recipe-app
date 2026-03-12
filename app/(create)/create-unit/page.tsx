@@ -34,6 +34,17 @@ export default function AddUnitPage() {
 
         <div>
           <label className="text-white">
+            Plural
+            <input
+              type="text"
+              className="block w-full p-2 bg-white text-black border rounded"
+              name="plural"
+            />
+          </label>
+        </div>
+
+        <div>
+          <label className="text-white">
             Shorthand
             <input
               type="text"
@@ -41,7 +52,6 @@ export default function AddUnitPage() {
               name="abbreviation"
             />
           </label>
-          {state.errors.abbreviation && <p className="text-red-500">{state.errors.abbreviation}</p>}
         </div>
 
         <button

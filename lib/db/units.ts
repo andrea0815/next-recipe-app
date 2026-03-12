@@ -18,6 +18,7 @@ export async function getUnits(query?: string, userId?: string) {
                         OR: [
                             { name: { contains: query, mode: "insensitive" } },
                             { abbreviation: { contains: query, mode: "insensitive" } },
+                            { plural: { contains: query, mode: "insensitive" } },
                         ],
                     }
                     : {},
@@ -34,12 +35,14 @@ export async function getUnit(id: string) {
 
 export async function addUnit(
     name: string,
+    plural: string,
     abbreviation: string,
     userId: string
 ) {
     return prisma.units.create({
         data: {
             name,
+            plural,
             abbreviation,
             users: {
                 connect: { id: userId },
@@ -51,6 +54,7 @@ export async function addUnit(
 export async function updateUnit(
     id: string,
     name: string,
+    plural: string,
     abbreviation: string,
     userId: string
 ) {
@@ -59,7 +63,7 @@ export async function updateUnit(
             id,
             owner_id: userId,
         },
-        data: { name, abbreviation },
+        data: { name, plural, abbreviation },
     });
 }
 

@@ -5,11 +5,10 @@ import { generateUniqueRecipeSlug } from "@/lib/db/utils/generateSlug";
 import type { IngredientLineInput, RecipeStep } from "@/types/recipe";
 
 export async function getUserRecipes(query?: string, userId?: string) {
-    return prisma.recipes.findMany({
+    const recipes = await prisma.recipes.findMany({
         where: {
-            ...(userId && { owner_id: userId }), // filter by userId if provided
-
-            ...(query && { // filter by query if provided
+            ...(userId && { owner_id: userId }),
+            ...(query && {
                 OR: [
                     { name: { contains: query, mode: "insensitive" } },
                     { subtitle: { contains: query, mode: "insensitive" } },
@@ -17,16 +16,28 @@ export async function getUserRecipes(query?: string, userId?: string) {
             }),
         },
     });
+
+    return recipes.map((recipe) => ({
+        ...recipe,
+        portions: Number(recipe.portions),
+    }));
 }
 
 export async function getRecipeById(id: string) {
-    return prisma.recipes.findUnique({
+    const recipe = await prisma.recipes.findUnique({
         where: { id },
     });
+
+    if (!recipe) return null;
+
+    return {
+        ...recipe,
+        portions: Number(recipe.portions),
+    };
 }
 
 export async function getRecipeBySlug(slug: string, userId?: string) {
-    return prisma.recipes.findFirst({
+    const recipe = await prisma.recipes.findFirst({
         where: {
             slug,
             OR: [
@@ -53,6 +64,17 @@ export async function getRecipeBySlug(slug: string, userId?: string) {
             },
         },
     });
+
+    if (!recipe) return null;
+
+    return {
+        ...recipe,
+        portions: Number(recipe.portions),
+        recipe_ingredients: recipe.recipe_ingredients.map((ingredient) => ({
+            ...ingredient,
+            amount: Number(ingredient.amount),
+        })),
+    };
 }
 
 export async function addRecipe(
@@ -91,7 +113,10 @@ export async function addRecipe(
                 create: ingredient_lines.map((line) => ({
                     ingredient_id: line.ingredient_id,
                     unit_id: line.unit_id,
-                    amount: new Prisma.Decimal(line.amount), // safe Decimal
+                    owner_id: line.owner_id,
+                    amount: new Prisma.Decimal(line.amount),
+                    group_name: line.group_name,
+                    position: new Prisma.Decimal(line.position),
                     on_shopping_list: line.on_shopping_list ?? false,
                 })),
             },

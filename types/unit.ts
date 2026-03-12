@@ -1,6 +1,7 @@
 export type Unit = {
     id: string;
     name: string;
-    abbreviation: string;
+    plural: string | null;
+    abbreviation: string | null;
     owner_id: string | null;
 }

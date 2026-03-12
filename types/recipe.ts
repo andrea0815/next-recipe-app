@@ -17,6 +17,7 @@ export type IngredientLineInput = {
     unit_id: string;
     amount: number;
     group_name: string;
+    owner_id: string;
     position: number;
     on_shopping_list?: boolean | null;
 };

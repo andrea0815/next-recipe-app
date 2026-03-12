@@ -7,7 +7,6 @@ import { redirect } from 'next/navigation';
 
 export type Errors = {
     name?: string;
-    abbreviation?: string;
 }
 
 export type FormState = {
@@ -20,6 +19,7 @@ export async function createUnit(prevState: FormState, formData: FormData
     const user = await getCurrentDbUser();
 
     const name = formData.get("name") as string;
+    const plural = formData.get("plural") as string;
     const abbreviation = formData.get("abbreviation") as string;
 
     const errors: Errors = {};
@@ -28,15 +28,11 @@ export async function createUnit(prevState: FormState, formData: FormData
         errors.name = "Name is required";
     }
 
-    if (!abbreviation) {
-        errors.abbreviation = "Abbreviation is required";
-    }
-
     if (Object.keys(errors).length > 0) {
         return { errors };
     }
 
-    await addUnit(name, abbreviation, user.id);
+    await addUnit(name, plural, abbreviation, user.id);
     redirect('/');
 }
 
@@ -46,6 +42,7 @@ export async function editUnit(id: string, prevState: FormState, formData: FormD
     const user = await getCurrentDbUser();
 
     const name = formData.get("name") as string;
+    const plural = formData.get("plural") as string;
     const abbreviation = formData.get("abbreviation") as string;
 
     const errors: Errors = {};
@@ -54,15 +51,11 @@ export async function editUnit(id: string, prevState: FormState, formData: FormD
         errors.name = "Name is required";
     }
 
-    if (!abbreviation) {
-        errors.abbreviation = "Abbreviation is required";
-    }
-
     if (Object.keys(errors).length > 0) {
         return { errors };
     }
 
-    await updateUnit(id, name, abbreviation, user.id);
+    await updateUnit(id, name, plural, abbreviation, user.id);
     redirect('/');
 }
 
