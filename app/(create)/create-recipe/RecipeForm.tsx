@@ -34,6 +34,7 @@ export default function RecipeForm({ categories, ingredients, units }: { categor
                             type="text"
                             className="block w-full p-2 bg-white text-black border rounded"
                             name="name"
+                            defaultValue="Unnamed Recipe"
                         />
                     </label>
                     {state.errors.name && <p className="text-red-500">{state.errors.name}</p>}
@@ -46,6 +47,7 @@ export default function RecipeForm({ categories, ingredients, units }: { categor
                             type="text"
                             className="block w-full p-2 bg-white text-black border rounded"
                             name="subtitle"
+                            defaultValue="a lá"
                         />
                     </label>
                     {state.errors.subtitle && <p className="text-red-500">{state.errors.subtitle}</p>}

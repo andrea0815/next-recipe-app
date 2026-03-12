@@ -50,12 +50,24 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
                 </div>
 
                 <h2 className='text-xl mt-5'>Ingredients</h2>
+
                 <ul className='flex flex-col w-[200px]'>
                     {recipe.recipe_ingredients.map((recipeIngredient) => (
                         <li key={recipeIngredient.id} className="grid grid-cols-3 ">
                             <p>{formatAmount(Number(recipeIngredient.amount))}</p>
                             <p>{recipeIngredient.units.abbreviation}</p>
                             <p>{recipeIngredient.ingredients.name}</p>
+                        </li>
+                    ))}
+                </ul>
+
+                <h2 className='text-xl mt-5'>Steps</h2>
+
+                <ul className='flex flex-col'>
+                    {recipe.recipe_steps.map((recipeStep) => (
+                        <li key={recipeStep.id} className="block">
+                            <p className="p-5"><span>{recipeStep.step_index + 1}.</span> {recipeStep.text}</p>
+                            <p className="p-5 m-5 bg-gray-700 rounded-2xl">Hint: {recipeStep.hint}</p>
                         </li>
                     ))}
                 </ul>

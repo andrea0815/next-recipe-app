@@ -40,6 +40,7 @@ export default function StepEditor({
                         Text
                         <textarea
                             value={step.text}
+                            name="step_texts"
                             onChange={(e) =>
                                 setSteps((prev) =>
                                     prev.map((s, i) =>
@@ -73,6 +74,7 @@ export default function StepEditor({
                             Hint
                             <textarea
                                 value={step.hint ?? ""}
+                                name="step_hints"
                                 onChange={(e) =>
                                     setSteps((prev) =>
                                         prev.map((s, i) =>

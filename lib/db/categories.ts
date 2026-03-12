@@ -4,6 +4,31 @@ export async function getCategories(query?: string, userId?: string) {
 
     return prisma.categories.findMany({
         where: {
+            AND: [
+                userId
+                    ? {
+                        OR: [
+                            { owner_id: userId },
+                            { owner_id: null }
+                        ],
+                    }
+                    : {},
+                query
+                    ? {
+                        OR: [
+                            { name: { contains: query, mode: "insensitive" } },
+                        ],
+                    }
+                    : {},
+            ],
+        },
+    });
+}
+
+export async function getCategoriesByUserId(query?: string, userId?: string) {
+
+    return prisma.categories.findMany({
+        where: {
             ...(userId && { owner_id: userId }), // filter by userId if provided
 
             ...(query && { // filter by query if provided

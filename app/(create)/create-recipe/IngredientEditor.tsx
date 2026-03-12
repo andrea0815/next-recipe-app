@@ -100,8 +100,14 @@ export default function IngredientEditor({
     ]);
   }
 
+
   function removeGroup(index: number) {
-    setGroups((prev) => prev.filter((_, i) => i !== index));
+    setGroups((prev) => {
+      if (prev.length <= 1) {
+        return prev;
+      }
+      return prev.filter((_, i) => i !== index);
+    });
   }
 
   function updateGroupName(index: number, value: string) {
@@ -116,23 +122,37 @@ export default function IngredientEditor({
     <div className="space-y-3">
       <h2 className="text-white font-semibold">Ingredients</h2>
 
+      <div>
+        <label className="text-white">
+          Portions
+          <input
+            type="number"
+            className="block w-full p-2 bg-white text-black border rounded"
+            name="portions"
+            min="1"
+            defaultValue="2"
+          />
+        </label>
+      </div>
+
       <label >
         Groups enabled
         <input
           type="checkbox"
+          name="groups_enabled"
           checked={groupsEnabled}
           onChange={(e) => setGroupsEnabled(e.target.checked)} />
       </label>
 
-      {groups.map((group, index) => (
+      {(groupsEnabled ? groups : [groups[0]]).map((group, index) => (
         <div key={index} className="bg-gray-800 p-5 rounded-2xl">
-
           {groupsEnabled &&
+
             <label className="text-white w-28 pt-5">
               Group name
               <input
                 type="text"
-                value={group.group_name}
+                value={groupsEnabled ? group.group_name : "General"}
                 onChange={(e) => updateGroupName(index, e.target.value)}
                 className="block w-full p-2 bg-white text-black border rounded"
                 placeholder="group name"
@@ -146,7 +166,10 @@ export default function IngredientEditor({
             <label className="text-white w-28">
               Amount
               <input
-                type="text"
+                type="number"
+                step="0.5"
+                min="0"
+                defaultValue="1"
                 value={group.draft.amount}
                 onChange={(e) => updateDraft(index, "amount", e.target.value)}
                 className="block w-full p-2 bg-white text-black border rounded"
@@ -252,9 +275,18 @@ export default function IngredientEditor({
             <p className="text-white/70 text-sm">No ingredients added yet.</p>
           )}
 
-          {groupsEnabled &&
-            <button type="button" onClick={() => removeGroup(index)}>Remove group</button>
-          }
+          {groupsEnabled && (
+            <>
+              <button
+                type="button"
+                onClick={() => removeGroup(index)}
+                disabled={groups.length <= 1}
+                className="disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Remove group
+              </button>
+            </>
+          )}
 
         </div>
       ))}

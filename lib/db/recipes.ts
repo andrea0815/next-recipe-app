@@ -58,12 +58,14 @@ export async function getRecipeBySlug(slug: string, userId?: string) {
 export async function addRecipe(
     name: string,
     subtitle: string,
-    is_public: boolean,
-    image_uri: string,
     userId: string,
+    portions: string,
+    image_uri: string,
+    is_public: boolean,
+    groups_enabled: boolean,
     categoryIds: string[],
     ingredient_lines: IngredientLineInput[],
-    steps: RecipeStep[]
+    steps: RecipeStep[],
 
 ) {
     const slug = await generateUniqueRecipeSlug(name, userId);
@@ -73,6 +75,8 @@ export async function addRecipe(
             name,
             subtitle,
             is_public,
+            groups_enabled,
+            portions,
             image_uri,
             slug,
             users: {

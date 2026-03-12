@@ -6,8 +6,6 @@ import { parseRecipeAmount } from "@/actions/utils/parseRecipeAmount";
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import type { IngredientLineInput } from '@/types/recipe';
-
 export type Errors = {
     name?: string;
     subtitle?: string;
@@ -33,13 +31,15 @@ export async function createRecipe(prevState: FormState, formData: FormData
     const subtitle = formData.get("subtitle") as string;
     const is_public = formData.get("is_public") === "on";
     const image_uri = formData.get("image_uri") as string;
+    const portions = formData.get("portions") as string;
+    const groups_enabled = formData.get("groups_enabled") === "on";
     const category_ids = (formData.getAll("category_ids") as string[]) || [];
     const ingredient_ids = formData.getAll("ingredient_ids") as string[];
     const unit_ids = formData.getAll("unit_ids") as string[];
-    const amounts = formData.getAll("amounts") as string[];
     const ingredient_groups = formData.getAll("group_names") as string[];
     const positions = formData.getAll("positions").map((p) => Number(p));
-    const parsedAmounts = amounts.map((amount) => parseRecipeAmount(amount));
+    const amounts = formData.getAll("amounts").map((p) => Number(p));
+    // const amounts = amounts.map((amount) => parseRecipeAmount(amount));
     const step_texts = formData.getAll("step_texts") as string[];
     const step_hints = formData.getAll("step_hints") as string[];
 
@@ -68,17 +68,21 @@ export async function createRecipe(prevState: FormState, formData: FormData
     if (!amounts || amounts.length === 0) {
         errors.amounts = "Amount is required";
     } else {
-        const hasInvalidAmount = parsedAmounts.some(
+        const hasInvalidAmount = amounts.some(
             (amount) => amount === null || !Number.isFinite(amount)
         );
 
         if (hasInvalidAmount) {
             errors.amounts =
-                "One or more amounts are invalid. Use values like 2, 0.5, 1/2 or 1 1/2";
+                "One or more amounts are invalid.";
         }
     }
 
     if (ingredient_ids.length !== unit_ids.length || ingredient_ids.length !== amounts.length) {
+        errors.amounts = "Ingredient data is incomplete";
+    }
+   
+    if (step_texts.length !== unit_ids.length || ingredient_ids.length !== amounts.length) {
         errors.amounts = "Ingredient data is incomplete";
     }
 
@@ -89,7 +93,7 @@ export async function createRecipe(prevState: FormState, formData: FormData
     const ingredient_lines = ingredient_ids.map((ingredient_id, i) => ({
         ingredient_id,
         unit_id: unit_ids[i],
-        amount: parsedAmounts[i] as number,
+        amount: amounts[i] as number,
         group_name: ingredient_groups[i],
         position: positions[i] as number,
     }));
@@ -103,12 +107,14 @@ export async function createRecipe(prevState: FormState, formData: FormData
     await addRecipe(
         name,
         subtitle,
-        is_public,
-        image_uri,
         user.id,
+        portions,
+        image_uri,
+        is_public,
+        groups_enabled,
         category_ids,
         ingredient_lines,
-        steps
+        steps,
     );
 
     redirect("/");

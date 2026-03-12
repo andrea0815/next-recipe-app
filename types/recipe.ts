@@ -7,6 +7,8 @@ export type Recipe = {
     image_uri: string | null;
     owner_id: string;
     categories: string[];
+    portions: string;
+    groups_enabled: number;
     ingredients: IngredientLineInput[];
 }
 

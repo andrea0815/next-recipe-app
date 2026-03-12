@@ -79,6 +79,8 @@ model recipes {
   created_at         DateTime             @default(now()) @db.Timestamptz(6)
   updated_at         DateTime             @default(now()) @db.Timestamptz(6)
   slug               String
+  groups_enabled     Boolean              @default(false)
+  portions           Decimal              @default(2) @db.Decimal
   recipe_categories  recipe_categories[]
   recipe_ingredients recipe_ingredients[]
   recipe_steps       recipe_steps[]
@@ -96,6 +98,7 @@ model units {
   created_at         DateTime             @default(now()) @db.Timestamptz(6)
   updated_at         DateTime             @default(now()) @db.Timestamptz(6)
   abbreviation       String
+  plural             String?
   recipe_ingredients recipe_ingredients[]
   users              users?               @relation(fields: [owner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
