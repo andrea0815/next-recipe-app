@@ -1,40 +1,31 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { Unit } from "@/types/unit";
 import type { Ingredient } from "@/types/ingredient";
+import type { RecipeGroupDraft, RecipeLineDraft } from "@/types/recipe";
+
 import UnitDisplay from "@/components/unit/UnitDisplay";
 import InrgredientDisplay from "@/components/ingredient/InrgredientDisplay";
-
-type Line = {
-  amount: string;
-  unit_id: string;
-  ingredient_id: string;
-};
-
-type Group = {
-  group_name: string;
-  draft: Line;
-  lines: Line[];
-};
 
 export default function IngredientEditor({
   state,
   ingredients,
   units,
+  groups,
+  groupsEnabled,
+  onGroupsChange,
+  onGroupsEnabledChange,
 }: {
   state: any; // your FormState (keep as any for now)
   ingredients: Ingredient[];
   units: Unit[];
+  groups: RecipeGroupDraft[],
+  groupsEnabled: boolean,
+  onGroupsChange: (groups: RecipeGroupDraft[]) => void,
+  onGroupsEnabledChange: (enabled: boolean) => void,
 }) {
 
-  const [groups, setGroups] = useState<Group[]>([{
-    group_name: "",
-    draft: { amount: "1", unit_id: "", ingredient_id: "" },
-    lines: []
-  }]);
-
-  const [groupsEnabled, setGroupsEnabled] = useState<boolean>(false)
 
   const unitById = useMemo(
     () => new Map(units.map((u) => [u.id, u])),
@@ -46,25 +37,27 @@ export default function IngredientEditor({
   );
 
   function addLine(groupIndex: number) {
-    setGroups((prev) =>
-      prev.map((group, i) => {
+    onGroupsChange(
+      groups.map((group, i) => {
         if (i !== groupIndex) return group;
 
         const { draft } = group;
-        if (!draft.amount || !draft.unit_id || !draft.ingredient_id) return group;
+        if (!draft.amount || !draft.unit_id || !draft.ingredient_id) {
+          return group;
+        }
 
         return {
           ...group,
           lines: [...group.lines, draft],
-          draft: { amount: "1", unit_id: "", ingredient_id: "" },
+          draft: { amount: 1, unit_id: "", ingredient_id: "" },
         };
       })
     );
   }
 
   function removeLine(groupIndex: number, lineIndex: number) {
-    setGroups((prev) =>
-      prev.map((group, i) =>
+    onGroupsChange(
+      groups.map((group, i) =>
         i === groupIndex
           ? {
             ...group,
@@ -75,13 +68,13 @@ export default function IngredientEditor({
     );
   }
 
-  function updateDraft(
+  function updateDraft<K extends keyof RecipeLineDraft>(
     groupIndex: number,
-    field: keyof Line,
-    value: string
+    field: K,
+    value: RecipeLineDraft[K]
   ) {
-    setGroups((prev) =>
-      prev.map((group, i) =>
+    onGroupsChange(
+      groups.map((group, i) =>
         i === groupIndex
           ? {
             ...group,
@@ -96,29 +89,30 @@ export default function IngredientEditor({
   }
 
   function addGroup() {
-    setGroups((prev) => [
-      ...prev,
-      { group_name: "", lines: [], draft: { amount: "1", unit_id: "", ingredient_id: "" } }
+    onGroupsChange([
+      ...groups,
+      {
+        group_name: "",
+        draft: { amount: 1, unit_id: "", ingredient_id: "" },
+        lines: [],
+      },
     ]);
   }
 
-
   function removeGroup(index: number) {
-    setGroups((prev) => {
-      if (prev.length <= 1) {
-        return prev;
-      }
-      return prev.filter((_, i) => i !== index);
-    });
+    if (groups.length <= 1) return;
+
+    onGroupsChange(groups.filter((_, i) => i !== index));
   }
 
   function updateGroupName(index: number, value: string) {
-    setGroups((prev) =>
-      prev.map((group, i) =>
+    onGroupsChange(
+      groups.map((group, i) =>
         i === index ? { ...group, group_name: value } : group
       )
     );
   }
+
 
   return (
     <div className="space-y-3">
@@ -143,7 +137,7 @@ export default function IngredientEditor({
           type="checkbox"
           name="groups_enabled"
           checked={groupsEnabled}
-          onChange={(e) => setGroupsEnabled(e.target.checked)} />
+          onChange={(e) => onGroupsEnabledChange(e.target.checked)} />
       </label>
 
       {(groupsEnabled ? groups : [groups[0]]).map((group, index) => (
@@ -173,7 +167,7 @@ export default function IngredientEditor({
                 step="0.5"
                 min="0"
                 value={group.draft.amount}
-                onChange={(e) => updateDraft(index, "amount", e.target.value)}
+                onChange={(e) => updateDraft(index, "amount", Number(e.target.value))}
                 className="block w-full p-2 bg-white text-black border rounded"
                 placeholder="e.g. 200"
               />

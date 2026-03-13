@@ -160,11 +160,13 @@ export async function updateRecipe(
                 connect: { id: userId },
             },
             recipe_categories: {
+                deleteMany: {},
                 create: categoryIds.map((categoryId) => ({
                     categories: { connect: { id: categoryId } },
-                }))
+                })),
             },
             recipe_ingredients: {
+                deleteMany: {},
                 create: ingredient_lines.map((line) => ({
                     ingredient_id: line.ingredient_id,
                     unit_id: line.unit_id,
@@ -176,6 +178,7 @@ export async function updateRecipe(
                 })),
             },
             recipe_steps: {
+                deleteMany: {},
                 create: steps.map((step) => ({
                     step_index: step.step_index,
                     text: step.text,

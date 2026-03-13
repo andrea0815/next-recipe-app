@@ -3,8 +3,15 @@
 import { useMemo, useState } from "react";
 import type { Category } from "@/types/category";
 
-export function CategoryMultiSelect({ categories }: { categories: Category[] }) {
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+export default function CategoryMultiSelect({
+  categories,
+  selectedIds,
+  onChange
+}: {
+  categories: Category[],
+  selectedIds: string[],
+  onChange: (ids: string[]) => void;
+}) {
 
   const selected = useMemo(
     () => categories.filter((c) => selectedIds.includes(c.id)),
@@ -18,11 +25,11 @@ export function CategoryMultiSelect({ categories }: { categories: Category[] }) 
 
   function add(id: string) {
     if (!id) return;
-    setSelectedIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
+    onChange(selectedIds.includes(id) ? selectedIds : [...selectedIds, id]);
   }
 
   function remove(id: string) {
-    setSelectedIds((prev) => prev.filter((x) => x !== id));
+    onChange(selectedIds.filter((x) => x !== id));
   }
 
   return (

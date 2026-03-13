@@ -6,6 +6,8 @@ import { getIngredients } from "@/lib/db/ingredients";
 import type { Category } from '@/types/category';
 import type { Ingredient } from "@/types/ingredient";
 import type { Unit } from "@/types/unit";
+import type { RecipeDraft } from '@/types/recipe';
+import { FormMode } from '@/types/recipe';
 
 import RecipeForm from '@/components/recipe/RecipeForm';
 
@@ -17,10 +19,30 @@ export default async function AddRecipePage() {
   const ingredients: Ingredient[] = await getIngredients(undefined, user?.id ?? undefined);
   const units: Unit[] = await getUnits(undefined, user?.id ?? undefined);
 
+  const emptyDraft: RecipeDraft = {
+    id: "",
+    name: "",
+    subtitle: "",
+    slug: "",
+    image_uri: "/images/placeholder.png",
+    is_public: false,
+    portions: 2,
+    groups_enabled: false,
+    category_ids: [],
+    groups: [
+      {
+        group_name: "",
+        draft: { amount: 1, unit_id: "", ingredient_id: "" },
+        lines: [],
+      },
+    ],
+    steps: [],
+  };
+
   return (
     <main>
       <h1>Create Recipe</h1>
-      <RecipeForm categories={categories} ingredients={ingredients} units={units}></RecipeForm>
+      <RecipeForm categories={categories} ingredients={ingredients} units={units} initialDraft={emptyDraft} mode={FormMode.CREATE}/>
     </main>
   );
 }

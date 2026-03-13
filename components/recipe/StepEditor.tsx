@@ -2,29 +2,42 @@
 
 import { useState } from "react";
 
-type Step = {
-    text: string;
-    hint?: string;
-    hint_is_showing: boolean;
-};
+import type { RecipeStepDraft } from "@/types/recipe";
 
 export default function StepEditor({
     state,
+    steps,
+    onChange
 }: {
     state: any;
+    steps: RecipeStepDraft[];
+    onChange: (steps: RecipeStepDraft[]) => void;
 }) {
 
-    const [steps, setSteps] = useState<Step[]>([]);
 
     function addStep() {
-        setSteps((prev) => [
-            ...prev,
-            { text: "", hint: "", hint_is_showing: false }
+        onChange([
+            ...steps,
+            { text: "", hint: "", hint_is_showing: false, step_index: steps.length },
         ]);
     }
 
     function removeStep(index: number) {
-        setSteps((prev) => prev.filter((_, i) => i !== index));
+        onChange(steps.filter((_, i) => i !== index));
+    }
+
+    function updateStep<K extends keyof RecipeStepDraft>(
+        index: number,
+        field: K,
+        value: RecipeStepDraft[K]
+    ) {
+        onChange(
+            steps.map((step, i) =>
+                i === index
+                    ? { ...step, [field]: value }
+                    : step
+            )
+        );
     }
 
     return (
@@ -41,13 +54,7 @@ export default function StepEditor({
                         <textarea
                             value={step.text}
                             name="step_texts"
-                            onChange={(e) =>
-                                setSteps((prev) =>
-                                    prev.map((s, i) =>
-                                        i === index ? { ...s, text: e.target.value } : s
-                                    )
-                                )
-                            }
+                            onChange={(e) => updateStep(index, "text", e.target.value)}
                             className="block w-full p-2 bg-white text-black border rounded"
                             placeholder="Step text"
                         />
@@ -59,13 +66,7 @@ export default function StepEditor({
                         <input
                             type="checkbox"
                             checked={step.hint_is_showing}
-                            onChange={(e) =>
-                                setSteps((prev) =>
-                                    prev.map((s, i) =>
-                                        i === index ? { ...s, hint_is_showing: e.target.checked } : s
-                                    )
-                                )
-                            }
+                            onChange={(e) => updateStep(index, "hint_is_showing", e.target.checked)}
                         />
                     </label>
 
@@ -75,13 +76,8 @@ export default function StepEditor({
                             <textarea
                                 value={step.hint ?? ""}
                                 name="step_hints"
-                                onChange={(e) =>
-                                    setSteps((prev) =>
-                                        prev.map((s, i) =>
-                                            i === index ? { ...s, hint: e.target.value } : s
-                                        )
-                                    )
-                                }
+                                onChange={(e) => updateStep(index, "hint", e.target.value)}
+
                                 className="block w-full p-2 bg-white text-black border rounded"
                                 placeholder="Optional hint"
                             />

@@ -155,7 +155,7 @@ export async function createRecipe(
     redirect("/");
 }
 
-export async function editRecipe(id: string, prevState: FormState, formData: FormData
+export async function editRecipe(id: string, slug: string, prevState: FormState, formData: FormData
 ): Promise<FormState> {
 
     const user = await getCurrentDbUser();
@@ -278,7 +278,7 @@ export async function editRecipe(id: string, prevState: FormState, formData: For
         ingredient_lines,
         steps
     );
-    redirect('/');
+    redirect(`/recipes/${slug}`);
 }
 
 export async function removeRecipe(id: string) {

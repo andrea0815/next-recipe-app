@@ -1,46 +1,61 @@
 "use client";
 import { useActionState, useState } from 'react';
-import { FormState, createRecipe } from '@/actions/recipes';
+import { FormState, createRecipe, editRecipe } from '@/actions/recipes';
 
 import type { Category } from '@/types/category';
 import type { Unit } from '@/types/unit';
 import type { Ingredient } from '@/types/ingredient';
+import type { RecipeDraft } from '@/types/recipe';
+import { FormMode } from '@/types/recipe';
 
 import Navbar from '@/components/Navbar';
-import { CategoryMultiSelect } from './CategoryMultiSelect';
+import CategoryMultiSelect from './CategoryMultiSelect';
 import IngredientEditor from './IngredientEditor';
 import StepEditor from './StepEditor';
 
-type Draft = {
-    name: string;
-    subtitle: string;
-    image_uri: string;
-    is_public: boolean;
-}
+
 
 export default function RecipeForm({
     categories,
     ingredients,
     units,
+    initialDraft,
+    mode
 }: {
     categories: Category[];
     ingredients: Ingredient[];
     units: Unit[];
+    initialDraft: RecipeDraft;
+    mode: FormMode;
 }) {
     const initialState: FormState = {
         errors: {},
     };
 
-    const [state, formAction, isPending] = useActionState(createRecipe, initialState);
+    const action =
+        mode === FormMode.CREATE
+            ? createRecipe
+            : editRecipe.bind(null, initialDraft.id, initialDraft.slug);
 
-    const [draft, setDraft] = useState<Draft>({
-        name: "",
-        subtitle: "",
-        image_uri: "/images/placeholder.png",
-        is_public: false,
-    });
+    const [state, formAction, isPending] = useActionState(action, initialState);
+    const [draft, setDraft] = useState<RecipeDraft>(initialDraft);
 
-    function updateDraft<K extends keyof Draft>(field: K, value: Draft[K]) {
+    const submitButtonText = mode === FormMode.CREATE ?
+        {
+            static: "Create Recipe",
+            pending: "Creating Recipe …"
+        } :
+        {
+            static: "Save Changes",
+            pending: "Saving Changes …"
+        }
+
+
+
+    function updateDraft<K extends keyof RecipeDraft>(
+        field: K,
+        value: RecipeDraft[K]
+    ) {
         setDraft((prev) => ({
             ...prev,
             [field]: value,
@@ -109,16 +124,34 @@ export default function RecipeForm({
                     {state.errors.image_uri && <p className="text-red-500">{state.errors.image_uri}</p>}
                 </div>
 
-                <CategoryMultiSelect categories={categories} />
-                <IngredientEditor state={state} ingredients={ingredients} units={units} />
-                <StepEditor state={state} />
+                <CategoryMultiSelect
+                    categories={categories}
+                    selectedIds={draft.category_ids}
+                    onChange={(ids) => updateDraft("category_ids", ids)}
+                />
+
+                <IngredientEditor
+                    state={state}
+                    ingredients={ingredients}
+                    units={units}
+                    groups={draft.groups}
+                    groupsEnabled={draft.groups_enabled}
+                    onGroupsChange={(groups) => updateDraft("groups", groups)}
+                    onGroupsEnabledChange={(enabled) => updateDraft("groups_enabled", enabled)}
+                />
+
+                <StepEditor
+                    state={state}
+                    steps={draft.steps}
+                    onChange={(steps) => updateDraft("steps", steps)}
+                />
 
                 <button
                     type="submit"
                     className="block w-full p-2 text-white bg-blue-500 rounded disabled:bg-gray-500 cursor-pointer"
                     disabled={isPending}
                 >
-                    {isPending ? "Creating..." : "Create Recipe"}
+                    {isPending ? submitButtonText.pending : submitButtonText.static}
                 </button>
             </form>
         </>

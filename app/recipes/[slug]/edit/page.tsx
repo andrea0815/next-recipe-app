@@ -2,25 +2,85 @@ import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 import { getCategories } from "@/lib/db/categories";
 import { getUnits } from "@/lib/db/units";
 import { getIngredients } from "@/lib/db/ingredients";
+import { getRecipeBySlug } from "@/lib/db/recipes";
+import { notFound } from "next/navigation";
 
 import type { Category } from '@/types/category';
 import type { Ingredient } from "@/types/ingredient";
 import type { Unit } from "@/types/unit";
+import type { RecipeDraft, RecipeGroupDraft, RecipeLineDraft } from '@/types/recipe';
+import { FormMode } from '@/types/recipe';
+
 
 import RecipeForm from '@/components/recipe/RecipeForm';
 
-export default async function EditRecipePage() {
+export default async function EditRecipePage({ params }: { params: Promise<{ slug: string }> }) {
 
+    const { slug } = await params;
     const user = await getCurrentDbUser();
 
+    console.log(user);
+
+    if (!user) {
+        notFound();
+    }
     const categories: Category[] = await getCategories(undefined, user?.id ?? undefined);
     const ingredients: Ingredient[] = await getIngredients(undefined, user?.id ?? undefined);
     const units: Unit[] = await getUnits(undefined, user?.id ?? undefined);
+    const recipe = await getRecipeBySlug(slug, user.id);
+    console.log(recipe);
+
+    if (!recipe) {
+        notFound();
+    }
+
+    const groupsMap = new Map<string, RecipeLineDraft[]>();
+
+    for (const ingredientLine of recipe.recipe_ingredients) {
+        const groupName = ingredientLine.group_name ?? "";
+
+        const line: RecipeLineDraft = {
+            amount: Number(ingredientLine.amount),
+            unit_id: ingredientLine.units.id,
+            ingredient_id: ingredientLine.ingredients.id,
+        };
+
+        const existing = groupsMap.get(groupName) ?? [];
+        existing.push(line);
+        groupsMap.set(groupName, existing);
+    }
+
+    const groups: RecipeGroupDraft[] = Array.from(groupsMap.entries()).map(
+        ([group_name, lines]) => ({
+            group_name,
+            draft: { amount: 1, unit_id: "", ingredient_id: "" },
+            lines,
+        })
+    );
+
+    const propagatedDraft: RecipeDraft = {
+        id: recipe.id,
+        name: recipe.name,
+        subtitle: recipe.subtitle,
+        slug: recipe.slug,
+        image_uri: recipe.image_uri,
+        is_public: recipe.is_public,
+        portions: recipe.portions,
+        groups_enabled: recipe.groups_enabled,
+        category_ids: recipe.recipe_categories.map((category) => category.category_id),
+        groups: groups,
+        steps: recipe.recipe_steps.map((step) => ({
+            text: step.text,
+            hint: step.hint ?? "",
+            step_index: step.step_index,
+            hint_is_showing: !!step.hint,
+        })),
+    };
 
     return (
         <main>
             <h1>Edit Recipe</h1>
-            <RecipeForm categories={categories} ingredients={ingredients} units={units}></RecipeForm>
+            <RecipeForm categories={categories} ingredients={ingredients} units={units} initialDraft={propagatedDraft} mode={FormMode.EDIT} />
         </main>
     );
 }
