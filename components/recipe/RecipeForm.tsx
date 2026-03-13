@@ -8,7 +8,7 @@ import type { Ingredient } from '@/types/ingredient';
 import type { RecipeDraft } from '@/types/recipe';
 import { FormMode } from '@/types/general';
 
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/nav/Navbar';
 import CategoryMultiSelect from './CategoryMultiSelect';
 import IngredientEditor from './IngredientEditor';
 import StepEditor from './StepEditor';

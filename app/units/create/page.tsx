@@ -2,7 +2,7 @@
 
 import { useActionState } from 'react';
 import { FormState, createUnit } from '@/actions/units';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/nav/Navbar';
 
 export default function AddUnitPage() {
 

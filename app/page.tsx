@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SignUp, SignedIn, SignOutButton, SignedOut } from '@clerk/nextjs';
-import RecipeList from "@/components/RecipeList";
-import UnitList from "@/components/UnitList";
-import CategoryList from "@/components/CategoryList";
-import IngredientList from "@/components/IngredientList";
+import RecipeList from "@/components/recipe/RecipeList";
+import UnitList from "@/components/unit/UnitList";
+import CategoryList from "@/components/category/CategoryList";
+import IngredientList from "@/components/ingredient/IngredientList";
 
 
 export default function Home() {

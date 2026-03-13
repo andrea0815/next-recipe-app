@@ -1,3 +1,4 @@
+
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 import { getCategories } from "@/lib/db/categories";
 import { getUnits } from "@/lib/db/units";
@@ -19,8 +20,6 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
     const { slug } = await params;
     const user = await getCurrentDbUser();
 
-    console.log(user);
-
     if (!user) {
         notFound();
     }
@@ -28,7 +27,6 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
     const ingredients: Ingredient[] = await getIngredients(undefined, user?.id ?? undefined);
     const units: Unit[] = await getUnits(undefined, user?.id ?? undefined);
     const recipe = await getRecipeBySlug(slug, user.id);
-    console.log(recipe);
 
     if (!recipe) {
         notFound();

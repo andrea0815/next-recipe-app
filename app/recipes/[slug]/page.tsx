@@ -6,7 +6,7 @@ import { formatAmount } from "@/lib/db/utils/formatDecimals";
 
 import { notFound } from "next/navigation";
 
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/nav/Navbar';
 import UnitDisplay from "@/components/unit/UnitDisplay";
 import InrgredientDisplay from "@/components/ingredient/InrgredientDisplay";
 import Link from "next/link";

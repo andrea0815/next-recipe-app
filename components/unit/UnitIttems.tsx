@@ -3,6 +3,7 @@
 import { useOptimistic } from "react";
 
 import type { Unit } from '@/types/unit';
+import Link from "next/link";
 
 export default function UnitItems({ units }: { units: Unit[] }) {
 
@@ -22,10 +23,11 @@ export default function UnitItems({ units }: { units: Unit[] }) {
                         key={unit.id}
                         className=""
                     >
-                        <p className="text-sm">
-                            {unit.name} –   {unit.abbreviation}
-                        </p>
-
+                        <Link href={`/units/${unit.id}/edit`}>
+                            <p className="text-sm">
+                                {unit.name} – {unit.abbreviation}
+                            </p>
+                        </Link>
                     </li>
                 ))}
             </ul>
