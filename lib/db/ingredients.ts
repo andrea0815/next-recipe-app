@@ -69,11 +69,20 @@ export async function updateIngredient(
     plural: string,
     userId: string
 ) {
+    const ingredient = await prisma.ingredients.findUnique({
+        where: { id },
+    });
+
+    if (!ingredient) {
+        throw new Error("Ingredient not found");
+    }
+
+    if (ingredient.owner_id !== userId) {
+        throw new Error("You are not allowed to edit this ingredient");
+    }
+
     return prisma.ingredients.update({
-        where: {
-            id,
-            owner_id: userId,
-        },
+        where: { id },
         data: { name, plural },
     });
 }

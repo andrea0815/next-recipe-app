@@ -1,13 +1,13 @@
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
-import { getUnit } from "@/lib/db/units";
+import { getIngredient } from "@/lib/db/ingredients";
 import { notFound } from "next/navigation";
 
-import { UnitDraft } from "@/types/unit";
+import { IngredientDraft } from "@/types/ingredient";
 import Navbar from '@/components/nav/Navbar';
-import UnitForm from "@/components/unit/UnitForm";
+import IngredientForm from "@/components/ingredient/IngredientForm";
 import { FormMode } from "@/types/general";
 
-export default async function EditUnitPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function EditIngredientPage({ params }: { params: Promise<{ id: string }> }) {
 
   const { id } = await params;
   const user = await getCurrentDbUser();
@@ -15,17 +15,17 @@ export default async function EditUnitPage({ params }: { params: Promise<{ id: s
   if (!user) {
     notFound();
   }
-  const unit: UnitDraft | null = await getUnit(id)
+  const ingredient: IngredientDraft | null = await getIngredient(id)
 
-  if (!unit) {
+  if (!ingredient) {
     notFound();
   }
 
   return (
     <>
       <Navbar />
-      <UnitForm
-        initialDraft={unit}
+      <IngredientForm
+        initialDraft={ingredient}
         mode={FormMode.EDIT}
         submitButtonText={{ default: "Save Changes", pending: "Saving Changes …" }} />
     </>

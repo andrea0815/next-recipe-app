@@ -58,11 +58,20 @@ export async function updateUnit(
     abbreviation: string,
     userId: string
 ) {
+    const unit = await prisma.units.findUnique({
+        where: { id },
+    });
+
+    if (!unit) {
+        throw new Error("Unit not found");
+    }
+
+    if (unit.owner_id !== userId) {
+        throw new Error("You are not allowed to edit this unit");
+    }
+
     return prisma.units.update({
-        where: {
-            id,
-            owner_id: userId,
-        },
+        where: { id },
         data: { name, plural, abbreviation },
     });
 }

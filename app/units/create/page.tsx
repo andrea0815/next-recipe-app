@@ -1,67 +1,25 @@
-"use client";
+import { FormMode } from '@/types/general';
+import { UnitDraft } from "@/types/unit";
 
-import { useActionState } from 'react';
-import { FormState, createUnit } from '@/actions/units';
 import Navbar from '@/components/nav/Navbar';
+import UnitForm from '@/components/unit/UnitForm';
 
 export default function AddUnitPage() {
 
-  const initialState: FormState = {
-    errors: {}
-  }
-
-  const [state, formAction, isPending] = useActionState(
-    createUnit,
-    initialState
-  );
+  const emptyDraft: UnitDraft = {
+    id: "",
+    name: "",
+    abbreviation: "",
+    plural: "",
+  };
 
   return (
     <>
       <Navbar />
-      <form action={formAction} className="p-4 space-y-4 max-w-96">
-
-        <div>
-          <label className="text-white">
-            Name
-            <input
-              type="text"
-              className="block w-full p-2 bg-white text-black border rounded"
-              name="name"
-            />
-          </label>
-          {state.errors.name && <p className="text-red-500">{state.errors.name}</p>}
-        </div>
-
-        <div>
-          <label className="text-white">
-            Plural
-            <input
-              type="text"
-              className="block w-full p-2 bg-white text-black border rounded"
-              name="plural"
-            />
-          </label>
-        </div>
-
-        <div>
-          <label className="text-white">
-            Shorthand
-            <input
-              type="text"
-              className="block w-full p-2 bg-white text-black border rounded"
-              name="abbreviation"
-            />
-          </label>
-        </div>
-
-        <button
-          type="submit"
-          className="block w-full p-2 text-white bg-blue-500 rounded disabled:bg-gray-500 cursor-pointer"
-          disabled={isPending}
-        >
-          Create Unit
-        </button>
-      </form>
+      <UnitForm
+        initialDraft={emptyDraft}
+        mode={FormMode.CREATE}
+        submitButtonText={{ default: "Add Unit", pending: "Creating Unit …" }} />
     </>
   );
 }

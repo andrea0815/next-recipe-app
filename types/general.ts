@@ -8,3 +8,8 @@ export enum ItemType {
     UNIT = "unit",
     CATEGORY = "category",
 }
+
+export type SubmitButtonText = {
+    default: string;
+    pending: string;
+}

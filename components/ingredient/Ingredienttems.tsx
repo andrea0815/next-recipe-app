@@ -3,6 +3,7 @@
 import { useOptimistic } from "react";
 
 import type { Ingredient } from '@/types/ingredient';
+import Link from "next/link";
 
 export default function IngredientItems({ ingredients }: { ingredients: Ingredient[] }) {
 
@@ -20,11 +21,12 @@ export default function IngredientItems({ ingredients }: { ingredients: Ingredie
                 {optimisticIngredients.map((ingredient) => (
                     <li
                         key={ingredient.id}
-                        className=""
                     >
-                        <p className="text-sm">
-                            {ingredient.name}
-                        </p>
+                        <Link href={`/ingredients/${ingredient.id}/edit`}>
+                            <p className="text-sm">
+                                {ingredient.name}
+                            </p>
+                        </Link>
 
                     </li>
                 ))}

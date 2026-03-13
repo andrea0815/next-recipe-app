@@ -1,14 +1,14 @@
 "use client"
 
 import { useActionState, useState } from 'react';
-import { FormState, editUnit, createUnit } from '@/actions/units';
+import { FormState, editCategory, createCategory } from '@/actions/categories';
 
-import { UnitDraft } from "@/types/unit";
+import { CategoryDraft } from "@/types/category";
 import { FormMode } from "@/types/general";
 import { SubmitButtonText } from "@/types/general";
 import Navbar from '@/components/nav/Navbar';
 
-export default function UnitForm({ initialDraft, mode, submitButtonText }: { initialDraft: UnitDraft, mode: FormMode, submitButtonText: SubmitButtonText }) {
+export default function CategoryForm({ initialDraft, mode, submitButtonText }: { initialDraft: CategoryDraft, mode: FormMode, submitButtonText: SubmitButtonText }) {
 
     const initialState: FormState = {
         errors: {}
@@ -16,17 +16,17 @@ export default function UnitForm({ initialDraft, mode, submitButtonText }: { ini
 
     const action =
         mode === FormMode.CREATE
-            ? createUnit
-            : editUnit.bind(null, initialDraft.id);
+            ? createCategory
+            : editCategory.bind(null, initialDraft.id);
 
     const [state, formAction, isPending] = useActionState(action, initialState);
-    const [draft, setDraft] = useState<UnitDraft>(initialDraft);
+    const [draft, setDraft] = useState<CategoryDraft>(initialDraft);
 
     const submitText = submitButtonText;
 
-    function updateDraft<K extends keyof UnitDraft>(
+    function updateDraft<K extends keyof CategoryDraft>(
         field: K,
-        value: UnitDraft[K]
+        value: CategoryDraft[K]
     ) {
         setDraft((prev) => ({
             ...prev,
@@ -51,32 +51,6 @@ export default function UnitForm({ initialDraft, mode, submitButtonText }: { ini
                         />
                     </label>
                     {state.errors.name && <p className="text-red-500">{state.errors.name}</p>}
-                </div>
-
-                <div>
-                    <label className="text-white">
-                        Plural
-                        <input
-                            type="text"
-                            className="block w-full p-2 bg-white text-black border rounded"
-                            name="plural"
-                            value={draft.plural ?? ""}
-                            onChange={(e) => updateDraft("plural", e.target.value)}
-                        />
-                    </label>
-                </div>
-
-                <div>
-                    <label className="text-white">
-                        Shorthand
-                        <input
-                            type="text"
-                            className="block w-full p-2 bg-white text-black border rounded"
-                            name="abbreviation"
-                            value={draft.abbreviation ?? ""}
-                            onChange={(e) => updateDraft("abbreviation", e.target.value)}
-                        />
-                    </label>
                 </div>
 
                 <button

@@ -1,8 +1,10 @@
 "use client";
 
 import { useOptimistic } from "react";
+import Link from "next/link";
 
 import type { Category } from '@/types/category';
+
 
 export default function CategoryItems({ categories }: { categories: Category[] }) {
 
@@ -22,9 +24,11 @@ export default function CategoryItems({ categories }: { categories: Category[] }
                         key={category.id}
                         className=""
                     >
-                        <p className="text-sm">
-                            {category.name}
-                        </p>
+                        <Link href={`/categories/${category.id}/edit`}>
+                            <p className="text-sm">
+                                {category.name}
+                            </p>
+                        </Link>
 
                     </li>
                 ))}

@@ -65,11 +65,20 @@ export async function updateCategory(
     name: string,
     userId: string
 ) {
+    const category = await prisma.categories.findUnique({
+        where: { id },
+    });
+
+    if (!category) {
+        throw new Error("Category not found");
+    }
+
+    if (category.owner_id !== userId) {
+        throw new Error("You are not allowed to edit this category");
+    }
+
     return prisma.categories.update({
-        where: {
-            id,
-            owner_id: userId,
-        },
+        where: { id },
         data: { name },
     });
 }

@@ -1,13 +1,13 @@
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
-import { getUnit } from "@/lib/db/units";
+import { getCategory } from "@/lib/db/categories";
 import { notFound } from "next/navigation";
 
-import { UnitDraft } from "@/types/unit";
+import { CategoryDraft } from "@/types/category";
 import Navbar from '@/components/nav/Navbar';
-import UnitForm from "@/components/unit/UnitForm";
+import CategoryForm from "@/components/category/CategoryForm";
 import { FormMode } from "@/types/general";
 
-export default async function EditUnitPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function EditCategoryPage({ params }: { params: Promise<{ id: string }> }) {
 
   const { id } = await params;
   const user = await getCurrentDbUser();
@@ -15,17 +15,17 @@ export default async function EditUnitPage({ params }: { params: Promise<{ id: s
   if (!user) {
     notFound();
   }
-  const unit: UnitDraft | null = await getUnit(id)
+  const category: CategoryDraft | null = await getCategory(id)
 
-  if (!unit) {
+  if (!category) {
     notFound();
   }
 
   return (
     <>
       <Navbar />
-      <UnitForm
-        initialDraft={unit}
+      <CategoryForm
+        initialDraft={category}
         mode={FormMode.EDIT}
         submitButtonText={{ default: "Save Changes", pending: "Saving Changes …" }} />
     </>
