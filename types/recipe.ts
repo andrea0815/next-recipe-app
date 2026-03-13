@@ -1,3 +1,5 @@
+import type { Category } from "@/types/category";
+
 export type Recipe = {
     id: string;
     name: string;
@@ -7,9 +9,20 @@ export type Recipe = {
     image_uri: string;
     owner_id: string;
     categories: string[];
-    portions: string;
+    portions: number;
     groups_enabled: number;
     ingredients: IngredientLineInput[];
+}
+
+export type RecipeListItem = {
+    id: string;
+    name: string;
+    slug: string;
+    subtitle: string;
+    is_public: boolean;
+    image_uri: string;
+    owner_id: string;
+    categories: Category[];
 }
 
 export type IngredientLineInput = {
@@ -64,10 +77,3 @@ export type RecipeDraft = {
     groups: RecipeGroupDraft[];
     steps: RecipeStepDraft[];
 };
-
-// enums
-
-export enum FormMode {
-    EDIT = "edit",
-    CREATE = "create",
-}

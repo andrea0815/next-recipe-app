@@ -5,9 +5,9 @@ import Link from "next/dist/client/link";
 import Form from "next/form";
 import { useOptimistic } from "react";
 
-import type { Recipe } from '@/types/recipe';
+import type { RecipeListItem } from '@/types/recipe';
 
-export default function RecipeItems({ recipes }: { recipes: Recipe[] }) {
+export default function RecipeItems({ recipes }: { recipes: RecipeListItem[] }) {
 
     const [optimisticRecipes, setOptimisticRecipes] = useOptimistic(
         recipes,
@@ -37,9 +37,20 @@ export default function RecipeItems({ recipes }: { recipes: Recipe[] }) {
 
                         <p>{recipe.is_public ? 'Public' : 'Private'}</p>
 
+                        {recipe.categories && (
+                            <div className="my-2 flex flex-row flex-wrap gap-2">
+                                {recipe.categories.map((category) => (
+                                    <p className="bg-white text-black py-1 px-2 inline-block rounded-3xl ">{category.name}</p>
+                                ))
+                                }
+                            </div>
+                        )}
+
                         {recipe.image_uri && (
                             <img src={recipe.image_uri} alt={recipe.name} className="w-full h-48 object-cover rounded-lg mt-2" />
                         )}
+
+
 
                         <Form action={removeRecipeById.bind(null, recipe.id)}>
                             <button

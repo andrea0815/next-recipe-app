@@ -20,10 +20,10 @@ export default function Home() {
           <SignOutButton><button>Sign out</button></SignOutButton>
           <h1>Welcome back!</h1>
           <Link href="/shopping-list">Go to your shopping list</Link>
-          <Link href="/create-recipe">Create a new recipe</Link>
-          <Link href="/create-unit">Create a new unit</Link>
-          <Link href="/create-category">Create a new category</Link>
-          <Link href="/create-ingredient">Create a new ingredient</Link>
+          <Link href="/recipes/create">Create a new recipe</Link>
+          <Link href="/units/create">Create a new unit</Link>
+          <Link href="/categories/create">Create a new category</Link>
+          <Link href="/ingredients/create">Create a new ingredient</Link>
 
           <div>
             <div className="flex mt-10 gap-3">

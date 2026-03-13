@@ -15,11 +15,28 @@ export async function getUserRecipes(query?: string, userId?: string) {
                 ],
             }),
         },
+        include: {
+            recipe_categories: {
+                include: {
+                    categories: true,
+                },
+            },
+        },
     });
 
     return recipes.map((recipe) => ({
-        ...recipe,
-        portions: Number(recipe.portions),
+        id: recipe.id,
+        name: recipe.name,
+        slug: recipe.slug,
+        subtitle: recipe.subtitle,
+        is_public: recipe.is_public,
+        image_uri: recipe.image_uri,
+        owner_id: recipe.owner_id,
+        categories: recipe.recipe_categories.map((rc) => ({
+            id: rc.categories.id,
+            name: rc.categories.name,
+            owner_id: rc.categories.owner_id
+        })),
     }));
 }
 

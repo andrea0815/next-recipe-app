@@ -7,7 +7,7 @@ import type { Category } from '@/types/category';
 import type { Ingredient } from "@/types/ingredient";
 import type { Unit } from "@/types/unit";
 import type { RecipeDraft } from '@/types/recipe';
-import { FormMode } from '@/types/recipe';
+import { FormMode } from '@/types/general';
 
 import RecipeForm from '@/components/recipe/RecipeForm';
 
