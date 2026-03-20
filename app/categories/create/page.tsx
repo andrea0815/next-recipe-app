@@ -2,7 +2,7 @@
 
 import { useActionState } from 'react';
 import { FormState, createCategory } from '@/actions/categories';
-import Navbar from '@/components/nav/Navbar';
+import Navbar from '@/components/header/Navbar';
 
 export default function AddCategoryPage() {
 
@@ -16,7 +16,6 @@ export default function AddCategoryPage() {
   );
 
   return (<>
-    <Navbar />
     <form action={formAction} className="p-4 space-y-4 max-w-96">
 
       <div>

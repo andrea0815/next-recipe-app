@@ -6,7 +6,7 @@ import { FormState, editUnit, createUnit } from '@/actions/units';
 import { UnitDraft } from "@/types/unit";
 import { FormMode } from "@/types/general";
 import { SubmitButtonText } from "@/types/general";
-import Navbar from '@/components/nav/Navbar';
+import Navbar from '@/components/header/Navbar';
 
 export default function UnitForm({ initialDraft, mode, submitButtonText }: { initialDraft: UnitDraft, mode: FormMode, submitButtonText: SubmitButtonText }) {
 

@@ -278,7 +278,7 @@ export async function editRecipe(id: string, slug: string, prevState: FormState,
         ingredient_lines,
         steps
     );
-    redirect(`/recipes/${slug}`);
+    redirect(`/collection/${slug}`);
 }
 
 export async function removeRecipe(id: string) {

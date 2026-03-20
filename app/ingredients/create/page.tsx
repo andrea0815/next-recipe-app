@@ -1,7 +1,7 @@
 import { FormMode } from '@/types/general';
 import { IngredientDraft } from "@/types/ingredient";
 
-import Navbar from '@/components/nav/Navbar';
+import Navbar from '@/components/header/Navbar';
 import IngredientForm from '@/components/ingredient/IngredientForm';
 
 export default function AddIngredientPage() {
@@ -14,7 +14,6 @@ export default function AddIngredientPage() {
 
   return (
     <>
-      <Navbar />
       <IngredientForm
         initialDraft={emptyDraft}
         mode={FormMode.CREATE}

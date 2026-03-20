@@ -16,26 +16,30 @@ export default function RecipeItems({ recipes }: { recipes: RecipeListItem[] }) 
         }
     );
 
-    const removeRecipeById = async (recipeId: string) => {
-        setOptimisticRecipes(recipeId);
-        await removeRecipe(recipeId);
-    }
-
     return (
-        <ul className="space-y-4 p-4 flex flex-wrap gap-2">
+        <ul className="space-y-4 px-4 flex flex-wrap gap-2">
             {optimisticRecipes.map((recipe) => (
                 <li
                     key={recipe.id}
-                    className="p-4 bg-gray-700 shadow-md rounded-lg text-white"
+                    className="p-2 bg-gray-200 rounded-2xl text-text"
                 >
-                    <Link href={`/recipes/${recipe.slug}`}>
+                    <Link href={`/collection/${recipe.slug}`}>
+
+                        <div className="relative">
+
+                            {recipe.image_uri && (
+                                <img src={recipe.image_uri} alt={recipe.name} className="w-full h-48 object-cover rounded-lg mt-2" />
+                            )}
+                            <p className="absolute top-3 right-3">{recipe.is_public ? 'Public' : 'Private'}</p>
+
+                        </div>
+
                         <h2 className="text-xl font-semibold">
                             {recipe.name}
                         </h2>
 
                         <p>{recipe.subtitle}</p>
 
-                        <p>{recipe.is_public ? 'Public' : 'Private'}</p>
 
                         {recipe.categories && (
                             <div className="my-2 flex flex-row flex-wrap gap-2">
@@ -45,21 +49,6 @@ export default function RecipeItems({ recipes }: { recipes: RecipeListItem[] }) 
                                 }
                             </div>
                         )}
-
-                        {recipe.image_uri && (
-                            <img src={recipe.image_uri} alt={recipe.name} className="w-full h-48 object-cover rounded-lg mt-2" />
-                        )}
-
-
-
-                        <Form action={removeRecipeById.bind(null, recipe.id)}>
-                            <button
-                                type="submit"
-                                className="p-2 text-white bg-red-500 rounded disabled:bg-gray-500"
-                            >
-                                Delete
-                            </button>
-                        </Form>
                     </Link>
                 </li>
             ))

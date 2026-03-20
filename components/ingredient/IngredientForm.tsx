@@ -6,7 +6,7 @@ import { FormState, editIngredient, createIngredient } from '@/actions/ingredien
 import { IngredientDraft } from "@/types/ingredient";
 import { FormMode } from "@/types/general";
 import { SubmitButtonText } from "@/types/general";
-import Navbar from '@/components/nav/Navbar';
+import Navbar from '@/components/header/Navbar';
 
 export default function IngredientForm({ initialDraft, mode, submitButtonText }: { initialDraft: IngredientDraft, mode: FormMode, submitButtonText: SubmitButtonText }) {
 

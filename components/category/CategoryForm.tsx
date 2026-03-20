@@ -6,7 +6,7 @@ import { FormState, editCategory, createCategory } from '@/actions/categories';
 import { CategoryDraft } from "@/types/category";
 import { FormMode } from "@/types/general";
 import { SubmitButtonText } from "@/types/general";
-import Navbar from '@/components/nav/Navbar';
+import Navbar from '@/components/header/Navbar';
 
 export default function CategoryForm({ initialDraft, mode, submitButtonText }: { initialDraft: CategoryDraft, mode: FormMode, submitButtonText: SubmitButtonText }) {
 
@@ -36,7 +36,6 @@ export default function CategoryForm({ initialDraft, mode, submitButtonText }: {
 
     return (
         <>
-            <Navbar />
             <form action={formAction} className="p-4 space-y-4 max-w-96">
 
                 <div>

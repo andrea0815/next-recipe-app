@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "scripts/test-prisma.js", "prisma.config.ts.bak"  ],
+, "scripts/test-prisma.js", "prisma.config.ts.bak", "app/setup/page.tss"  ],
   "exclude": ["node_modules"]
 }

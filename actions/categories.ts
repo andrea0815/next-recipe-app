@@ -17,6 +17,9 @@ export async function createCategory(prevState: FormState, formData: FormData
 ): Promise<FormState> {
 
     const user = await getCurrentDbUser();
+    if (!user) {
+        redirect('/');
+    }
 
     const name = formData.get("name") as string;
 
@@ -38,6 +41,9 @@ export async function editCategory(id: string, prevState: FormState, formData: F
 ): Promise<FormState> {
 
     const user = await getCurrentDbUser();
+    if (!user) {
+        redirect('/');
+    }
 
     const name = formData.get("name") as string;
 
@@ -58,6 +64,9 @@ export async function editCategory(id: string, prevState: FormState, formData: F
 export async function removeCategory(id: string) {
 
     const user = await getCurrentDbUser();
+    if (!user) {
+        redirect('/');
+    }
 
     await deleteCategory(id, user.id);
 

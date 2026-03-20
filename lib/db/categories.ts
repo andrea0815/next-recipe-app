@@ -9,7 +9,7 @@ export async function getCategories(query?: string, userId?: string) {
                     ? {
                         OR: [
                             { owner_id: userId },
-                            { owner_id: null }
+                            // { owner_id: null }
                         ],
                     }
                     : {},

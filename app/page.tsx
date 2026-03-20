@@ -5,22 +5,20 @@ import RecipeList from "@/components/recipe/RecipeList";
 import UnitList from "@/components/unit/UnitList";
 import CategoryList from "@/components/category/CategoryList";
 import IngredientList from "@/components/ingredient/IngredientList";
+import Navbar from "@/components/header/Navbar";
 
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+    <div className="flex flex-col min-h-screen items-center justify-center">
 
 
       <div className="flex flex-col">
         <SignedIn>
-          <Link href="/user-profile" className="text-[var(--foreground)] hover:text-[var(--primary)]">
-            Profile
-          </Link>
           <SignOutButton><button>Sign out</button></SignOutButton>
           <h1>Welcome back!</h1>
           <Link href="/shopping-list">Go to your shopping list</Link>
-          <Link href="/recipes/create">Create a new recipe</Link>
+          <Link href="/collection/create">Create a new recipe</Link>
           <Link href="/units/create">Create a new unit</Link>
           <Link href="/categories/create">Create a new category</Link>
           <Link href="/ingredients/create">Create a new ingredient</Link>
@@ -35,11 +33,7 @@ export default function Home() {
           </div>
         </SignedIn>
 
-        <SignedOut>
-          <Link href="/sign-in">Sign in</Link>
-          <Link href="/sign-up">Sign up</Link>
-          <h1>You are currently not signed in.</h1>
-        </SignedOut>
+       
       </div>
     </div>
   );

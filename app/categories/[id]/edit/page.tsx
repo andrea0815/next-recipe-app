@@ -3,7 +3,7 @@ import { getCategory } from "@/lib/db/categories";
 import { notFound } from "next/navigation";
 
 import { CategoryDraft } from "@/types/category";
-import Navbar from '@/components/nav/Navbar';
+import Navbar from '@/components/header/Navbar';
 import CategoryForm from "@/components/category/CategoryForm";
 import { FormMode } from "@/types/general";
 
@@ -23,7 +23,6 @@ export default async function EditCategoryPage({ params }: { params: Promise<{ i
 
   return (
     <>
-      <Navbar />
       <CategoryForm
         initialDraft={category}
         mode={FormMode.EDIT}

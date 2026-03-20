@@ -3,7 +3,7 @@ import { getUnit } from "@/lib/db/units";
 import { notFound } from "next/navigation";
 
 import { UnitDraft } from "@/types/unit";
-import Navbar from '@/components/nav/Navbar';
+import Navbar from '@/components/header/Navbar';
 import UnitForm from "@/components/unit/UnitForm";
 import { FormMode } from "@/types/general";
 
@@ -23,7 +23,6 @@ export default async function EditUnitPage({ params }: { params: Promise<{ id: s
 
   return (
     <>
-      <Navbar />
       <UnitForm
         initialDraft={unit}
         mode={FormMode.EDIT}

@@ -3,6 +3,8 @@ import { getUserRecipes } from "@/lib/db/recipes";
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 import RecipeItems from './RecipeItems';
 import type { RecipeListItem } from '@/types/recipe';
+import { redirect } from 'next/navigation';
+
 
 export default async function RecipeList() {
 

@@ -6,7 +6,7 @@ import { formatAmount } from "@/lib/db/utils/formatDecimals";
 
 import { notFound } from "next/navigation";
 
-import Navbar from '@/components/nav/Navbar';
+import Navbar from '@/components/header/Navbar';
 import UnitDisplay from "@/components/unit/UnitDisplay";
 import InrgredientDisplay from "@/components/ingredient/InrgredientDisplay";
 import Link from "next/link";
@@ -45,7 +45,6 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
 
     return (
         <main>
-            <Navbar />
 
             <Link href={`/recipes/${slug}/edit`}>Edit</Link>
 

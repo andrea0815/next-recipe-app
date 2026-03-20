@@ -1,7 +1,7 @@
 import { FormMode } from '@/types/general';
 import { UnitDraft } from "@/types/unit";
 
-import Navbar from '@/components/nav/Navbar';
+import Navbar from '@/components/header/Navbar';
 import UnitForm from '@/components/unit/UnitForm';
 
 export default function AddUnitPage() {
@@ -15,7 +15,6 @@ export default function AddUnitPage() {
 
   return (
     <>
-      <Navbar />
       <UnitForm
         initialDraft={emptyDraft}
         mode={FormMode.CREATE}

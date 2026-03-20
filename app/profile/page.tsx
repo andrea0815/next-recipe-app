@@ -3,10 +3,10 @@ import {
     UserProfile
 } from "@clerk/nextjs";
 
-export default function UserProfilePage() {
+export default function ProfilePage() {
     return (
         <div className='h-dvh flex justify-center items-center'>
-            <UserProfile path='/user-profile' />
+            <UserProfile path='/profile' />
         </div>
     );
 }
