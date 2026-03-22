@@ -6,7 +6,7 @@ import { FormState, editCategory, createCategory } from '@/actions/categories';
 import { CategoryDraft } from "@/types/category";
 import { FormMode } from "@/types/general";
 import { SubmitButtonText } from "@/types/general";
-import Navbar from '@/components/header/Navbar';
+import Navbar from '@/components/nav/Navbar';
 
 export default function CategoryForm({ initialDraft, mode, submitButtonText }: { initialDraft: CategoryDraft, mode: FormMode, submitButtonText: SubmitButtonText }) {
 

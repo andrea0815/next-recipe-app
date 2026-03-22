@@ -1,18 +1,13 @@
 import type { Metadata } from "next";
 import { ClerkProvider, SignedIn, SignedOut } from '@clerk/nextjs'
-import { Geist, Geist_Mono } from "next/font/google";
+import { Recursive } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/header/Navbar";
+import Navbar from "@/components/nav/Navbar";
 import Link from "next/link";
-import Header from "@/components/header/Header";
+import Header from "@/components/nav/Header";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const recursive = Recursive({
+  variable: "--font-recursive",
   subsets: ["latin"],
 });
 
@@ -30,7 +25,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${recursive.variable} antialiased`}
         >
           <SignedIn>
             <Header />
@@ -42,7 +37,7 @@ export default function RootLayout({
               <h1>You are currently not signed in.</h1>
             </header>
           </SignedOut>
-          <main>
+          <main className="min-h-screen flex flex-col justify-center items-center">
             {children}
           </main>
         </body>

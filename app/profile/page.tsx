@@ -5,8 +5,8 @@ import {
 
 export default function ProfilePage() {
     return (
-        <div className='h-dvh flex justify-center items-center'>
-            <UserProfile path='/profile' />
-        </div>
+        <main className='flex justify-center items-center'>
+            Profile
+        </main>
     );
 }

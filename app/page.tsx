@@ -5,7 +5,7 @@ import RecipeList from "@/components/recipe/RecipeList";
 import UnitList from "@/components/unit/UnitList";
 import CategoryList from "@/components/category/CategoryList";
 import IngredientList from "@/components/ingredient/IngredientList";
-import Navbar from "@/components/header/Navbar";
+import Navbar from "@/components/nav/Navbar";
 
 
 export default function Home() {

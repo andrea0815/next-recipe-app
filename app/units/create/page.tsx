@@ -1,7 +1,7 @@
 import { FormMode } from '@/types/general';
 import { UnitDraft } from "@/types/unit";
 
-import Navbar from '@/components/header/Navbar';
+import Navbar from '@/components/nav/Navbar';
 import UnitForm from '@/components/unit/UnitForm';
 
 export default function AddUnitPage() {

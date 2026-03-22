@@ -6,10 +6,10 @@ import { formatAmount } from "@/lib/db/utils/formatDecimals";
 
 import { notFound } from "next/navigation";
 
-import Navbar from '@/components/header/Navbar';
 import UnitDisplay from "@/components/unit/UnitDisplay";
 import InrgredientDisplay from "@/components/ingredient/InrgredientDisplay";
 import Link from "next/link";
+import DeleteButton from "./DeleteButton";
 
 export default async function RecipePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
@@ -41,12 +41,12 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
         return acc;
     }, {} as Record<string, typeof recipe.recipe_ingredients>);
 
-
-
     return (
         <main>
 
             <Link href={`/recipes/${slug}/edit`}>Edit</Link>
+            <DeleteButton itemId={recipe.id} />
+
 
             <div>
                 <h2 className='text-3xl'>{recipe.name}</h2>
@@ -106,7 +106,6 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
                         </li>
                     ))}
                 </ul>
-
             </div>
         </main>
     );
