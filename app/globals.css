@@ -3,14 +3,21 @@
 
 :root {
   --background: #ffffff;
-  --text: #171717;
+  --red: #E5614F;
+  --green: #26622D;
+  --green-dark: #113415;
+  --green-light: #859E88;
+  --text-default: var(--green-dark);
+  --primary: var(--green);
+  --text-light: var(--green-light);
+  
   --font-sans: "Recursive";
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-text: var(--text);
-  --color-text: var(--text);
+  --color-text: var(--text-default);
+  --color-text-light: var(--text-light);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
 }

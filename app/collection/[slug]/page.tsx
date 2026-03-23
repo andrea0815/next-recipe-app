@@ -44,7 +44,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
     return (
         <main>
 
-            <Link href={`/recipes/${slug}/edit`}>Edit</Link>
+            <Link href={`/collection/${slug}/edit`}>Edit</Link>
             <DeleteButton itemId={recipe.id} />
 
 

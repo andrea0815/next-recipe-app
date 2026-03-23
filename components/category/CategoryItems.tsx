@@ -2,8 +2,12 @@
 
 import { useOptimistic } from "react";
 import Link from "next/link";
+import { removeCategory } from "@/actions/categories";
+
 
 import type { Category } from '@/types/category';
+import Form from "next/form";
+import ListItem from "../general/ListItem";
 
 
 export default function CategoryItems({ categories }: { categories: Category[] }) {
@@ -15,24 +19,22 @@ export default function CategoryItems({ categories }: { categories: Category[] }
         }
     );
 
-    return (
-        <div>
-            <h2 className="text-md font-bold">Categories</h2>
-            <ul className="">
-                {optimisticCategories.map((category) => (
-                    <li
-                        key={category.id}
-                        className=""
-                    >
-                        <Link href={`/categories/${category.id}/edit`}>
-                            <p className="text-sm">
-                                {category.name}
-                            </p>
-                        </Link>
+    const removeCategoryById = async (recipeId: string) => {
+        setOptimisticCategories(recipeId);
+        await removeCategory(recipeId);
+    }
 
-                    </li>
-                ))}
-            </ul>
-        </div>
+    return (
+        <ul className="">
+            {optimisticCategories.map((category) => (
+                <ListItem
+                    key={category.id}
+                    id={category.id}
+                    editHref={`/categorys/${category.id}/edit`}
+                    onDeleteAction={removeCategoryById.bind(null, category.id)}
+                    textItems={[category.name]}
+                />
+            ))}
+        </ul>
     );
 }

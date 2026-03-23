@@ -1,9 +1,11 @@
 "use client";
 
 import { useOptimistic } from "react";
+import { removeIngredient } from "@/actions/ingredients";
+
 
 import type { Ingredient } from '@/types/ingredient';
-import Link from "next/link";
+import ListItem from "../general/ListItem";
 
 export default function IngredientItems({ ingredients }: { ingredients: Ingredient[] }) {
 
@@ -14,23 +16,25 @@ export default function IngredientItems({ ingredients }: { ingredients: Ingredie
         }
     );
 
-    return (
-        <div>
-            <h2 className="text-md font-bold">Ingredients</h2>
-            <ul className="">
-                {optimisticIngredients.map((ingredient) => (
-                    <li
-                        key={ingredient.id}
-                    >
-                        <Link href={`/ingredients/${ingredient.id}/edit`}>
-                            <p className="text-sm">
-                                {ingredient.name}
-                            </p>
-                        </Link>
+    const removeIngredientById = async (recipeId: string) => {
+        setOptimisticIngredients(recipeId);
+        await removeIngredient(recipeId);
+    }
 
-                    </li>
-                ))}
-            </ul>
-        </div>
+    return (
+        <ul className="">
+            {optimisticIngredients.map((ingredient) => (
+                <>
+                    <ListItem
+                        key={ingredient.id}
+                        id={ingredient.id}
+                        editHref={`/ingredients/${ingredient.id}/edit`}
+                        onDeleteAction={removeIngredientById.bind(null, ingredient.id)}
+                        textItems={[ingredient.name, ingredient.plural || "–"]}
+                    />
+
+                </>
+            ))}
+        </ul>
     );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ListItem_Ingredient({item}: any) {
+export default function GeneralSection() {
   return (
     <div>
       

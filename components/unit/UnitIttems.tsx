@@ -4,8 +4,8 @@ import { useOptimistic } from "react";
 import { removeUnit } from "@/actions/units";
 
 import type { Unit } from '@/types/unit';
-import Link from "next/link";
-import Form from "next/form";
+
+import ListItem from "../general/ListItem";
 
 export default function UnitItems({ units }: { units: Unit[] }) {
 
@@ -16,37 +16,35 @@ export default function UnitItems({ units }: { units: Unit[] }) {
         }
     );
 
-    const removeRecipeById = async (recipeId: string) => {
+    const removeUnitById = async (recipeId: string) => {
         setOptimisticUnits(recipeId);
         await removeUnit(recipeId);
     }
 
     return (
-        <div>
-            <h2 className="text-md font-bold">Units</h2>
-            <ul className="">
-                {optimisticUnits.map((unit) => (
-                    <li
-                        key={unit.id}
-                        className=""
-                    >
-                        <Link href={`/units/${unit.id}/edit`}>
-                            <p className="text-sm">
-                                {unit.name} – {unit.abbreviation}
-                            </p>
-                        </Link>
+        <ul className="flex flex-col">
+            <li>
+                Add new Unit
+            </li>
+            {optimisticUnits.map((unit) => (
 
-                        <Form action={removeRecipeById.bind(null, unit.id)}>
-                            <button
-                                type="submit"
-                                className="p-2 text-white bg-red-500 rounded disabled:bg-gray-500"
-                            >
-                                Delete
-                            </button>
-                        </Form>
-                    </li>
-                ))}
-            </ul>
-        </div>
+                <ListItem
+                    key={unit.id}
+                    id={unit.id}
+                    editHref={`/units/${unit.id}/edit`}
+                    onDeleteAction={removeUnitById.bind(null, unit.id)}
+                    textItems={[unit.name, unit.plural || "–", unit.abbreviation || "–"]}
+                />
+
+            ))}
+        </ul>
     );
+}
+
+type ListItemProps = {
+    onEdit: () => void,
+    onDelete: () => void,
+    textItems: string[],
+    href: string,
+    key: string,
 }

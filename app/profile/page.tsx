@@ -1,12 +1,5 @@
-import React from 'react';
-import {
-    UserProfile
-} from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 export default function ProfilePage() {
-    return (
-        <main className='flex justify-center items-center'>
-            Profile
-        </main>
-    );
+  redirect("/profile/settings");
 }

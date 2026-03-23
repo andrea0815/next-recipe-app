@@ -9,8 +9,8 @@ type TabBarProps = {
 
 export default function TabBar({ children }: TabBarProps) {
     return (
-        <div className='h-10 flex flex-row justify-center items-center'>
+        <nav className='w-full h-10 mt-[200px] flex flex-row justify-center items-center border-b-2 border-solid border-text'>
             {children}
-        </div>
+        </nav>
     );
 }

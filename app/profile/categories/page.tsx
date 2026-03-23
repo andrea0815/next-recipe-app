@@ -1,9 +1,11 @@
 import React from 'react';
+import CategoryList from "@/components/category/CategoryList";
 
 export default function CategoriesPage() {
-  return (
-    <div>
-      Categories Page
-    </div>
-  );
+    return (
+        <>
+            <h1>Categories</h1>
+            <CategoryList />
+        </>
+    );
 }
