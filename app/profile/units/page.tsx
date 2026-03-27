@@ -9,7 +9,6 @@ import type { Unit } from '@/types/unit';
 import { ItemType } from "@/types/general"
 import ListSection from '@/components/general/ListSection';
 import PageHeadline from "@/components/typography/PageHeadline";
-import GeneralSection from "@/components/containers/GeneralSection";
 
 export default async function UnitsPage() {
     const user = await getCurrentDbUser();
@@ -23,10 +22,10 @@ export default async function UnitsPage() {
     }));
 
     return (
-        <GeneralSection>
+        <>
             <PageHeadline>Units</PageHeadline>
             <ListSection items={preparedUnits} removeItem={removeUnit} type={ItemType.UNIT} />
-        </GeneralSection>
+        </>
     );
 }
 

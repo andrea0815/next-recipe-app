@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import type { Category } from "@/types/category";
+import InputWrapper from "../form/InputWrapper";
+import Chip from "../general/Chip";
 
 export default function CategoryMultiSelect({
   categories,
@@ -33,9 +35,7 @@ export default function CategoryMultiSelect({
   }
 
   return (
-    <div>
-      <p className="text-text mb-2">Categories</p>
-
+    <InputWrapper labelName="Categories">
       {/* Dropdown */}
       <select
         className="block w-full p-2 bg-white text-text border rounded"
@@ -57,18 +57,15 @@ export default function CategoryMultiSelect({
         ))}
       </select>
 
+
       {/* Chips */}
       <div className="mt-3 flex flex-wrap gap-2">
         {selected.map((c) => (
-          <button
+          <Chip
             key={c.id}
-            type="button"
             onClick={() => remove(c.id)}
-            className="px-3 py-1 rounded-full bg-white/10 text-text border border-white/20 hover:bg-white/20"
-            title="Click to remove"
-          >
-            {c.name} ✕
-          </button>
+            text={c.name}
+          />
         ))}
       </div>
 
@@ -76,6 +73,9 @@ export default function CategoryMultiSelect({
       {selectedIds.map((id) => (
         <input key={id} type="hidden" name="category_ids" value={id} />
       ))}
-    </div>
+
+    </InputWrapper >
+
+
   );
 }

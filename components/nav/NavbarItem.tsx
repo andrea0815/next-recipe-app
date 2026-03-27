@@ -12,7 +12,7 @@ export default function NavbarItem({ link, iconSrc, text }: { link: string, icon
     
     return (
         <Link href={link}>
-            <div className={`flex items-center gap-3 px-3 py-2 hover:bg-gray-300 rounded-full ${isActive ? "bg-gray-200" : ""} `}>
+            <div className={`flex items-center gap-3 px-3 py-2 hover:bg-white rounded-full ${isActive ? "bg-white" : ""} `}>
                 <img src={iconSrc} alt={text} className='w-5 h-5' />
                 <p>{text}</p>
             </div>

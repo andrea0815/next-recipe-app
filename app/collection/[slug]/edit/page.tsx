@@ -14,6 +14,7 @@ import { FormMode } from '@/types/general';
 
 
 import RecipeForm from '@/components/recipe/RecipeForm';
+import FormSection from "@/components/containers/FormSection";
 
 export default async function EditRecipePage({ params }: { params: Promise<{ slug: string }> }) {
 
@@ -76,10 +77,9 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
     };
 
     return (
-        <main>
-            <h1>Edit Recipe</h1>
+        <FormSection headline="Edit Recipe">
             <RecipeForm categories={categories} ingredients={ingredients} units={units} initialDraft={propagatedDraft} mode={FormMode.EDIT} />
-        </main>
+        </FormSection>
     );
 }
 

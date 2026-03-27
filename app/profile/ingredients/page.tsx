@@ -24,11 +24,11 @@ export default async function IngredientsPage() {
   }));
 
   return (
-    <GeneralSection>
+    <>
       <PageHeadline>Ingredients</PageHeadline>
       {/* <IngredientList /> */}
       <ListSection items={preparedIngredients} removeItem={removeIngredient} type={ItemType.INGREDIENT} />
-    </GeneralSection>
+    </>
   );
 }
 

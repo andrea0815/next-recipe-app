@@ -23,10 +23,10 @@ export default async function CategoriesPage() {
     }));
 
     return (
-        <GeneralSection>
+        <>
             <PageHeadline>Categories</PageHeadline>
             <ListSection items={preparedCategories} removeItem={removeCategory} type={ItemType.CATEGORY} />
-        </GeneralSection>
+        </>
 
     );
 }

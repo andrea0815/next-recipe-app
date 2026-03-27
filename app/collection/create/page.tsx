@@ -10,6 +10,9 @@ import type { RecipeDraft } from '@/types/recipe';
 import { FormMode } from '@/types/general';
 
 import RecipeForm from '@/components/recipe/RecipeForm';
+import SectionWrapper from "@/components/containers/SectionWrapper";
+import PageHeadline from "@/components/typography/PageHeadline";
+import FormSection from "@/components/containers/FormSection";
 
 export default async function AddRecipePage() {
 
@@ -40,10 +43,9 @@ export default async function AddRecipePage() {
   };
 
   return (
-    <main>
-      <h1>Create Recipe</h1>
-      <RecipeForm categories={categories} ingredients={ingredients} units={units} initialDraft={emptyDraft} mode={FormMode.CREATE}/>
-    </main>
+    <FormSection headline="Create Recipe">
+      <RecipeForm categories={categories} ingredients={ingredients} units={units} initialDraft={emptyDraft} mode={FormMode.CREATE} />
+    </FormSection>
   );
 }
 

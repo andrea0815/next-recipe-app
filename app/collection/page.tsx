@@ -1,6 +1,5 @@
 import RecipeList from '@/components/recipe/RecipeList';
 import ButtonLink from '@/components/buttons/ButtonLink';
-import React from 'react';
 
 export default function CollectionPage() {
     return (

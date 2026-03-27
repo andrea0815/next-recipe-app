@@ -9,7 +9,7 @@ export default function Navbar() {
       <NavbarItem text="Shopping List" iconSrc="/file.svg" link='/shopping-list' />
       <NavbarItem text="Explore" iconSrc="/file.svg" link='/explore' />
       <NavbarItem text="Profile" iconSrc="/file.svg" link='/profile' />
-      <div className='absolute inset-0 scale-200 -z-10 backdrop-blur-md'></div>
+      <div className='absolute inset-0 scale-200 -z-10 backdrop-blur-sm bg-section-50'></div>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/nav/Navbar";
 import Link from "next/link";
 import Header from "@/components/nav/Header";
+import Footer from "@/components/footer/Footer";
 
 const recursive = Recursive({
   variable: "--font-recursive",
@@ -40,6 +41,7 @@ export default function RootLayout({
           <main className="min-h-screen flex flex-col justify-start items-center">
             {children}
           </main>
+          <Footer />
         </body>
       </html>
     </ClerkProvider>

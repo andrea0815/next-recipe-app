@@ -7,6 +7,11 @@ import type { RecipeGroupDraft, RecipeLineDraft } from "@/types/recipe";
 
 import UnitDisplay from "@/components/unit/UnitDisplay";
 import InrgredientDisplay from "@/components/ingredient/InrgredientDisplay";
+import InputFieldText from "@/components/form/InputFieldText";
+import InputWrapper from "../form/InputWrapper";
+import Switch from "../form/Switch";
+import Button from "../buttons/Button";
+import InputFieldNumber from "../form/InputFieldNumber";
 
 export default function IngredientEditor({
   state,
@@ -116,145 +121,125 @@ export default function IngredientEditor({
 
   return (
     <div className="space-y-3">
-      <h2 className="text-text font-semibold">Ingredients</h2>
 
-      <div>
-        <label className="text-text">
-          Portions
-          <input
-            type="number"
-            className="block w-full p-2 bg-white text-text border rounded"
-            name="portions"
-            min="1"
-            defaultValue="2"
-          />
-        </label>
-      </div>
-
-      <label >
-        Groups enabled
-        <input
-          type="checkbox"
-          name="groups_enabled"
+      <InputWrapper labelName="Groups enabled">
+        <Switch
           checked={groupsEnabled}
-          onChange={(e) => onGroupsEnabledChange(e.target.checked)} />
-      </label>
+          onChange={(checked) => onGroupsEnabledChange(checked)}
+        />
+
+      </InputWrapper>
 
       {(groupsEnabled ? groups : [groups[0]]).map((group, index) => (
-        <div key={index} className="bg-gray-800 p-5 rounded-2xl">
+        <div key={index} className="bg-gray-300 p-4 rounded-2xl flex flex-col gap-4">
 
           {groupsEnabled &&
-            <label className="text-text w-28 pt-5">
-              Group name
-              <input
-                type="text"
-                name="all_group_names"
-                value={group.group_name}
-                onChange={(e) => updateGroupName(index, e.target.value)}
-                className="block w-full p-2 bg-white text-text border rounded"
-                placeholder="Group Name"
-              />
-            </label>
+
+            <InputFieldText<RecipeGroupDraft, "group_name">
+              field="group_name"
+              name="all_group_names"
+              labelName="Group Name"
+              draftValue={group.group_name}
+              updateDraftValue={(_, value) => updateGroupName(index, value)}
+              placeholder="Group Name"
+              error={state?.errors?.group_names}
+            />
           }
 
+          <div>
+            {/* Draft input row */}
+            <div className="flex gap-2 items-end border-t border-t-gray-500 pt-4">
 
-          {/* Draft input row */}
-          <div className="flex gap-2 items-end">
-            <label className="text-text w-28">
-              Amount
-              <input
-                type="number"
-                step="0.5"
-                min="0"
-                value={group.draft.amount}
-                onChange={(e) => updateDraft(index, "amount", Number(e.target.value))}
-                className="block w-full p-2 bg-white text-text border rounded"
-                placeholder="e.g. 200"
+              <InputFieldNumber<RecipeLineDraft, "amount">
+                labelName="Amount"
+                field="amount"
+                draftValue={group.draft.amount}
+                updateDraftValue={(_, value) => updateDraft(index, "amount", value)}
+                min={0}
+                step={0.1}
+                error={state?.errors?.amounts}
               />
-            </label>
 
-            <label className="text-text flex-1">
-              Unit
-              <select
-                value={group.draft.unit_id}
-                onChange={(e) => updateDraft(index, "unit_id", e.target.value)}
-                className="block w-full p-2 bg-white text-text border rounded"
-              >
-                <option value="" disabled>
-                  Select unit…
-                </option>
-                {units.map((unit) => (
-                  <option key={unit.id} value={unit.id}>
-                    {unit.name} ({unit.abbreviation})
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="text-text flex-1">
-              Ingredient
-              <select
-                value={group.draft.ingredient_id}
-                onChange={(e) => updateDraft(index, "ingredient_id", e.target.value)}
-                className="block w-full p-2 bg-white text-text border rounded"
-              >
-                <option value="" disabled>
-                  Select ingredient…
-                </option>
-                {ingredients.map((ingredient) => (
-                  <option key={ingredient.id} value={ingredient.id}>
-                    {ingredient.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <button
-              type="button"
-              onClick={() => addLine(index)}
-              className="px-3 py-2 rounded bg-blue-500 text-text disabled:bg-gray-500"
-              disabled={!group.draft.amount || !group.draft.unit_id || !group.draft.ingredient_id}
-            >
-              Add Line
-            </button>
-          </div>
-
-
-          {/* Added lines list */}
-          <div className="space-y-2">
-            {group.lines.map((line, lineIndex) => {
-              const unit = unitById.get(line.unit_id);
-              const ing = ingredientById.get(line.ingredient_id);
-
-              return (
-                <div
-                  key={`${line.ingredient_id}-${line.unit_id}-${index}`}
-                  className="flex items-center justify-between gap-2 p-2 rounded border border-white/20 bg-white/5"
+              <label className="text-text flex-1">
+                Unit
+                <select
+                  value={group.draft.unit_id}
+                  onChange={(e) => updateDraft(index, "unit_id", e.target.value)}
+                  className="block w-full p-2 bg-white text-text border rounded"
                 >
-                  <div className="text-text">
-                    <span className="font-semibold">{line.amount}</span>{" "}
-                    <UnitDisplay amount={Number(line.amount)} unit={unit} />{" "}
-                    <InrgredientDisplay amount={Number(line.amount)} ingredient={ing} />
-                  </div>
+                  <option value="" disabled>
+                    Select unit…
+                  </option>
+                  {units.map((unit) => (
+                    <option key={unit.id} value={unit.id}>
+                      {unit.name} ({unit.abbreviation})
+                    </option>
+                  ))}
+                </select>
+              </label>
 
-                  <button
-                    type="button"
-                    onClick={() => removeLine(index, lineIndex)}
-                    className="px-2 py-1 rounded bg-white/10 text-text hover:bg-white/20"
-                    title="Remove"
+              <label className="text-text flex-1">
+                Ingredient
+                <select
+                  value={group.draft.ingredient_id}
+                  onChange={(e) => updateDraft(index, "ingredient_id", e.target.value)}
+                  className="block w-full p-2 bg-white text-text border rounded"
+                >
+                  <option value="" disabled>
+                    Select ingredient…
+                  </option>
+                  {ingredients.map((ingredient) => (
+                    <option key={ingredient.id} value={ingredient.id}>
+                      {ingredient.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <Button
+                onClick={() => addLine(index)}
+                disabled={!group.draft.amount || !group.draft.unit_id || !group.draft.ingredient_id}
+              >Add</Button>
+            </div>
+
+
+            {/* Added lines list */}
+            <div className="">
+              {group.lines.map((line, lineIndex) => {
+                const unit = unitById.get(line.unit_id);
+                const ing = ingredientById.get(line.ingredient_id);
+
+                return (
+                  <div
+                    key={`${line.ingredient_id}-${line.unit_id}-${index}`}
+                    className="flex items-center justify-between gap-2 p-2 border-b border-gray-400"
                   >
-                    ✕
-                  </button>
+                    <div className="text-text">
+                      <span className="font-semibold">{line.amount}</span>{" "}
+                      <UnitDisplay amount={Number(line.amount)} unit={unit} />{" "}
+                      <InrgredientDisplay amount={Number(line.amount)} ingredient={ing} />
+                    </div>
 
-                  {/* Hidden inputs: THIS is what gets submitted */}
-                  <input type="hidden" name="amounts" value={line.amount} />
-                  <input type="hidden" name="unit_ids" value={line.unit_id} />
-                  <input type="hidden" name="ingredient_ids" value={line.ingredient_id} />
-                  <input type="hidden" name="group_names" value={group.group_name} />
-                  <input type="hidden" name="positions" value={lineIndex} />
-                </div>
-              );
-            })}
+                    <button
+                      type="button"
+                      onClick={() => removeLine(index, lineIndex)}
+                      className="px-2 py-1 rounded bg-white/10 text-text hover:bg-white/20 cursor-pointer"
+                      title="Remove"
+                    >
+                      ✕
+                    </button>
+
+                    {/* Hidden inputs: THIS is what gets submitted */}
+                    <input type="hidden" name="amounts" value={line.amount} />
+                    <input type="hidden" name="unit_ids" value={line.unit_id} />
+                    <input type="hidden" name="ingredient_ids" value={line.ingredient_id} />
+                    <input type="hidden" name="group_names" value={group.group_name} />
+                    <input type="hidden" name="positions" value={lineIndex} />
+                  </div>
+                );
+              })}
+            </div>
+
           </div>
 
           {/* Optional: show a message if no lines */}
@@ -264,14 +249,12 @@ export default function IngredientEditor({
 
           {groupsEnabled && (
             <>
-              <button
-                type="button"
+              <Button
                 onClick={() => removeGroup(index)}
                 disabled={groups.length <= 1}
-                className="disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Remove group
-              </button>
+              </Button>
             </>
           )}
 
@@ -279,7 +262,9 @@ export default function IngredientEditor({
       ))}
 
       {groupsEnabled &&
-        <button type="button" onClick={addGroup}>Add group</button>
+        <Button
+          onClick={addGroup}
+        >Add Group</Button>
       }
 
       {(state?.errors?.amounts ||

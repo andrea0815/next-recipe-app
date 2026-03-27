@@ -8,10 +8,14 @@ import type { Ingredient } from '@/types/ingredient';
 import type { RecipeDraft } from '@/types/recipe';
 import { FormMode } from '@/types/general';
 
-import Navbar from '@/components/nav/Navbar';
 import CategoryMultiSelect from './CategoryMultiSelect';
 import IngredientEditor from './IngredientEditor';
 import StepEditor from './StepEditor';
+import InputWrapper from '../form/InputWrapper';
+import Switch from '../form/Switch';
+import InputFieldText from '../form/InputFieldText';
+import InputMultiSelect from '../form/InputMultiSelect';
+import InputFieldNumber from '../form/InputFieldNumber';
 
 
 
@@ -66,67 +70,58 @@ export default function RecipeForm({
         <>
             <form
                 action={formAction}
-                className="p-4 space-y-4 max-w-96"
+                className='flex flex-col gap-4'
             >
-                <div>
-                    <label className="text-text">
-                        Name
-                        <input
-                            type="text"
-                            className="block w-full p-2 bg-white text-text border rounded"
-                            name="name"
-                            value={draft.name}
-                            onChange={(e) => updateDraft("name", e.target.value)}
-                        />
-                    </label>
-                    {state.errors.name && <p className="text-red-500">{state.errors.name}</p>}
-                </div>
 
-                <div>
-                    <label className="text-text">
-                        Subtitle
-                        <input
-                            type="text"
-                            className="block w-full p-2 bg-white text-text border rounded"
-                            name="subtitle"
-                            value={draft.subtitle}
-                            onChange={(e) => updateDraft("subtitle", e.target.value)}
-                        />
-                    </label>
-                    {state.errors.subtitle && <p className="text-red-500">{state.errors.subtitle}</p>}
-                </div>
+                <InputFieldText<RecipeDraft, "name">
+                    field="name"
+                    labelName="Name"
+                    draftValue={draft.name}
+                    updateDraftValue={updateDraft}
+                    error={state.errors.name}
+                />
 
-                <div>
-                    <label className="text-text">
-                        Should this recipe be public?
-                        <input
-                            type="checkbox"
-                            className="block w-full p-2 bg-white text-text border rounded"
-                            name="is_public"
-                            checked={draft.is_public}
-                            onChange={(e) => updateDraft("is_public", e.target.checked)}
-                        />
-                    </label>
-                </div>
+                <InputFieldText<RecipeDraft, "subtitle">
+                    field="subtitle"
+                    labelName="Subtitle"
+                    draftValue={draft.subtitle}
+                    updateDraftValue={updateDraft}
+                    error={state.errors.subtitle}
+                />
 
-                <div>
-                    <label className="text-text">
-                        Image
-                        <input
-                            type="text"
-                            className="block w-full p-2 bg-white text-text border rounded"
-                            name="image_uri"
-                            value={draft.image_uri}
-                            onChange={(e) => updateDraft("image_uri", e.target.value)}
-                        />
-                    </label>
-                    {state.errors.image_uri && <p className="text-red-500">{state.errors.image_uri}</p>}
-                </div>
+                <InputWrapper labelName='Should this recipe be public?'>
+                    <Switch
+                        checked={draft.is_public}
+                        name="is_public"
+                        onChange={(checked) => updateDraft("is_public", checked)}
+                    />
+                </InputWrapper>
 
-                <CategoryMultiSelect
-                    categories={categories}
+                <InputFieldText<RecipeDraft, "image_uri">
+                    field="image_uri"
+                    labelName="Image"
+                    draftValue={draft.image_uri}
+                    updateDraftValue={updateDraft}
+                    error={state.errors.image_uri}
+                />
+
+                <InputMultiSelect
+                    labelName="Categories"
+                    items={categories}
                     selectedIds={draft.category_ids}
                     onChange={(ids) => updateDraft("category_ids", ids)}
+                />
+
+                <h2 className="text-text text-lg font-semibold mt-6">Ingredients</h2>
+
+                <InputFieldNumber<RecipeDraft, "portions">
+                    labelName="Portions"
+                    field="portions"
+                    draftValue={draft.portions}
+                    updateDraftValue={updateDraft}
+                    min={1}
+                    step={1}
+                    error={state.errors.portions}
                 />
 
                 <IngredientEditor
@@ -152,7 +147,7 @@ export default function RecipeForm({
                 >
                     {isPending ? submitButtonText.pending : submitButtonText.static}
                 </button>
-            </form>
+            </form >
         </>
     );
 }

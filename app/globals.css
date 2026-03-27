@@ -10,10 +10,13 @@
   --green-default: #26622D;
   --green-light: #859E88;
   --green-light2: #bad1bd;
-  
+
   --gray-100: #FDFBFB;
-  --gray-200: #EEE5E2;
-  --gray-300: #D8CCC1;
+  --gray-200: #f4f2ef;
+  --gray-200-50: #f4f2ef46;
+  --gray-300: #e3ddd7;
+  --gray-300-50: #d8ccc136;
+  --gray-400: #d1c4be;
   --gray-500: #BFADA3;
   --gray-700: #837670;
   --gray-900: #584F49;
@@ -38,14 +41,17 @@
   --color-red-800: var(--red-dark);
 
   --color-gray-100: var(--gray-100);
-  --color-gray-200: var(--gray-800);
-  --color-gray-300: var(--gray-800);
-  --color-gray-500: var(--gray-800);
-  --color-gray-700: var(--gray-800);
+  --color-gray-200: var(--gray-200);
+  --color-gray-300: var(--gray-300);
+  --color-gray-400: var(--gray-400);
+  --color-gray-500: var(--gray-500);
+  --color-gray-700: var(--gray-700);
   --color-gray-900: var(--gray-900);
-  
+
 
   --color-background: var(--color-cream);
+  --color-section: var(--gray-200);
+  --color-section-50: var(--gray-300-50);
   --color-text: var(--color-green-800);
   --color-text-light: var(--color-green-400);
   --color-light: var(--color-green-300);
@@ -67,6 +73,10 @@
   * {
     font-family: var(--font-sans);
     box-sizing: border-box;
+  }
+
+  * :focus-visible {
+    @apply outline-primary outline-2 outline-offset-2;
   }
 
   .no-scrollbar {

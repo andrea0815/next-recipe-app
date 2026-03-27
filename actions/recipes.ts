@@ -91,6 +91,7 @@ export async function createRecipe(
     ) {
         errors.amounts = "Ingredient data is incomplete";
     }
+    console.log(all_group_names);
 
     if (groups_enabled) {
         if (all_group_names.length === 0) {
