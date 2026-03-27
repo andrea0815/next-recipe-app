@@ -1,28 +1,40 @@
+"use client";
 
-import React from 'react';
 import Button from '../buttons/Button';
 import Link from 'next/link';
-import Form from 'next/form';
+import IconEdit from '../icons/IconEdit';
+import IconTrash from '../icons/IconTrash';
 
 type ListItemProps = {
-    onDeleteAction: () => void,
-    textItems: string[],
-    editHref: string,
-    id: string,
-}
+    onDeleteAction: () => void;
+    textItems: string[];
+    editHref: string;
+    id: string;
+};
 
-export default function ListItem({ textItems, id, editHref, onDeleteAction }: ListItemProps) {
+export default function ListItem({
+    textItems,
+    editHref,
+    onDeleteAction,
+}: ListItemProps) {
     return (
-        <li key={id} className='flex gap-3 border-2 '>
-            <div className='flex-1 flex border-2'>
+        <li className={`flex py-2 gap-3 border-b last-of-type:border-b-0 border-light items-center`}  >
+            <div className="flex-1 flex gap-3">
                 {textItems.map((item, index) => (
-                    <p key={index} className='flex-1'>{item}</p>
+                    <p key={index} className="flex-1">
+                        {item}
+                    </p>
                 ))}
             </div>
-            <Link href={editHref}>Edit</Link>
-            <Form action={onDeleteAction}>
-                <Button text="Delete" bgColor='red' />
-            </Form>
+
+            <Link href={editHref}>
+                <IconEdit />
+            </Link>
+
+
+            <Button onClick={onDeleteAction} bgColor="error" textColor='red'> 
+                <IconTrash />
+                 </Button>
         </li>
     );
 }

@@ -1,5 +1,6 @@
 import React, { ReactElement, ReactNode } from 'react';
 import TabBarItem from './TabBarItem';
+import HeaderSectionWrapper from '../containers/HeaderSectionWrapper';
 
 type TabBarProps = {
     children:
@@ -9,7 +10,7 @@ type TabBarProps = {
 
 export default function TabBar({ children }: TabBarProps) {
     return (
-        <nav className='w-full h-10 mt-[200px] flex flex-row justify-center items-center border-b-2 border-solid border-text'>
+        <nav className='flex flex-row justify-center items-center w-full overflow-x-scroll no-scrollbar'>
             {children}
         </nav>
     );

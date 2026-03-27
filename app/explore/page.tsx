@@ -1,12 +1,11 @@
-import React from 'react';
-import UnitList from "@/components/unit/UnitList";
-import CategoryList from "@/components/category/CategoryList";
-import IngredientList from "@/components/ingredient/IngredientList";
+
+import GeneralSection from '@/components/containers/GeneralSection';
+import HeaderSectionWrapper from '@/components/containers/HeaderSectionWrapper';
 
 export default function ExplorePage() {
     return (
-        <div>
-            Explore Page
-        </div>
+        <>
+            <h1>Explore</h1>
+        </>
     );
 }

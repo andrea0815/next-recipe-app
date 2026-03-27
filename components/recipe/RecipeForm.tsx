@@ -64,17 +64,16 @@ export default function RecipeForm({
 
     return (
         <>
-            <Navbar />
             <form
                 action={formAction}
                 className="p-4 space-y-4 max-w-96"
             >
                 <div>
-                    <label className="text-white">
+                    <label className="text-text">
                         Name
                         <input
                             type="text"
-                            className="block w-full p-2 bg-white text-black border rounded"
+                            className="block w-full p-2 bg-white text-text border rounded"
                             name="name"
                             value={draft.name}
                             onChange={(e) => updateDraft("name", e.target.value)}
@@ -84,11 +83,11 @@ export default function RecipeForm({
                 </div>
 
                 <div>
-                    <label className="text-white">
+                    <label className="text-text">
                         Subtitle
                         <input
                             type="text"
-                            className="block w-full p-2 bg-white text-black border rounded"
+                            className="block w-full p-2 bg-white text-text border rounded"
                             name="subtitle"
                             value={draft.subtitle}
                             onChange={(e) => updateDraft("subtitle", e.target.value)}
@@ -98,11 +97,11 @@ export default function RecipeForm({
                 </div>
 
                 <div>
-                    <label className="text-white">
+                    <label className="text-text">
                         Should this recipe be public?
                         <input
                             type="checkbox"
-                            className="block w-full p-2 bg-white text-black border rounded"
+                            className="block w-full p-2 bg-white text-text border rounded"
                             name="is_public"
                             checked={draft.is_public}
                             onChange={(e) => updateDraft("is_public", e.target.checked)}
@@ -111,11 +110,11 @@ export default function RecipeForm({
                 </div>
 
                 <div>
-                    <label className="text-white">
+                    <label className="text-text">
                         Image
                         <input
                             type="text"
-                            className="block w-full p-2 bg-white text-black border rounded"
+                            className="block w-full p-2 bg-white text-text border rounded"
                             name="image_uri"
                             value={draft.image_uri}
                             onChange={(e) => updateDraft("image_uri", e.target.value)}
@@ -148,7 +147,7 @@ export default function RecipeForm({
 
                 <button
                     type="submit"
-                    className="block w-full p-2 text-white bg-blue-500 rounded disabled:bg-gray-500 cursor-pointer"
+                    className="block w-full p-2 text-text bg-blue-500 rounded disabled:bg-gray-500 cursor-pointer"
                     disabled={isPending}
                 >
                     {isPending ? submitButtonText.pending : submitButtonText.static}

@@ -34,11 +34,11 @@ export default function CategoryMultiSelect({
 
   return (
     <div>
-      <p className="text-white mb-2">Categories</p>
+      <p className="text-text mb-2">Categories</p>
 
       {/* Dropdown */}
       <select
-        className="block w-full p-2 bg-white text-black border rounded"
+        className="block w-full p-2 bg-white text-text border rounded"
         value=""
         onChange={(e) => {
           add(e.target.value);
@@ -64,7 +64,7 @@ export default function CategoryMultiSelect({
             key={c.id}
             type="button"
             onClick={() => remove(c.id)}
-            className="px-3 py-1 rounded-full bg-white/10 text-white border border-white/20 hover:bg-white/20"
+            className="px-3 py-1 rounded-full bg-white/10 text-text border border-white/20 hover:bg-white/20"
             title="Click to remove"
           >
             {c.name} ✕

@@ -1,4 +1,6 @@
 import { prisma } from "@/lib/prisma";
+import { mapPrismaError } from "@/lib/errors/map-prisma-errors";
+import { ForbiddenError, NotFoundError } from "@/lib/errors/app-errors";
 
 export async function getUnits(query?: string, userId?: string) {
     return prisma.units.findMany({
@@ -12,7 +14,6 @@ export async function getUnits(query?: string, userId?: string) {
                         ],
                     }
                     : {},
-
                 query
                     ? {
                         OR: [
@@ -27,10 +28,36 @@ export async function getUnits(query?: string, userId?: string) {
     });
 }
 
-export async function getUnit(id: string) {
-    return prisma.units.findUnique({
-        where: { id },
+export async function getUnitsByUserId(query?: string, userId?: string) {
+    return prisma.units.findMany({
+        where: {
+            ...(userId && { owner_id: userId }),
+
+            ...(query && {
+                OR: [
+                    { name: { contains: query, mode: "insensitive" } },
+                    { abbreviation: { contains: query, mode: "insensitive" } },
+                    { plural: { contains: query, mode: "insensitive" } },
+                ],
+            }),
+        },
     });
+}
+
+export async function getUnit(id: string) {
+    try {
+        const unit = await prisma.units.findUnique({
+            where: { id },
+        });
+
+        if (!unit) {
+            throw new NotFoundError("Unit not found");
+        }
+
+        return unit;
+    } catch (error) {
+        mapPrismaError(error);
+    }
 }
 
 export async function addUnit(
@@ -39,16 +66,20 @@ export async function addUnit(
     abbreviation: string,
     userId: string
 ) {
-    return prisma.units.create({
-        data: {
-            name,
-            plural,
-            abbreviation,
-            users: {
-                connect: { id: userId },
+    try {
+        return await prisma.units.create({
+            data: {
+                name,
+                plural,
+                abbreviation,
+                users: {
+                    connect: { id: userId },
+                },
             },
-        },
-    });
+        });
+    } catch (error) {
+        mapPrismaError(error);
+    }
 }
 
 export async function updateUnit(
@@ -63,24 +94,32 @@ export async function updateUnit(
     });
 
     if (!unit) {
-        throw new Error("Unit not found");
+        throw new NotFoundError("Unit not found");
     }
 
     if (unit.owner_id !== userId) {
-        throw new Error("You are not allowed to edit this unit");
+        throw new ForbiddenError("You are not allowed to edit this unit");
     }
 
-    return prisma.units.update({
-        where: { id },
-        data: { name, plural, abbreviation },
-    });
+    try {
+        return await prisma.units.update({
+            where: { id },
+            data: { name, plural, abbreviation },
+        });
+    } catch (error) {
+        mapPrismaError(error);
+    }
 }
 
 export async function deleteUnit(id: string, userId: string) {
-    return prisma.units.deleteMany({
-        where: {
-            id,
-            owner_id: userId,
-        },
-    });
+    try {
+        return await prisma.units.deleteMany({
+            where: {
+                id,
+                owner_id: userId,
+            },
+        });
+    } catch (error) {
+        mapPrismaError(error);
+    }
 }

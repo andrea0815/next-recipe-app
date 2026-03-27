@@ -40,11 +40,3 @@ export default function UnitItems({ units }: { units: Unit[] }) {
         </ul>
     );
 }
-
-type ListItemProps = {
-    onEdit: () => void,
-    onDelete: () => void,
-    textItems: string[],
-    href: string,
-    key: string,
-}

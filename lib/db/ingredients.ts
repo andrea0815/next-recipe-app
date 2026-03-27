@@ -1,4 +1,6 @@
 import { prisma } from "@/lib/prisma";
+import { mapPrismaError } from "@/lib/errors/map-prisma-errors"
+import { ForbiddenError, NotFoundError } from "@/lib/errors/app-errors";
 
 export async function getIngredients(query?: string, userId?: string) {
     return prisma.ingredients.findMany({
@@ -39,12 +41,20 @@ export async function getIngredientsByUserId(query?: string, userId?: string) {
     });
 }
 
-
-
 export async function getIngredient(id: string) {
-    return prisma.ingredients.findUnique({
-        where: { id },
-    });
+    try {
+        const ingredient = await prisma.ingredients.findUnique({
+            where: { id },
+        });
+
+        if (!ingredient) {
+            throw new NotFoundError("Ingredient not found");
+        }
+
+        return ingredient;
+    } catch (error) {
+        mapPrismaError(error);
+    }
 }
 
 export async function addIngredient(
@@ -52,15 +62,19 @@ export async function addIngredient(
     plural: string,
     userId: string
 ) {
-    return prisma.ingredients.create({
-        data: {
-            name,
-            plural,
-            users: {
-                connect: { id: userId },
+    try {
+        return prisma.ingredients.create({
+            data: {
+                name,
+                plural,
+                users: {
+                    connect: { id: userId },
+                },
             },
-        },
-    });
+        });
+    } catch (error) {
+        mapPrismaError(error);
+    }
 }
 
 export async function updateIngredient(
@@ -74,24 +88,32 @@ export async function updateIngredient(
     });
 
     if (!ingredient) {
-        throw new Error("Ingredient not found");
+        throw new NotFoundError("Ingredient not found");
     }
 
     if (ingredient.owner_id !== userId) {
-        throw new Error("You are not allowed to edit this ingredient");
+        throw new ForbiddenError("You are not allowed to edit this ingredient");
     }
 
-    return prisma.ingredients.update({
-        where: { id },
-        data: { name, plural },
-    });
+    try {
+        return prisma.ingredients.update({
+            where: { id },
+            data: { name, plural },
+        });
+    } catch (error) {
+        mapPrismaError(error);
+    }
 }
 
 export async function deleteIngredient(id: string, userId: string) {
-    return prisma.ingredients.deleteMany({
-        where: {
-            id,
-            owner_id: userId,
-        },
-    });
+    try {
+        return await prisma.ingredients.deleteMany({
+            where: {
+                id,
+                owner_id: userId,
+            },
+        });
+    } catch (error) {
+        mapPrismaError(error);
+    }
 }

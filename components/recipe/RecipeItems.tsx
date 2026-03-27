@@ -44,7 +44,7 @@ export default function RecipeItems({ recipes }: { recipes: RecipeListItem[] }) 
                         {recipe.categories && (
                             <div className="my-2 flex flex-row flex-wrap gap-2">
                                 {recipe.categories.map((category) => (
-                                    <p key={category.id} className="bg-white text-black py-1 px-2 inline-block rounded-3xl ">{category.name}</p>
+                                    <p key={category.id} className="bg-white text-text py-1 px-2 inline-block rounded-3xl ">{category.name}</p>
                                 ))
                                 }
                             </div>

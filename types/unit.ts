@@ -12,3 +12,15 @@ export type UnitDraft = {
     plural: string | null;
     abbreviation: string | null;
 }
+
+export type UnitFields = {
+    name: string;
+    plural: string | null;
+    abbreviation: string | null;
+}
+
+export type UnitFieldErrors = {
+    name?: string;
+    plural?: string;
+    abbreviation?: string;
+};

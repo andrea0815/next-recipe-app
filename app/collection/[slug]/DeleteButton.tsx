@@ -15,7 +15,7 @@ export default function DeleteButton({ itemId }: { itemId: string }) {
         <Form action={removeById.bind(null, itemId)}>
             <button
                 type="submit"
-                className="p-2 text-white bg-red-500 rounded disabled:bg-gray-500 cursor-pointer"
+                className="p-2 text-text bg-red-500 rounded disabled:bg-gray-500 cursor-pointer"
             >
                 Delete
             </button>

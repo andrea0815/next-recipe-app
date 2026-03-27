@@ -75,7 +75,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
                     {Object.entries(groupedIngredients).map(([groupName, ingredients]) => (
                         <div key={groupName}>
                             {recipe.groups_enabled && (
-                                <h3 className="font-semibold text-white mb-2">{groupName}</h3>
+                                <h3 className="font-semibold text-text mb-2">{groupName}</h3>
                             )}
 
                             <ul className="flex flex-col w-[200px]">

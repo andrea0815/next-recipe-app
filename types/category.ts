@@ -9,3 +9,7 @@ export type CategoryDraft = {
     name: string;
     owner_id: string | null;
 }
+
+export type CategoryFields = {
+    name: string;
+}

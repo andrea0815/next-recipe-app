@@ -1,48 +1,71 @@
 "use client";
 
-import { useOptimistic } from "react";
-
-import type { Ingredient } from "@/types/ingredient";
-import type { Unit } from "@/types/unit";
-import type { Category } from "@/types/category";
-
+import { startTransition, useOptimistic, useState } from "react";
 import ListItem from "../general/ListItem";
+import ListAddButton from "./ListAddButton";
+import ErrorDialog from "../errors/ErrorDialog";
+import type { ActionResult } from "@/types/actions";
+import type { ItemType } from "@/types/general"
+
+type PreparedItem = {
+    id: string;
+    textItems: string[];
+    editHref: string;
+};
 
 type ListSectionProps = {
-    items: Ingredient[] | Unit[] | Category[],
-    removeItem: (id: string) => void
-}
+    type: ItemType;
+    items: PreparedItem[];
+    removeItem: (id: string) => Promise<ActionResult>;
+};
 
-export default function ListSection({ items, removeItem }: ListSectionProps) {
+export default function ListSection({ type, items, removeItem }: ListSectionProps) {
+    const [errorMessage, setErrorMessage] = useState("");
 
     const [optimisticItems, setOptimisticItems] = useOptimistic(
         items,
-        (currentItems, itemId) => {
-            return currentItems.filter(item => item.id !== itemId);
+        (currentItems, itemId: string) => {
+            return currentItems.filter((item) => item.id !== itemId);
         }
     );
 
-    const removeItemById = async (recipeId: string) => {
-        setOptimisticItems(recipeId);
-        await removeItem(recipeId);
-    }
+    const removeItemById = async (itemId: string) => {
+        const result = await removeItem(itemId);
+
+        if (!result.success) {
+            setErrorMessage(result.message);
+            return;
+        }
+
+        startTransition(() => {
+            setOptimisticItems(itemId);
+        });
+    };
 
     return (
-        <section>
-            <ul className="">
-                {optimisticItems.map((item) => (
-                    <>
+        <>
+            <ErrorDialog
+                open={!!errorMessage}
+                message={errorMessage}
+                onClose={() => setErrorMessage("")}
+            />
+
+            <section className="my-6">
+                <ul className="flex flex-col">
+                    <li className="flex justify-start mb-2">
+                        <ListAddButton type={type} />
+                    </li>
+                    {optimisticItems.map((item, index) => (
                         <ListItem
                             key={item.id}
                             id={item.id}
-                            editHref={`/items/${item.id}/edit`}
+                            editHref={item.editHref}
                             onDeleteAction={removeItemById.bind(null, item.id)}
-                            textItems={[item.name, item.plural || "–"]}
+                            textItems={item.textItems}
                         />
-
-                    </>
-                ))}
-            </ul>
-        </section>
+                    ))}
+                </ul>
+            </section>
+        </>
     );
 }

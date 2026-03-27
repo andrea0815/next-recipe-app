@@ -116,14 +116,14 @@ export default function IngredientEditor({
 
   return (
     <div className="space-y-3">
-      <h2 className="text-white font-semibold">Ingredients</h2>
+      <h2 className="text-text font-semibold">Ingredients</h2>
 
       <div>
-        <label className="text-white">
+        <label className="text-text">
           Portions
           <input
             type="number"
-            className="block w-full p-2 bg-white text-black border rounded"
+            className="block w-full p-2 bg-white text-text border rounded"
             name="portions"
             min="1"
             defaultValue="2"
@@ -144,14 +144,14 @@ export default function IngredientEditor({
         <div key={index} className="bg-gray-800 p-5 rounded-2xl">
 
           {groupsEnabled &&
-            <label className="text-white w-28 pt-5">
+            <label className="text-text w-28 pt-5">
               Group name
               <input
                 type="text"
                 name="all_group_names"
                 value={group.group_name}
                 onChange={(e) => updateGroupName(index, e.target.value)}
-                className="block w-full p-2 bg-white text-black border rounded"
+                className="block w-full p-2 bg-white text-text border rounded"
                 placeholder="Group Name"
               />
             </label>
@@ -160,7 +160,7 @@ export default function IngredientEditor({
 
           {/* Draft input row */}
           <div className="flex gap-2 items-end">
-            <label className="text-white w-28">
+            <label className="text-text w-28">
               Amount
               <input
                 type="number"
@@ -168,17 +168,17 @@ export default function IngredientEditor({
                 min="0"
                 value={group.draft.amount}
                 onChange={(e) => updateDraft(index, "amount", Number(e.target.value))}
-                className="block w-full p-2 bg-white text-black border rounded"
+                className="block w-full p-2 bg-white text-text border rounded"
                 placeholder="e.g. 200"
               />
             </label>
 
-            <label className="text-white flex-1">
+            <label className="text-text flex-1">
               Unit
               <select
                 value={group.draft.unit_id}
                 onChange={(e) => updateDraft(index, "unit_id", e.target.value)}
-                className="block w-full p-2 bg-white text-black border rounded"
+                className="block w-full p-2 bg-white text-text border rounded"
               >
                 <option value="" disabled>
                   Select unit…
@@ -191,12 +191,12 @@ export default function IngredientEditor({
               </select>
             </label>
 
-            <label className="text-white flex-1">
+            <label className="text-text flex-1">
               Ingredient
               <select
                 value={group.draft.ingredient_id}
                 onChange={(e) => updateDraft(index, "ingredient_id", e.target.value)}
-                className="block w-full p-2 bg-white text-black border rounded"
+                className="block w-full p-2 bg-white text-text border rounded"
               >
                 <option value="" disabled>
                   Select ingredient…
@@ -212,7 +212,7 @@ export default function IngredientEditor({
             <button
               type="button"
               onClick={() => addLine(index)}
-              className="px-3 py-2 rounded bg-blue-500 text-white disabled:bg-gray-500"
+              className="px-3 py-2 rounded bg-blue-500 text-text disabled:bg-gray-500"
               disabled={!group.draft.amount || !group.draft.unit_id || !group.draft.ingredient_id}
             >
               Add Line
@@ -231,7 +231,7 @@ export default function IngredientEditor({
                   key={`${line.ingredient_id}-${line.unit_id}-${index}`}
                   className="flex items-center justify-between gap-2 p-2 rounded border border-white/20 bg-white/5"
                 >
-                  <div className="text-white">
+                  <div className="text-text">
                     <span className="font-semibold">{line.amount}</span>{" "}
                     <UnitDisplay amount={Number(line.amount)} unit={unit} />{" "}
                     <InrgredientDisplay amount={Number(line.amount)} ingredient={ing} />
@@ -240,7 +240,7 @@ export default function IngredientEditor({
                   <button
                     type="button"
                     onClick={() => removeLine(index, lineIndex)}
-                    className="px-2 py-1 rounded bg-white/10 text-white hover:bg-white/20"
+                    className="px-2 py-1 rounded bg-white/10 text-text hover:bg-white/20"
                     title="Remove"
                   >
                     ✕
@@ -259,7 +259,7 @@ export default function IngredientEditor({
 
           {/* Optional: show a message if no lines */}
           {group.lines.length === 0 && (
-            <p className="text-white/70 text-sm">No ingredients added yet.</p>
+            <p className="text-text/70 text-sm">No ingredients added yet.</p>
           )}
 
           {groupsEnabled && (

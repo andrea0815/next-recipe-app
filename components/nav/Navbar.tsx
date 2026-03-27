@@ -4,7 +4,7 @@ import NavbarItem from './NavbarItem';
 
 export default function Navbar() {
   return (
-    <div className='fixed z-10 flex gap-4 py-2 px-2 rounded-full mt-6 text-black pointer-events-auto overflow-hidden'>
+    <div className='fixed z-10 flex gap-4 py-2 px-2 rounded-full mt-6 text-text pointer-events-auto overflow-hidden'>
       <NavbarItem text="Collection" iconSrc="/file.svg" link='/collection' />
       <NavbarItem text="Shopping List" iconSrc="/file.svg" link='/shopping-list' />
       <NavbarItem text="Explore" iconSrc="/file.svg" link='/explore' />

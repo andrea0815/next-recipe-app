@@ -1,69 +1,93 @@
 "use server";
 
-import { addUnit, deleteUnit, updateUnit } from '@/lib/db/units';
+import { addUnit, deleteUnit, updateUnit } from "@/lib/db/units";
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
-export type Errors = {
-    name?: string;
+import type { UnitFieldErrors, UnitFields } from "@/types/unit";
+
+import { ValidationError } from "@/lib/errors/app-errors";
+import { errorToActionResult } from "@/lib/errors/error-to-action-result";
+import { ActionResult } from "@/lib/actions/action-result";
+
+export async function createUnit(
+    prevState: ActionResult<UnitFieldErrors>,
+    formData: FormData
+): Promise<ActionResult<UnitFieldErrors>> {
+    try {
+        const user = await getCurrentDbUser();
+
+        const name = String(formData.get("name") ?? "").trim();
+        const plural = String(formData.get("plural") ?? "").trim();
+        const abbreviation = String(formData.get("abbreviation") ?? "").trim();
+
+        const fieldErrors: Partial<UnitFieldErrors> = {};
+
+        if (!name) {
+            fieldErrors.name = "Name is required";
+        }
+
+        if (Object.keys(fieldErrors).length > 0) {
+            throw new ValidationError(
+                "Please correct the highlighted fields.",
+                fieldErrors
+            );
+        }
+
+        await addUnit(name, plural, abbreviation, user.id);
+    } catch (error) {
+        return errorToActionResult<UnitFieldErrors>(error);
+    }
+
+    redirect("/profile/units");
 }
 
-export type FormState = {
-    errors: Errors;
-}
+export async function editUnit(
+    id: string,
+    prevState: ActionResult<UnitFieldErrors>,
+    formData: FormData
+): Promise<ActionResult<UnitFieldErrors>> {
+    try {
+        const user = await getCurrentDbUser();
 
-export async function createUnit(prevState: FormState, formData: FormData
-): Promise<FormState> {
+        const name = String(formData.get("name") ?? "").trim();
+        const plural = String(formData.get("plural") ?? "").trim();
+        const abbreviation = String(formData.get("abbreviation") ?? "").trim();
 
-    const user = await getCurrentDbUser();
+        const fieldErrors: Partial<UnitFieldErrors> = {};
 
-    const name = formData.get("name") as string;
-    const plural = formData.get("plural") as string;
-    const abbreviation = formData.get("abbreviation") as string;
+        if (!name) {
+            fieldErrors.name = "Name is required";
+        }
 
-    const errors: Errors = {};
+        if (Object.keys(fieldErrors).length > 0) {
+            throw new ValidationError(
+                "Please correct the highlighted fields.",
+                fieldErrors
+            );
+        }
 
-    if (!name) {
-        errors.name = "Name is required";
+        await updateUnit(id, name, plural, abbreviation, user.id);
+    } catch (error) {
+        return errorToActionResult<UnitFieldErrors>(error);
     }
 
-    if (Object.keys(errors).length > 0) {
-        return { errors };
-    }
-
-    await addUnit(name, plural, abbreviation, user.id);
-    redirect('/');
-}
-
-export async function editUnit(id: string, prevState: FormState, formData: FormData
-): Promise<FormState> {
-
-    const user = await getCurrentDbUser();
-
-    const name = formData.get("name") as string;
-    const plural = formData.get("plural") as string;
-    const abbreviation = formData.get("abbreviation") as string;
-
-    const errors: Errors = {};
-
-    if (!name) {
-        errors.name = "Name is required";
-    }
-
-    if (Object.keys(errors).length > 0) {
-        return { errors };
-    }
-
-    await updateUnit(id, name, plural, abbreviation, user.id);
-    redirect('/');
+    redirect("/profile/units");
 }
 
 export async function removeUnit(id: string) {
+    try {
+        const user = await getCurrentDbUser();
 
-    const user = await getCurrentDbUser();
+        await deleteUnit(id, user.id);
+        revalidatePath("/profile/units");
 
-    await deleteUnit(id, user.id);
-
-    revalidatePath("/");
+        return {
+            success: true,
+            message: "Unit deleted successfully.",
+        };
+    } catch (error) {
+        return errorToActionResult(error);
+    }
 }

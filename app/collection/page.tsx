@@ -1,10 +1,12 @@
 import RecipeList from '@/components/recipe/RecipeList';
+import ButtonLink from '@/components/buttons/ButtonLink';
 import React from 'react';
 
 export default function CollectionPage() {
     return (
-        <main className='mt-[20vh]'>
+        <div className='flex flex-col gap-6'>
+            <ButtonLink link='/collection/create' text='Create new Recipe' />
             <RecipeList />
-        </main>
+        </div>
     );
 }

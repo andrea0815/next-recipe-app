@@ -25,7 +25,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${recursive.variable} text-text antialiased`}
+          className={`${recursive.variable} text-text antialiased bg-greay-100`}
         >
           <SignedIn>
             <Header />

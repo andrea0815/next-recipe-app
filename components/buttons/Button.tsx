@@ -1,18 +1,21 @@
 import React from 'react';
 
 type ButtonProps = {
-    text: string
+    children: any,
     bgColor?: string,
+    textColor?: string,
+    stretch?: boolean,
     onClick?: () => void,
-    type?: string
+    type?: "button" | "submit" | "reset";
 }
 
-export default function Button({ text, bgColor = "primary", onClick }: ButtonProps) {
+export default function Button({ children, bgColor = "primary", textColor = "white", onClick, type = "button", stretch = false }: ButtonProps) {
     return (
         <button
             onClick={onClick}
-            className={`text-white rounded-md px-4 py-2 cursor-pointer bg-${bgColor}-500`}>
-            {text}
+            type={type}
+            className={`text-${textColor} ${stretch ? "w-full" : ""} rounded-md px-4 py-3 cursor-pointer bg-${bgColor}`}>
+            {children}
         </button>
     );
 }

@@ -1,74 +1,91 @@
 "use server";
 
-import { addCategory, deleteCategory, updateCategory } from '@/lib/db/categories';
+import { addCategory, deleteCategory, updateCategory } from "@/lib/db/categories";
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
-export type Errors = {
-    name?: string;
+import type { CategoryFields } from "@/types/category";
+
+// errors
+import { ValidationError } from "@/lib/errors/app-errors";
+import { errorToActionResult } from "@/lib/errors/error-to-action-result";
+import { ActionResult } from "@/lib/actions/action-result";
+
+export async function createCategory(
+    prevState: ActionResult<CategoryFields>,
+    formData: FormData
+): Promise<ActionResult<CategoryFields>> {
+    try {
+        const user = await getCurrentDbUser();
+
+        const name = String(formData.get("name") ?? "").trim();
+
+        const fieldErrors: Partial<CategoryFields> = {};
+
+        if (!name) {
+            fieldErrors.name = "Name is required";
+        }
+
+        if (Object.keys(fieldErrors).length > 0) {
+            throw new ValidationError(
+                "Please correct the highlighted fields.",
+                fieldErrors
+            );
+        }
+
+        await addCategory(name, user.id);
+    } catch (error) {
+        return errorToActionResult<CategoryFields>(error);
+    }
+
+    redirect("/profile/categories");
 }
 
-export type FormState = {
-    errors: Errors;
-}
+export async function editCategory(
+    id: string,
+    prevState: ActionResult<CategoryFields>,
+    formData: FormData
+): Promise<ActionResult<CategoryFields>> {
+    try {
+        const user = await getCurrentDbUser();
 
-export async function createCategory(prevState: FormState, formData: FormData
-): Promise<FormState> {
+        const name = String(formData.get("name") ?? "").trim();
 
-    const user = await getCurrentDbUser();
-    if (!user) {
-        redirect('/');
+        const fieldErrors: Partial<CategoryFields> = {};
+
+        if (!name) {
+            fieldErrors.name = "Name is required";
+        }
+
+        if (Object.keys(fieldErrors).length > 0) {
+            throw new ValidationError(
+                "Please correct the highlighted fields.",
+                fieldErrors
+            );
+        }
+
+        await updateCategory(id, name, user.id);
+    } catch (error) {
+        return errorToActionResult<CategoryFields>(error);
     }
 
-    const name = formData.get("name") as string;
-
-    const errors: Errors = {};
-
-    if (!name) {
-        errors.name = "Name is required";
-    }
-
-    if (Object.keys(errors).length > 0) {
-        return { errors };
-    }
-
-    await addCategory(name, user.id);
-    redirect('/');
-}
-
-export async function editCategory(id: string, prevState: FormState, formData: FormData
-): Promise<FormState> {
-
-    const user = await getCurrentDbUser();
-    if (!user) {
-        redirect('/');
-    }
-
-    const name = formData.get("name") as string;
-
-    const errors: Errors = {};
-
-    if (!name) {
-        errors.name = "Name is required";
-    }
-
-    if (Object.keys(errors).length > 0) {
-        return { errors };
-    }
-
-    await updateCategory(id, name, user.id);
-    redirect('/');
+    redirect("/profile/categories");
 }
 
 export async function removeCategory(id: string) {
+    try {
+        const user = await getCurrentDbUser();
 
-    const user = await getCurrentDbUser();
-    if (!user) {
-        redirect('/');
+        await deleteCategory(id, user.id);
+
+        revalidatePath("/profile/categories");
+
+        return {
+            success: true,
+            message: "Category deleted successfully.",
+        };
+    } catch (error) {
+        return errorToActionResult(error);
     }
-
-    await deleteCategory(id, user.id);
-
-    revalidatePath("/");
 }

@@ -10,3 +10,8 @@ export type IngredientDraft = {
     name: string;
     plural: string | null;
 }
+
+export type IngredientFields = {
+    name: string;
+    plural: string;
+};
