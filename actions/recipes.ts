@@ -61,9 +61,6 @@ export async function createRecipe(
 
     const errors: Errors = {};
 
-    console.log(all_group_names);
-
-
     if (!name) errors.name = "Name is required";
     if (!subtitle) errors.subtitle = "Subtitle is required";
     if (!image_uri) errors.image_uri = "Image uri is required";
@@ -91,7 +88,6 @@ export async function createRecipe(
     ) {
         errors.amounts = "Ingredient data is incomplete";
     }
-    console.log(all_group_names);
 
     if (groups_enabled) {
         if (all_group_names.length === 0) {
@@ -139,6 +135,9 @@ export async function createRecipe(
             text: step_text,
             hint: step_hints[i] || null,
         }));
+
+    console.log(steps);
+
 
     await addRecipe(
         name,
@@ -265,6 +264,9 @@ export async function editRecipe(id: string, slug: string, prevState: FormState,
             text: step_text,
             hint: step_hints[i] || null,
         }));
+
+    console.log(groups_enabled);
+
 
     await updateRecipe(
         id,

@@ -11,8 +11,6 @@ export default async function RecipeList() {
   const user = await getCurrentDbUser();
 
   const recipes: RecipeListItem[] = await getUserRecipes(undefined, user?.id ?? undefined);
-  console.log(recipes);
-
 
   return (
     <RecipeItems recipes={recipes}></RecipeItems>

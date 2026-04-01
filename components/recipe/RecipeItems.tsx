@@ -6,6 +6,8 @@ import Form from "next/form";
 import { useOptimistic } from "react";
 
 import type { RecipeListItem } from '@/types/recipe';
+import Icon from "../icons/Icon";
+import Tag from "../general/Tag";
 
 export default function RecipeItems({ recipes }: { recipes: RecipeListItem[] }) {
 
@@ -23,28 +25,39 @@ export default function RecipeItems({ recipes }: { recipes: RecipeListItem[] }) 
                     key={recipe.id}
                     className="p-3 bg-section rounded-2xl text-text"
                 >
-                    <Link href={`/collection/${recipe.slug}`}>
+                    <Link href={`/collection/${recipe.slug}`}
+                        className="flex flex-col h-full">
 
-                        <div className="relative">
+                        <div className="relative aspect-square">
 
                             {recipe.image_uri && (
-                                <img src={recipe.image_uri} alt={recipe.name} className="w-full h-48 object-cover rounded-xl" />
+                                <img src={recipe.image_uri} alt={recipe.name} className="min-w-full min-h-full h-48 rounded-xl object-cover" />
                             )}
-                            <p className="absolute top-3 right-3">{recipe.is_public ? 'Public' : 'Private'}</p>
+                            {/* <p className="absolute top-3 right-3">{recipe.is_public ? 'Public' : 'Private'}</p> */}
+                            {recipe.is_public &&
+                                <Tag
+                                    customClass="absolute top-2 right-2 text-xs"
+                                >public</Tag>
+                            }
+
 
                         </div>
 
-                        <h2 className="text-xl font-semibold">
+                        <h2 className="text-xl font-semibold mt-2">
                             {recipe.name}
                         </h2>
 
-                        <p>{recipe.subtitle}</p>
+                        <p className="leading-tight text-sm text-text-light mt-1">{recipe.subtitle}</p>
 
 
                         {recipe.categories && (
-                            <div className="my-2 flex flex-row flex-wrap gap-2">
+                            <div className="mt-2 flex flex-row flex-wrap gap-2 flex-1 items-end">
                                 {recipe.categories.map((category) => (
-                                    <p key={category.id} className="bg-white text-text py-1 px-2 inline-block rounded-3xl ">{category.name}</p>
+                                    <Tag
+                                        key={category.id}
+                                        customClass="text-xs"
+                                        isInverted={true}
+                                    >{category.name}</Tag>
                                 ))
                                 }
                             </div>

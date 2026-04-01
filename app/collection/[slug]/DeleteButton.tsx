@@ -3,6 +3,7 @@
 import Form from 'next/form';
 import React from 'react';
 import { removeRecipe } from "@/actions/recipes";
+import Button from '@/components/buttons/Button';
 
 
 export default function DeleteButton({ itemId }: { itemId: string }) {
@@ -13,12 +14,9 @@ export default function DeleteButton({ itemId }: { itemId: string }) {
 
     return (
         <Form action={removeById.bind(null, itemId)}>
-            <button
-                type="submit"
-                className="p-2 text-text bg-red-500 rounded disabled:bg-gray-500 cursor-pointer"
-            >
+            <Button type="submit" color='red' size='small'>
                 Delete
-            </button>
+            </Button>
         </Form>
     );
 }

@@ -16,6 +16,7 @@ import Switch from '../form/Switch';
 import InputFieldText from '../form/InputFieldText';
 import InputMultiSelect from '../form/InputMultiSelect';
 import InputFieldNumber from '../form/InputFieldNumber';
+import Button from '../buttons/Button';
 
 
 
@@ -112,7 +113,7 @@ export default function RecipeForm({
                     onChange={(ids) => updateDraft("category_ids", ids)}
                 />
 
-                <h2 className="text-text text-lg font-semibold mt-6">Ingredients</h2>
+                <h2 className="text-text text-lg font-semibold mt-10 pt-4 border-t border-gray-400">Ingredients</h2>
 
                 <InputFieldNumber<RecipeDraft, "portions">
                     labelName="Portions"
@@ -134,19 +135,28 @@ export default function RecipeForm({
                     onGroupsEnabledChange={(enabled) => updateDraft("groups_enabled", enabled)}
                 />
 
+                <h2 className="text-text text-lg font-semibold mt-10 pt-4 border-t border-gray-400">Steps</h2>
+
                 <StepEditor
                     state={state}
                     steps={draft.steps}
                     onChange={(steps) => updateDraft("steps", steps)}
                 />
 
-                <button
+                <Button
                     type="submit"
-                    className="block w-full p-2 text-text bg-blue-500 rounded disabled:bg-gray-500 cursor-pointer"
-                    disabled={isPending}
+                    size='big'
+                    customClass='fixed bottom-6 left-1/2 -translate-x-1/2 z-10 w-200'
+                    disabled={
+                        isPending ||
+                        Object.keys(state.errors).length > 0 ||
+                        draft.name.trim() === "" ||
+                        draft.subtitle.trim() === ""
+                    }
+
                 >
                     {isPending ? submitButtonText.pending : submitButtonText.static}
-                </button>
+                </Button>
             </form >
         </>
     );

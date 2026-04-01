@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import type { Unit } from "@/types/unit";
 import type { Ingredient } from "@/types/ingredient";
-import type { RecipeGroupDraft, RecipeLineDraft } from "@/types/recipe";
+import type { RecipeGroupDraft, RecipeLineDraft, IngredientLineInput } from "@/types/recipe";
 
 import UnitDisplay from "@/components/unit/UnitDisplay";
 import InrgredientDisplay from "@/components/ingredient/InrgredientDisplay";
@@ -12,6 +12,7 @@ import InputWrapper from "../form/InputWrapper";
 import Switch from "../form/Switch";
 import Button from "../buttons/Button";
 import InputFieldNumber from "../form/InputFieldNumber";
+import InputSelect from "../form/InputSelect";
 
 export default function IngredientEditor({
   state,
@@ -120,35 +121,39 @@ export default function IngredientEditor({
 
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 flex flex-col justify-center">
 
       <InputWrapper labelName="Groups enabled">
         <Switch
           checked={groupsEnabled}
+          name="groups_enabled"
           onChange={(checked) => onGroupsEnabledChange(checked)}
         />
 
       </InputWrapper>
 
       {(groupsEnabled ? groups : [groups[0]]).map((group, index) => (
-        <div key={index} className="bg-gray-300 p-4 rounded-2xl flex flex-col gap-4">
+        <div key={index} className="bg-gray-300 p-4 rounded-2xl flex flex-col">
 
           {groupsEnabled &&
 
-            <InputFieldText<RecipeGroupDraft, "group_name">
-              field="group_name"
-              name="all_group_names"
-              labelName="Group Name"
-              draftValue={group.group_name}
-              updateDraftValue={(_, value) => updateGroupName(index, value)}
-              placeholder="Group Name"
-              error={state?.errors?.group_names}
-            />
+            <div className="border-b border-b-gray-500 pb-6 mb-4">
+
+              <InputFieldText<RecipeGroupDraft, "group_name">
+                field="group_name"
+                name="all_group_names"
+                labelName="Group Name"
+                draftValue={group.group_name}
+                updateDraftValue={(_, value) => updateGroupName(index, value)}
+                placeholder="Group Name"
+                error={state?.errors?.group_names}
+              />
+            </div>
           }
 
-          <div>
+          <div className="mb-4 flex flex-col gap-2">
             {/* Draft input row */}
-            <div className="flex gap-2 items-end border-t border-t-gray-500 pt-4">
+            <div className="flex gap-2 items-end justify-between">
 
               <InputFieldNumber<RecipeLineDraft, "amount">
                 labelName="Amount"
@@ -158,47 +163,33 @@ export default function IngredientEditor({
                 min={0}
                 step={0.1}
                 error={state?.errors?.amounts}
+                customClass="w-[10%] min-w-15 flex-shrink"
               />
 
-              <label className="text-text flex-1">
-                Unit
-                <select
-                  value={group.draft.unit_id}
-                  onChange={(e) => updateDraft(index, "unit_id", e.target.value)}
-                  className="block w-full p-2 bg-white text-text border rounded"
-                >
-                  <option value="" disabled>
-                    Select unit…
-                  </option>
-                  {units.map((unit) => (
-                    <option key={unit.id} value={unit.id}>
-                      {unit.name} ({unit.abbreviation})
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <InputSelect<RecipeLineDraft, "unit_id", typeof units[number]>
+                items={units}
+                field="unit_id"
+                labelName="Unit"
+                draftValue={group.draft.unit_id}
+                updateDraftValue={(_, value) => updateDraft(index, "unit_id", value)}
+                customClass="w-[20%] flex-shrink"
+              />
 
-              <label className="text-text flex-1">
-                Ingredient
-                <select
-                  value={group.draft.ingredient_id}
-                  onChange={(e) => updateDraft(index, "ingredient_id", e.target.value)}
-                  className="block w-full p-2 bg-white text-text border rounded"
-                >
-                  <option value="" disabled>
-                    Select ingredient…
-                  </option>
-                  {ingredients.map((ingredient) => (
-                    <option key={ingredient.id} value={ingredient.id}>
-                      {ingredient.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <InputSelect<RecipeLineDraft, "ingredient_id", typeof ingredients[number]>
+                items={ingredients}
+                field="ingredient_id"
+                labelName="Ingredient"
+                draftValue={group.draft.ingredient_id}
+                updateDraftValue={(_, value) => updateDraft(index, "ingredient_id", value)}
+                customClass="flex-1 min-w-0"
+                error=""
+              />
 
               <Button
                 onClick={() => addLine(index)}
                 disabled={!group.draft.amount || !group.draft.unit_id || !group.draft.ingredient_id}
+                priority="secondary"
+                size="small"
               >Add</Button>
             </div>
 
@@ -212,7 +203,7 @@ export default function IngredientEditor({
                 return (
                   <div
                     key={`${line.ingredient_id}-${line.unit_id}-${index}`}
-                    className="flex items-center justify-between gap-2 p-2 border-b border-gray-400"
+                    className="flex items-center justify-between gap-2 p-2 border-b border-gray-400 last-of-type:border-b-0"
                   >
                     <div className="text-text">
                       <span className="font-semibold">{line.amount}</span>{" "}
@@ -244,7 +235,7 @@ export default function IngredientEditor({
 
           {/* Optional: show a message if no lines */}
           {group.lines.length === 0 && (
-            <p className="text-text/70 text-sm">No ingredients added yet.</p>
+            <p className="text-text/70 text-sm text-center m-6">No ingredients added yet.</p>
           )}
 
           {groupsEnabled && (
@@ -252,6 +243,7 @@ export default function IngredientEditor({
               <Button
                 onClick={() => removeGroup(index)}
                 disabled={groups.length <= 1}
+                priority="tertiary"
               >
                 Remove group
               </Button>
@@ -264,6 +256,9 @@ export default function IngredientEditor({
       {groupsEnabled &&
         <Button
           onClick={addGroup}
+          priority="secondary"
+          customClass="self-end"
+          size="small"
         >Add Group</Button>
       }
 

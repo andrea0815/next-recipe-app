@@ -31,14 +31,18 @@ export default function InputFieldText<
         <InputWrapper
             labelName={labelName}
             error={error}
+            customClass={customClass}
         >
-            <input
-                type="text"
-                className={`block h-10 w-full p-2 bg-white text-text rounded-lg border border-gray-500 ${customClass ? customClass : ""}`}
-                name={String(name ? name : field)}
+            <textarea
+                className="block w-full h-25 p-2 bg-white text-text rounded-lg border border-gray-500 resize-none overflow-hidden"
+                name={String(name ?? field)}
                 value={typeof draftValue === "string" ? draftValue : ""}
-                onChange={(e) => updateDraftValue(field, e.target.value)}
                 placeholder={placeholder}
+                onChange={(e) => {
+                    updateDraftValue(field, e.target.value);
+                    e.target.style.height = "auto";
+                    e.target.style.height = Math.max(e.target.scrollHeight, 100) + "px";
+                }}
             />
         </InputWrapper>
     );

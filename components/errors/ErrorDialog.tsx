@@ -15,7 +15,7 @@ export default function ErrorDialog({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-            <div className="w-1/2 max-w-md rounded-2xl p-10 shadow-xl bg-greay-100">
+            <div className="w-1/2 max-w-md rounded-2xl p-10 shadow-xl bg-gray-100">
                 <h2 className="mb-3 text-xl font-semibold text-red-800">
                     Could not delete item
                 </h2>

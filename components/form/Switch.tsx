@@ -22,7 +22,7 @@ export default function Switch({
                 aria-disabled={disabled}
                 disabled={disabled}
                 onClick={() => onChange(!checked)}
-                className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${checked ? "bg-primary" : "bg-gray-300"
+                className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${checked ? "bg-primary" : "bg-gray-400"
                     } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
             >
                 <span

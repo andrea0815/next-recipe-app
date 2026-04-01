@@ -6,8 +6,6 @@ async function main() {
   const val = await prisma.recipes.findMany({
     take: 5,
   });
-
-  console.log(val);
 }
 
 main()

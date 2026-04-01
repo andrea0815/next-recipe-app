@@ -7,68 +7,56 @@ type SelectItem = {
     name: string;
 };
 
-type InputTextProps<TItem extends SelectItem> = {
+type InputTextProps<
+    TDraft,
+    K extends keyof TDraft,
+    TItem extends SelectItem
+> = {
     items: TItem[];
     labelName?: string;
-    selectedIds: string[];
-    onChange: (ids: string[]) => void;
-    children?: any
+    field: K;
+    name?: string;
+    draftValue?: string;
+    updateDraftValue: (field: K, value: string) => void;
+    customClass?: string;
+    error?: string;
+
 };
 
-export default function InputText<TItem extends SelectItem>({
+export default function InputText<
+    TDraft,
+    K extends keyof TDraft,
+    TItem extends SelectItem
+>({
     items,
     labelName,
-    selectedIds,
-    onChange,
-}: InputTextProps<TItem>) {
+    field,
+    name,
+    draftValue,
+    updateDraftValue,
+    customClass = "",
+    error
+}: InputTextProps<TDraft, K, TItem>) {
 
-    const selected = useMemo(
-        () => items.filter((c) => selectedIds.includes(c.id)),
-        [items, selectedIds]
-    );
-
-    const available = useMemo(
-        () => items.filter((c) => !selectedIds.includes(c.id)),
-        [items, selectedIds]
-    );
-
-    function add(id: string) {
-        if (!id) return;
-        onChange(selectedIds.includes(id) ? selectedIds : [...selectedIds, id]);
-    }
-
-    function remove(id: string) {
-        onChange(selectedIds.filter((x) => x !== id));
-    }
 
     return (
-        <InputWrapper labelName={labelName}>
-            {/* Dropdown */}
+        <InputWrapper labelName={labelName} customClass={customClass} error={error}>
             <select
-                className="block w-full p-2 bg-white text-text rounded border border-gray-500"
-                value=""
-                onChange={(e) => {
-                    add(e.target.value);
-                    // keep placeholder selected
-                    e.currentTarget.value = "";
-                }}
+                className={`block w-full h-10 p-2 bg-white text-text rounded-lg border border-gray-500 ${customClass}`}
+                value={draftValue ?? ""}
+                onChange={(e) => updateDraftValue(field, e.target.value)}
+                name={String(name ?? field)}
             >
                 <option value="" disabled>
-                    Select a category…
+                    Select an option…
                 </option>
 
-                {available.map((c) => (
-                    <option key={c.id} value={c.id}>
-                        {c.name}
+                {items.map((item) => (
+                    <option key={item.id} value={item.id}>
+                        {item.name}
                     </option>
                 ))}
             </select>
-
-            {/* Hidden inputs so FormData contains category_ids[] */}
-            {selectedIds.map((id) => (
-                <input key={id} type="hidden" name="category_ids" value={id} />
-            ))}
-
-        </InputWrapper >
+        </InputWrapper>
     );
 }

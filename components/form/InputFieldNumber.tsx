@@ -11,6 +11,7 @@ type InputFieldNumberProps<TDraft, K extends keyof TDraft> = {
     min?: number;
     step?: number;
     error?: string;
+    customClass?: string;
 };
 
 export default function InputFieldNumber<TDraft, K extends keyof TDraft>({
@@ -22,15 +23,16 @@ export default function InputFieldNumber<TDraft, K extends keyof TDraft>({
     min = 0,
     step = 0.1,
     error,
+    customClass = ""
 }: InputFieldNumberProps<TDraft, K>) {
     return (
-        <InputWrapper labelName={labelName} error={error}>
+        <InputWrapper labelName={labelName} error={error} customClass={customClass}>
             <input
                 type="number"
                 name={String(name ?? field)}
                 value={draftValue}
                 onChange={(e) => updateDraftValue(field, Number(e.target.value))}
-                className="block w-full p-2 bg-white text-text rounded-lg border border-gray-500"
+                className={`block w-full h-10 p-2 bg-white text-text rounded-lg border border-gray-500 ${customClass ? customClass : ""}`}
                 min={min}
                 step={step}
             />

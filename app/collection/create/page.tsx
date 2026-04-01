@@ -39,7 +39,14 @@ export default async function AddRecipePage() {
         lines: [],
       },
     ],
-    steps: [],
+    steps: [
+      {
+        step_index: 0,
+        text: "",
+        hint_is_showing: false,
+        hint: "",
+      },
+    ],
   };
 
   return (

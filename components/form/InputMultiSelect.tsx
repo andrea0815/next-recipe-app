@@ -12,6 +12,7 @@ type InputTextProps<TItem extends SelectItem> = {
     labelName?: string;
     selectedIds: string[];
     onChange: (ids: string[]) => void;
+    error?: string;
     children?: any
 };
 
@@ -20,6 +21,7 @@ export default function InputText<TItem extends SelectItem>({
     labelName,
     selectedIds,
     onChange,
+    error,
 }: InputTextProps<TItem>) {
 
     const selected = useMemo(
@@ -42,10 +44,10 @@ export default function InputText<TItem extends SelectItem>({
     }
 
     return (
-        <InputWrapper labelName={labelName}>
+        <InputWrapper labelName={labelName} error={error}>
             {/* Dropdown */}
             <select
-                className="block w-full p-2 bg-white text-text rounded border border-gray-500"
+                className="block w-full h-10 p-2 bg-white text-text rounded-lg border border-gray-500"
                 value=""
                 onChange={(e) => {
                     add(e.target.value);
@@ -65,15 +67,16 @@ export default function InputText<TItem extends SelectItem>({
             </select>
 
             {/* Chips */}
-            <div className="mt-3 flex flex-wrap gap-2">
-                {selected.map((c) => (
-                    <Chip
-                        key={c.id}
-                        onClick={() => remove(c.id)}
-                        text={c.name}
-                    />
-                ))}
-            </div>
+            {selected.length > 0 &&
+                <div className="mt-3 flex flex-wrap gap-2">
+                    {selected.map((c) => (
+                        <Chip
+                            key={c.id}
+                            onClick={() => remove(c.id)}
+                            text={c.name}
+                        />
+                    ))}
+                </div>}
 
             {/* Hidden inputs so FormData contains category_ids[] */}
             {selectedIds.map((id) => (

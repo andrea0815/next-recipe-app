@@ -2,33 +2,36 @@
 
 import { getRecipeBySlug } from "@/lib/db/recipes";
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
-import { formatAmount } from "@/lib/db/utils/formatDecimals";
 
 import { notFound } from "next/navigation";
 
-import UnitDisplay from "@/components/unit/UnitDisplay";
-import InrgredientDisplay from "@/components/ingredient/InrgredientDisplay";
-import Link from "next/link";
 import DeleteButton from "./DeleteButton";
+import Button from "@/components/buttons/Button";
+import Tag from "@/components/general/Tag";
+import SectionWrapper from "@/components/containers/SectionWrapper";
+import IngredientSection from "./IngredientSection";
 
 export default async function RecipePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const user = await getCurrentDbUser();
-
-    console.log(user);
 
     if (!user) {
         notFound();
     }
 
     const recipe = await getRecipeBySlug(slug, user.id);
-    console.log(recipe);
 
     if (!recipe) {
         notFound();
     }
 
-    const groupedIngredients = recipe.recipe_ingredients.reduce((acc, recipeIngredient) => {
+    const safeIngredients = recipe.recipe_ingredients.map((recipeIngredient) => ({
+        ...recipeIngredient,
+        amount: Number(recipeIngredient.amount),
+        position: Number(recipeIngredient.position),
+    }));
+
+    const groupedIngredients = safeIngredients.reduce((acc, recipeIngredient) => {
         const groupName = recipe.groups_enabled
             ? recipeIngredient.group_name?.trim() || "General"
             : "Zutaten";
@@ -39,74 +42,80 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
 
         acc[groupName].push(recipeIngredient);
         return acc;
-    }, {} as Record<string, typeof recipe.recipe_ingredients>);
+    }, {} as Record<string, typeof safeIngredients>);
 
     return (
         <main>
 
-            <Link href={`/collection/${slug}/edit`}>Edit</Link>
-            <DeleteButton itemId={recipe.id} />
-
-
             <div>
-                <h2 className='text-3xl'>{recipe.name}</h2>
+                <div className="w-full h-[50dvh] relative rounded-lg mb-6 overflow-hidden flex justify-center items-center">
+                    {recipe.image_uri && (
+                        <img src={recipe.image_uri} alt={recipe.name} className="min-w-full min-h-full object-cover object-center" />
+                    )}
 
-                <h1>{recipe.subtitle}</h1>
+                    <Tag customClass="absolute top-4 right-4">
+                        {recipe.is_public ? "public" : "private"}
+                    </Tag>
+                </div>
 
-                <p>{recipe.is_public ? "public" : "private"}</p>
+                <div className="flex items-center justify-end gap-2">
+                    <Button
+                        href={`/collection/${slug}/edit`}
+                        size="small"
+                        priority="secondary"
+                    >Edit</Button>
+                    <DeleteButton itemId={recipe.id} />
+                </div>
 
+                <h1 className='text-4xl text-center font-bold mb-1'>{recipe.name}</h1>
 
-                {recipe.image_uri && (
-                    <img src={recipe.image_uri} alt={recipe.name} className="w-full h-48 object-cover rounded-lg mt-2" />
-                )}
+                <h2 className="text-xl text-center">{recipe.subtitle}</h2>
 
-                <h2 className='text-xl mt-5'>Categories</h2>
-                <div className='flex gap-2'>
+                <div className='flex gap-2 w-[60vw] m-auto justify-center mt-6 mb-15 flex-wrap'>
                     {recipe.recipe_categories.map((recipeCategory) => (
-                        <p key={recipeCategory.categories.id}>{recipeCategory.categories.name}</p>
+                        <Tag
+                            key={recipeCategory.categories.id}
+                            size="small"
+                            priority="secondary"
+                        >
+                            {recipeCategory.categories.name}
+                        </Tag>
                     ))}
                 </div>
 
-                <h2 className='text-xl mt-5'>Ingredients</h2>
+                <div className="flex lg:flex-row-reverse flex-col gap-10">
+                    <SectionWrapper customClass="lg:self-start pb-15 flex-1">
+                        <IngredientSection
+                            groupedIngredients={groupedIngredients}
+                            portions={Number(recipe.portions)}
+                            groupsEnabled={recipe.groups_enabled}
+                        />
+                    </SectionWrapper>
 
-                <p>{recipe.portions.toString()} {Number(recipe.portions) < 2 ? "Portion" : "Portionen"} </p>
 
-                <div className="space-y-4">
-                    {Object.entries(groupedIngredients).map(([groupName, ingredients]) => (
-                        <div key={groupName}>
-                            {recipe.groups_enabled && (
-                                <h3 className="font-semibold text-text mb-2">{groupName}</h3>
-                            )}
+                    <div className="flex-2 max-w-200 pb-15">
+                        <h2 className='text-2xl  font-bold mb-6'>Steps</h2>
 
-                            <ul className="flex flex-col w-[200px]">
-                                {ingredients.map((recipeIngredient) => (
-                                    <li key={recipeIngredient.id} className="grid grid-cols-3">
-                                        <p>{formatAmount(Number(recipeIngredient.amount.toString()))}</p>
-                                        <p><UnitDisplay amount={recipeIngredient.amount} unit={recipeIngredient.units} />{" "}</p>
-                                        <p><InrgredientDisplay amount={Number(recipeIngredient.amount)} ingredient={recipeIngredient.ingredients} /></p>
-
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
+                        <ul className='flex flex-col gap-6'>
+                            {recipe.recipe_steps.map((recipeStep, index) => (
+                                <li key={recipeStep.id} className="flex gap-4">
+                                    <p className="bg-gray-200 self-start w-7 h-7 rounded-full text-text flex justify-center items-center -translate-y-1">{index + 1}</p>
+                                    <div className="flex-1">
+                                        <p>{recipeStep.text}</p>
+                                        {recipeStep.hint && (
+                                            <div className="w-full p-4 mt-4 bg-gray-300 rounded-2xl">
+                                                <span className="font-bold uppercase text-sm">Hint:</span>
+                                                <p>{recipeStep.hint}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
 
-                <h2 className='text-xl mt-5'>Steps</h2>
-
-                <ul className='flex flex-col'>
-                    {recipe.recipe_steps.map((recipeStep) => (
-                        <li key={recipeStep.id} className="block">
-                            <p className="p-5"><span>{recipeStep.step_index + 1}.</span> {recipeStep.text}</p>
-                            {recipeStep.hint && (
-                                <p className="p-5 m-5 bg-gray-700 rounded-2xl">
-                                    Hint: {recipeStep.hint}
-                                </p>
-                            )}
-                        </li>
-                    ))}
-                </ul>
             </div>
-        </main>
+        </main >
     );
 }

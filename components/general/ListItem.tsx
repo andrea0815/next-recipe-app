@@ -32,9 +32,9 @@ export default function ListItem({
             </Link>
 
 
-            <Button onClick={onDeleteAction} bgColor="error" textColor='red'> 
+            <Button onClick={onDeleteAction} color="red-800" priority="tertiary">
                 <IconTrash />
-                 </Button>
+            </Button>
         </li>
     );
 }
