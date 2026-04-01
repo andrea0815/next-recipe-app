@@ -35,6 +35,11 @@ export type IngredientLineInput = {
     on_shopping_list?: boolean | null;
 };
 
+export type ShoppingListIngredientLine = {
+    id: string;
+    on_shopping_list?: boolean | null;
+};
+
 export type RecipeStep = {
     recipe_id?: string;
     step_index: number;

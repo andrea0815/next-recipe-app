@@ -1,10 +1,13 @@
 "use client";
 import Button from '@/components/buttons/Button';
+import Checkbox from '@/components/form/Checkbox';
 import IngredientDisplay from '@/components/ingredient/InrgredientDisplay';
+import ShoppingListCheckbox from '@/components/recipe/ShoppingListCheckbox';
 import UnitDisplay from '@/components/unit/UnitDisplay';
 import { formatAmount } from "@/lib/db/utils/formatDecimals";
+import { IngredientLineInput } from '@/types/recipe';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 export default function IngredientSection({
     groupedIngredients,
@@ -47,41 +50,59 @@ export default function IngredientSection({
                 </Button>
             </div>
 
-            <h2 className='text-2xl mb-4 mt-10 font-bold'>Ingredients</h2>
+            <h2 className='text-2xl mt-10 font-bold'>Ingredients</h2>
 
 
-            <div className="space-y-4">
+            <div className="grid w-full grid-cols-[max-content_max-content_max-content_1fr] gap-x-4">
                 {Object.entries(groupedIngredients).map(([groupName, ingredients]) => (
-                    <div key={groupName}>
+                    <React.Fragment key={groupName}>
+
+                        {/* Group header */}
                         {groupsEnabled && (
-                            <h3 className="font-semibold text-text mb-2">{groupName}</h3>
+                            <div className="col-span-4 mt-4 mb-2">
+                                <h3 className="font-bold text-text text-sm uppercase">
+                                    {groupName}
+                                </h3>
+                            </div>
                         )}
-                        <h3 className="font-bold text-sm text-text uppercase mb-2">{groupName}</h3>
 
-                        <ul className="flex flex-col w-[200px]">
-                            {ingredients.map((recipeIngredient) => {
-                                const calculatedAmount =
-                                    (Number(recipeIngredient.amount) / portions) * portionsDisplay;
+                        {/* Rows */}
+                        {ingredients.map((recipeIngredient) => {
+                            const calculatedAmount =
+                                portions > 0
+                                    ? Number(recipeIngredient.amount) * (portionsDisplay / portions)
+                                    : 0;
 
-                                return (
-                                    <li key={recipeIngredient.id} className="grid grid-cols-[max-content_max-content_1fr] gap-4 py-1 border-b border-gray-400 last-of-type:border-b-0">
-                                        <p className='text-right'>{formatAmount(calculatedAmount)}</p>
-                                        <p>
-                                            <UnitDisplay amount={calculatedAmount} unit={recipeIngredient.units} />
-                                        </p>
-                                        <p className="whitespace-nowrap">
-                                            <IngredientDisplay
-                                                amount={calculatedAmount}
-                                                ingredient={recipeIngredient.ingredients}
-                                            />
-                                        </p>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </div>
+                            return (
+                                <React.Fragment key={recipeIngredient.id}>
+                                    <ShoppingListCheckbox
+                                        recipeIngredientId={recipeIngredient.id}
+                                        initialChecked={!!recipeIngredient.on_shopping_list}
+                                    />
+
+                                    <p className="py-1 min-w-10 text-right border-b border-gray-400">
+                                        {formatAmount(calculatedAmount)}
+                                    </p>
+
+                                    <p className="py-1 border-b border-gray-400">
+                                        <UnitDisplay
+                                            amount={calculatedAmount}
+                                            unit={recipeIngredient.units}
+                                        />
+                                    </p>
+
+                                    <p className="py-1 border-b border-gray-400 min-w-0">
+                                        <IngredientDisplay
+                                            amount={calculatedAmount}
+                                            ingredient={recipeIngredient.ingredients}
+                                        />
+                                    </p>
+                                </React.Fragment>
+                            );
+                        })}
+                    </React.Fragment>
                 ))}
-            </div >
+            </div>
         </>
     );
 }

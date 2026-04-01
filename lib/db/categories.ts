@@ -56,6 +56,27 @@ export async function getCategory(id: string) {
     }
 }
 
+export async function getCategoryIdFromName(name: string, userId?: string) {
+    try {
+        const category = await prisma.categories.findFirst({
+            where: {
+                AND: {
+                    name: name,
+                    owner_id: userId,
+                }
+            },
+        });
+
+        if (!category) {
+            throw new NotFoundError("Category not found");
+        }
+        
+        return category.id;
+    } catch (error) {
+        mapPrismaError(error);
+    }
+}
+
 export async function addCategory(name: string, userId: string) {
     try {
         return await prisma.categories.create({

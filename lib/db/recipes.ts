@@ -4,7 +4,10 @@ import { generateUniqueRecipeSlug } from "@/lib/db/utils/generateSlug";
 
 import type { IngredientLineInput, RecipeStep } from "@/types/recipe";
 
-export async function getUserRecipes(query?: string, userId?: string) {
+export async function getUserRecipes(query?: string, userId?: string, categoryIds?: string[]) {
+
+    console.log(categoryIds);
+
     const recipes = await prisma.recipes.findMany({
         where: {
             ...(userId && { owner_id: userId }),
@@ -13,6 +16,15 @@ export async function getUserRecipes(query?: string, userId?: string) {
                     { name: { contains: query, mode: "insensitive" } },
                     { subtitle: { contains: query, mode: "insensitive" } },
                 ],
+            }),
+            ...(categoryIds && categoryIds.length > 0 && {
+                recipe_categories: {
+                    some: {
+                        category_id: {
+                            in: categoryIds,
+                        },
+                    },
+                },
             }),
         },
         include: {
@@ -202,6 +214,20 @@ export async function updateRecipe(
                     hint: step.hint,
                 })),
             },
+        },
+    });
+}
+
+export async function updateShoppingListStatus(
+    recipeIngredientId: string,
+    onShoppingList: boolean
+) {
+    await prisma.recipe_ingredients.update({
+        where: {
+            id: recipeIngredientId,
+        },
+        data: {
+            on_shopping_list: onShoppingList,
         },
     });
 }

@@ -5,13 +5,15 @@ import HeaderSectionWrapper from '../containers/HeaderSectionWrapper';
 type TabBarProps = {
     children:
     | ReactElement<typeof TabBarItem>
-    | ReactElement<typeof TabBarItem>[];
+    | any;
 };
 
 export default function TabBar({ children }: TabBarProps) {
     return (
-        <nav className='flex flex-row justify-center items-center w-full overflow-x-scroll no-scrollbar'>
-            {children}
+        <nav className="w-full overflow-x-auto no-scrollbar">
+            <div className="flex w-max mx-auto">
+                {children}
+            </div>
         </nav>
     );
 }

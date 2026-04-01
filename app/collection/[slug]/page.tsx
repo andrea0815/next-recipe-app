@@ -11,6 +11,7 @@ import Tag from "@/components/general/Tag";
 import SectionWrapper from "@/components/containers/SectionWrapper";
 import IngredientSection from "./IngredientSection";
 
+
 export default async function RecipePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const user = await getCurrentDbUser();
@@ -29,7 +30,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
         ...recipeIngredient,
         amount: Number(recipeIngredient.amount),
         position: Number(recipeIngredient.position),
-    }));
+    }));    
 
     const groupedIngredients = safeIngredients.reduce((acc, recipeIngredient) => {
         const groupName = recipe.groups_enabled
@@ -43,6 +44,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
         acc[groupName].push(recipeIngredient);
         return acc;
     }, {} as Record<string, typeof safeIngredients>);
+
 
     return (
         <main>
@@ -84,7 +86,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
                 </div>
 
                 <div className="flex lg:flex-row-reverse flex-col gap-10">
-                    <SectionWrapper customClass="lg:self-start pb-15 flex-1">
+                    <SectionWrapper customClass="lg:self-start flex-1">
                         <IngredientSection
                             groupedIngredients={groupedIngredients}
                             portions={Number(recipe.portions)}

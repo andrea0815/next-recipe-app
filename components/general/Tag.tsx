@@ -50,6 +50,7 @@ export default function Tag({
     return (
         href === "" && onClick === undefined ? (
             <span
+                title={title}
                 className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} rounded-full transition-all cursor-pointer ${disabled ? "opacity-50" : ""} ${customClass}`}
             >
                 {children}
@@ -68,6 +69,7 @@ export default function Tag({
             ) : (
                 <Link
                     href={href ? href : ""}
+                    title={title}
                     onClick={onClick}
                     className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} transition-all cursor-pointer ${disabled ? "opacity-50" : ""} ${customClass}`}>
                     {children}

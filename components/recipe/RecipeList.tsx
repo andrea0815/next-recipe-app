@@ -1,18 +1,35 @@
-import React from 'react';
-import { getUserRecipes } from "@/lib/db/recipes";
-import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
-import RecipeItems from './RecipeItems';
+"use client";
+
+import { removeRecipe } from "@/actions/recipes";
+import Link from "next/dist/client/link";
+import Form from "next/form";
+import { useOptimistic } from "react";
+
 import type { RecipeListItem } from '@/types/recipe';
-import { redirect } from 'next/navigation';
+import Icon from "../icons/Icon";
+import Tag from "../general/Tag";
+import RecipeCard from "./RecipeCard";
 
+export default function RecipeList({ recipes }: { recipes: RecipeListItem[] }) {
 
-export default async function RecipeList() {
+    const [optimisticRecipes, setOptimisticRecipes] = useOptimistic(
+        recipes,
+        (currentRecipes, recipeId) => {
+            return currentRecipes.filter(recipe => recipe.id !== recipeId);
+        }
+    );
 
-  const user = await getCurrentDbUser();
-
-  const recipes: RecipeListItem[] = await getUserRecipes(undefined, user?.id ?? undefined);
-
-  return (
-    <RecipeItems recipes={recipes}></RecipeItems>
-  );
+    return (
+        <ul className="gap-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {optimisticRecipes.map((recipe) => (
+                <li
+                    key={recipe.id}
+                    className="p-3 bg-section rounded-2xl text-text"
+                >
+                    <RecipeCard recipe={recipe}/>
+                </li>
+            ))
+            }
+        </ul >
+    );
 }

@@ -146,14 +146,13 @@ export default function RecipeForm({
                 <Button
                     type="submit"
                     size='big'
-                    customClass='fixed bottom-6 left-1/2 -translate-x-1/2 z-10 w-200'
+                    customClass=''
                     disabled={
                         isPending ||
                         Object.keys(state.errors).length > 0 ||
                         draft.name.trim() === "" ||
                         draft.subtitle.trim() === ""
                     }
-
                 >
                     {isPending ? submitButtonText.pending : submitButtonText.static}
                 </Button>

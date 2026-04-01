@@ -1,10 +1,10 @@
 export function formatAmount(amount: number) {
     const fractions: Record<number, string> = {
-        0.25: "¼",
-        0.33: "⅓",
-        0.5: "½",
-        0.66: "⅔",
-        0.75: "¾",
+        0.25: " ¼",
+        0.33: " ⅓",
+        0.5: " ½",
+        0.66: " ⅔",
+        0.75: " ¾",
     };
 
     const whole = Math.floor(amount);
