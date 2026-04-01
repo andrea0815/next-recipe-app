@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import Link from 'next/link';
 
 import type { RecipeListItem } from '@/types/recipe';
@@ -14,7 +14,9 @@ export default function RecipeCard({ recipe }: { recipe: RecipeListItem }) {
             <div className="relative aspect-square">
 
                 {recipe.image_uri && (
-                    <img src={recipe.image_uri} alt={recipe.name} className="min-w-full min-h-full h-48 rounded-xl object-cover" />
+                    <Suspense fallback={<div className="min-w-full min-h-full h-48 rounded-xl bg-gray-200 animate-pulse" />}>
+                        <img src={recipe.image_uri} alt={recipe.name} className="min-w-full min-h-full h-48 rounded-xl object-cover" />
+                    </Suspense>
                 )}
                 {/* <p className="absolute top-3 right-3">{recipe.is_public ? 'Public' : 'Private'}</p> */}
                 {recipe.is_public &&

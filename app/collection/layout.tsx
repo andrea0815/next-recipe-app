@@ -16,13 +16,9 @@ export default async function CollectionLayout({ children }: { children: any }) 
         <>
             <HeaderSectionWrapper>
                 <TabBar>
-                    <TabBarItem key={0} href={`/collection`}>
-                        All
-                        </TabBarItem>
+                    <TabBarItem key={0} href={`/collection`} text='All' />
                     {categories.map((category) => (
-                        <TabBarItem key={category.id} href={`/collection?category=${category.name}`}>
-                            {category.name}
-                        </TabBarItem>
+                        <TabBarItem key={category.id} href={`/collection?category=${category.name}`} text={category.name} />
                     ))}
                 </TabBar>
             </HeaderSectionWrapper>

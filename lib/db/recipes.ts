@@ -52,6 +52,58 @@ export async function getUserRecipes(query?: string, userId?: string, categoryId
     }));
 }
 
+export async function getOtherRecipes(query?: string, userId?: string, categoryIds?: string[]) {
+
+    console.log(categoryIds);
+
+    const recipes = await prisma.recipes.findMany({
+        where: {
+            ...(userId && {
+                owner_id: {
+                    not: userId,
+                },
+            }),
+            ...(query && {
+                OR: [
+                    { name: { contains: query, mode: "insensitive" } },
+                    { subtitle: { contains: query, mode: "insensitive" } },
+                ],
+            }),
+            ...(categoryIds && categoryIds.length > 0 && {
+                recipe_categories: {
+                    some: {
+                        category_id: {
+                            in: categoryIds,
+                        },
+                    },
+                },
+            }),
+        },
+        include: {
+            recipe_categories: {
+                include: {
+                    categories: true,
+                },
+            },
+        },
+    });
+
+    return recipes.map((recipe) => ({
+        id: recipe.id,
+        name: recipe.name,
+        slug: recipe.slug,
+        subtitle: recipe.subtitle,
+        is_public: recipe.is_public,
+        image_uri: recipe.image_uri,
+        owner_id: recipe.owner_id,
+        categories: recipe.recipe_categories.map((rc) => ({
+            id: rc.categories.id,
+            name: rc.categories.name,
+            owner_id: rc.categories.owner_id
+        })),
+    }));
+}
+
 export async function getRecipeById(id: string) {
     const recipe = await prisma.recipes.findUnique({
         where: { id },

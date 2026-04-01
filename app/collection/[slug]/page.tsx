@@ -30,20 +30,22 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
         ...recipeIngredient,
         amount: Number(recipeIngredient.amount),
         position: Number(recipeIngredient.position),
-    }));    
+    }));
 
-    const groupedIngredients = safeIngredients.reduce((acc, recipeIngredient) => {
-        const groupName = recipe.groups_enabled
-            ? recipeIngredient.group_name?.trim() || "General"
-            : "Zutaten";
+    const groupedIngredients = [...safeIngredients]
+        .sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
+        .reduce((acc, recipeIngredient) => {
+            const groupName = recipe.groups_enabled
+                ? recipeIngredient.group_name?.trim() || "General"
+                : "Zutaten";
 
-        if (!acc[groupName]) {
-            acc[groupName] = [];
-        }
+            if (!acc[groupName]) {
+                acc[groupName] = [];
+            }
 
-        acc[groupName].push(recipeIngredient);
-        return acc;
-    }, {} as Record<string, typeof safeIngredients>);
+            acc[groupName].push(recipeIngredient);
+            return acc;
+        }, {} as Record<string, typeof safeIngredients>);
 
 
     return (

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Checkbox from "@/components/form/Checkbox";
-import { editShoppingListStatus } from "@/actions/recipes";
+import { editShoppingListStatus } from "@/actions/shoppingList";
 
 type Props = {
   recipeIngredientId: string;

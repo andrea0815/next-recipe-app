@@ -1,6 +1,6 @@
 "use server";
 
-import { addRecipe, deleteRecipe, updateRecipe, updateShoppingListStatus } from '@/lib/db/recipes';
+import { addRecipe, deleteRecipe, updateRecipe } from '@/lib/db/recipes';
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 import { parseRecipeAmount } from "@/actions/utils/parseRecipeAmount";
 import { revalidatePath } from 'next/cache';
@@ -284,12 +284,7 @@ export async function editRecipe(id: string, slug: string, prevState: FormState,
     redirect(`/collection/${slug}`);
 }
 
-export async function editShoppingListStatus(ingredientLineId: string, onShoppingList: boolean) {
-    await updateShoppingListStatus(
-        ingredientLineId,
-        onShoppingList,
-    );
-}
+
 
 export async function removeRecipe(id: string) {
 
