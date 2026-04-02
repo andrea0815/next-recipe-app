@@ -4,11 +4,13 @@ export type CreateUserInput = {
   clerk_user_id: string;
   email: string;
   name: string;
+  username?: string | null;
 };
 
 export type UpdateUserInput = {
   email?: string;
   name?: string;
+  username?: string | null;
   clerk_user_id?: string;
 };
 
@@ -45,6 +47,7 @@ export async function createUser(data: CreateUserInput) {
       clerk_user_id: data.clerk_user_id,
       email: data.email,
       name: data.name,
+      username: data.username ?? null,
     },
   });
 }
@@ -97,15 +100,18 @@ export async function deleteUserByClerkId(clerkUserId: string) {
 export async function createOrLinkUserByEmail(params: {
   clerk_user_id: string;
   email: string | null;
+  username: string | null;
   name: string;
 }) {
-  const { clerk_user_id, email, name } = params;
+  const { clerk_user_id, email, username, name } = params;
 
   const existingByClerkId = await getUserByClerkId(clerk_user_id);
+
   if (existingByClerkId) {
     return updateUserByClerkId(clerk_user_id, {
       email: email ?? existingByClerkId.email,
       name,
+      username,
     });
   }
 
@@ -116,6 +122,7 @@ export async function createOrLinkUserByEmail(params: {
       return updateUserByEmail(email, {
         clerk_user_id,
         name,
+        username,
       });
     }
   }
@@ -124,5 +131,6 @@ export async function createOrLinkUserByEmail(params: {
     clerk_user_id,
     email: email ?? `${clerk_user_id}@missing.local`,
     name,
+    username,
   });
 }

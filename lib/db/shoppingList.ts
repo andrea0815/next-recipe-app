@@ -19,7 +19,7 @@ export async function getShoppingListItems(userId?: string) {
 
     return ingredientLines.map((recipe) => ({
         id: recipe.id,
-        amount: recipe.amount,
+        amount: Number(recipe.amount),
         unit: recipe.units,
         ingredient: recipe.ingredients,
         on_shopping_list: recipe.on_shopping_list,

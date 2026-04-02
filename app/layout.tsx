@@ -24,21 +24,14 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" className="no-scrollbar">
         <body
-          className={`${recursive.variable} text-text antialiased bg-greay-100 min-h-screen flex flex-col justify-between`}
+          className={`${recursive.variable} text-text antialiased bg-greay-100 min-h-screen flex flex-col justify-between no-scrollbar`}
         >
           <SignedIn>
             <Header />
           </SignedIn>
-          <SignedOut>
-            <header>
-              <Link href="/sign-in">Sign in</Link>
-              <Link href="/sign-up">Sign up</Link>
-              <h1>You are currently not signed in.</h1>
-            </header>
-          </SignedOut>
-          <main className="flex flex-col justify-start items-center flex-1">
+          <main className="flex flex-col justify-start items-center flex-1 no-scrollbar">
             {children} 
           </main>
           <Footer />

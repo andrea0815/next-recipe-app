@@ -6,35 +6,26 @@ import UnitList from "@/components/unit/UnitList";
 import CategoryList from "@/components/category/CategoryList";
 import IngredientList from "@/components/ingredient/IngredientList";
 import Navbar from "@/components/nav/Navbar";
+import Button from "@/components/buttons/Button";
 
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center">
+    <div className="flex flex-col flex-1 items-center justify-center">
 
+      <SignedOut>
+        <header className="flex flex-col justify-center items-center gap-2">
+          <h1 className="text-4xl font-bold mb-2">Welcome to the Recipe Organizer!</h1>
+          <h2 className="text-xl mb-10">You are currently not signed in.</h2>
 
-      <div className="flex flex-col">
-        <SignedIn>
-          <SignOutButton><button>Sign out</button></SignOutButton>
-          <h1>Welcome back!</h1>
-          <Link href="/shopping-list">Go to your shopping list</Link>
-          <Link href="/collection/create">Create a new recipe</Link>
-          <Link href="/units/create">Create a new unit</Link>
-          <Link href="/categories/create">Create a new category</Link>
-          <Link href="/ingredients/create">Create a new ingredient</Link>
-
-          <div>
-            <div className="flex mt-10 gap-3">
-              <UnitList />
-              <CategoryList />
-              <IngredientList />
-            </div>
-            <RecipeList />
+          <div className="w-1/2 flex flex-col justify-center items-center gap-2">
+            <Button stretch={true} href="/sign-up">Create Account</Button>
+            <Button priority="secondary" stretch={true} href="/sign-in">Login</Button>
           </div>
-        </SignedIn>
 
-       
-      </div>
+        </header>
+      </SignedOut>
+
     </div>
   );
 }

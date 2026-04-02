@@ -35,7 +35,7 @@ export default async function ShoppingListPage() {
           </Button>
         </form>
 
-        <SectionWrapper customClass="max-w-200 w-full flex-1 flex flex-col justify-center items-center">
+        <SectionWrapper customClass="max-w-200 w-full flex flex-col justify-start items-center">
           <ShoppingList items={shoppingListItems} />
         </SectionWrapper>
       </div>

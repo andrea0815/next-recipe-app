@@ -8,7 +8,7 @@ import IconProfile from '../icons/IconProfile';
 
 export default function Navbar() {
   return (
-    <div className='fixed z-10 flex gap-4 py-2 px-2 rounded-full mt-6 text-text pointer-events-auto overflow-hidden'>
+    <div className='fixed z-20 flex gap-2 py-2 px-2 rounded-full mt-6 text-text pointer-events-auto overflow-hidden'>
       <NavbarItem icon={<IconBook />} text="Collection" link='/collection' />
       <NavbarItem icon={<IconBag />} text="Shopping List" link='/shopping-list' />
       <NavbarItem icon={<IconCompas />} text="Explore" link='/explore' />

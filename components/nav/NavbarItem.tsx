@@ -29,10 +29,10 @@ export default function NavbarItem({
         </div>
 
         <span
-          className={`overflow-hidden whitespace-nowrap transition-all duration-700 pl-2 ${
+          className={`overflow-hidden whitespace-nowrap transition-all duration-700 ${
             isActive
-              ? "max-w-40 opacity-100 ml-3 translate-x-0"
-              : "max-w-0 opacity-0 ml-0 -translate-x-2"
+              ? "max-w-40 opacity-100 translate-x-0 pl-2"
+              : "max-w-0 opacity-0 ml-0 -translate-x-2 pl-0"
           }`}
         >
           {text}
