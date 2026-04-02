@@ -14,13 +14,13 @@ export default function ErrorDialog({
     if (!open) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-            <div className="w-1/2 max-w-md rounded-2xl p-10 shadow-xl bg-gray-100">
-                <h2 className="mb-3 text-xl font-semibold text-red-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 p-4 backdrop-blur-xs ">
+            <div className="w-1/2 max-w-md rounded-2xl p-10 shadow-xl text-center bg-gray-100">
+                <h2 className="mb-3 text-2xl font-bold text-red-800">
                     Could not delete item
                 </h2>
 
-                <p className="mb-5 text-sm text-red-800">{message}</p>
+                <p className="mb-5 text-sm text-text">{message}</p>
 
                 <div className="flex justify-end">
                     <button

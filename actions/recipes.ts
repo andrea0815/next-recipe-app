@@ -136,9 +136,6 @@ export async function createRecipe(
             hint: step_hints[i] || null,
         }));
 
-    console.log(steps);
-
-
     await addRecipe(
         name,
         subtitle,
@@ -264,9 +261,6 @@ export async function editRecipe(id: string, slug: string, prevState: FormState,
             text: step_text,
             hint: step_hints[i] || null,
         }));
-
-    console.log(groups_enabled);
-
 
     await updateRecipe(
         id,

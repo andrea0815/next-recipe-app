@@ -4,6 +4,7 @@ import Button from '../buttons/Button';
 import Link from 'next/link';
 import IconEdit from '../icons/IconEdit';
 import IconTrash from '../icons/IconTrash';
+import ConfirmAction from '../errors/ConfirmaAction';
 
 type ListItemProps = {
     onDeleteAction: () => void;
@@ -18,7 +19,7 @@ export default function ListItem({
     onDeleteAction,
 }: ListItemProps) {
     return (
-        <li className={`flex py-2 gap-3 border-b last-of-type:border-b-0 border-light items-center`}  >
+        <li className={`flex py-1 gap-3 border-b last-of-type:border-b-0 border-gray-400 items-center`}  >
             <div className="flex-1 flex gap-3">
                 {textItems.map((item, index) => (
                     <p key={index} className="flex-1">
@@ -31,10 +32,17 @@ export default function ListItem({
                 <IconEdit />
             </Link>
 
-
-            <Button onClick={onDeleteAction} color="red-800" priority="tertiary">
-                <IconTrash />
-            </Button>
+            <ConfirmAction
+                title="Delete item?"
+                description="This action cannot be undone."
+                confirmText="Delete"
+                onConfirm={onDeleteAction}
+                trigger={(openConfirm) => (
+                    <Button onClick={openConfirm} color="red-800" priority="tertiary" customClass='p-1'>
+                        <IconTrash />
+                    </Button>
+                )}
+            />
         </li>
     );
 }

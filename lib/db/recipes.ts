@@ -6,8 +6,6 @@ import type { IngredientLineInput, RecipeStep } from "@/types/recipe";
 
 export async function getUserRecipes(query?: string, userId?: string, categoryIds?: string[]) {
 
-    console.log(categoryIds);
-
     const recipes = await prisma.recipes.findMany({
         where: {
             ...(userId && { owner_id: userId }),
@@ -54,8 +52,6 @@ export async function getUserRecipes(query?: string, userId?: string, categoryId
 
 export async function getOtherRecipes(query?: string, userId?: string, categoryIds?: string[]) {
 
-    console.log(categoryIds);
-
     const recipes = await prisma.recipes.findMany({
         where: {
             ...(userId && {
@@ -96,6 +92,7 @@ export async function getOtherRecipes(query?: string, userId?: string, categoryI
         is_public: recipe.is_public,
         image_uri: recipe.image_uri,
         owner_id: recipe.owner_id,
+        is_owner: recipe.owner_id === userId,
         categories: recipe.recipe_categories.map((rc) => ({
             id: rc.categories.id,
             name: rc.categories.name,

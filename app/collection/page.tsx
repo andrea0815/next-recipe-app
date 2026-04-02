@@ -1,5 +1,3 @@
-import ButtonLink from '@/components/buttons/ButtonLink';
-
 import React from 'react';
 import { getUserRecipes } from "@/lib/db/recipes";
 import { getCategoryIdFromName } from "@/lib/db/categories";
@@ -8,6 +6,7 @@ import RecipeList from '@/components/recipe/RecipeList';
 import type { RecipeListItem } from '@/types/recipe';
 import { redirect } from 'next/navigation';
 import { get } from 'http';
+import Button from '@/components/buttons/Button';
 
 
 export default async function CollectionPage({ searchParams }: { searchParams: Promise<{ category: string }> }) {
@@ -30,7 +29,7 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
 
     return (
         <div className='flex flex-col gap-6'>
-            <ButtonLink link='/collection/create' text='Create new Recipe' />
+            <Button href='/collection/create'>Create new Recipe</Button>
             <RecipeList recipes={recipes}></RecipeList>
         </div>
     );

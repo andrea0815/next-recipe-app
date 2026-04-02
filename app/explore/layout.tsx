@@ -1,11 +1,12 @@
-import HeaderSectionWrapper from '@/components/containers/HeaderSectionWrapper';
-import GeneralSection from '@/components/containers/GeneralSection';
-import TabBar from '@/components/nav/TabBar';
-import TabBarItem from '@/components/nav/TabBarItem';
 import { getCategoriesByUserId } from '@/lib/db/categories';
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 
 import type { Category } from '@/types/category';
+
+import HeaderSectionWrapper from '@/components/containers/HeaderSectionWrapper';
+import GeneralSection from '@/components/containers/GeneralSection';
+import TabBar from '@/components/nav/TabBar';
+import TabBarItem from '@/components/nav/TabBarItem';
 
 export default async function CollectionLayout({ children }: { children: any }) {
 

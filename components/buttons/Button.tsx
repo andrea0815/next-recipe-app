@@ -7,7 +7,7 @@ type ButtonProps = {
     title?: string,
     stretch?: boolean,
     disabled?: boolean,
-    onClick?: () => void,
+    onClick?: React.MouseEventHandler<HTMLButtonElement>,
     type?: "button" | "submit" | "reset";
     priority?: "primary" | "secondary" | "tertiary";
     size?: "big" | "medium" | "small";
@@ -37,7 +37,7 @@ export default function Button({
     }
 
     const colorClasses = {
-        primary: `bg-${color} text-white `,
+        primary: `bg-${color} text-white`,
         secondary: `text-${color} bg-transparent border-2 border-${color} `,
         tertiary: `text-${color} fill-${color} stroke-${color} bg-transparent underline underline-offset-4`,
     }
@@ -52,14 +52,13 @@ export default function Button({
                 type={type}
                 title={title}
                 disabled={disabled}
-                className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} transition-all cursor-pointer ${disabled ? "opacity-50" : ""} ${customClass}`}>
+                className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} transition-all text-center ${disabled ? "opacity-30" : "cursor-pointer"} ${customClass}`}>
                 {children}
             </button>
         ) : (
             <Link
                 href={href ? href : ""}
-                onClick={onClick}
-                className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} transition-all cursor-pointer ${disabled ? "opacity-50" : ""} ${customClass}`}>
+                className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} transition-all text-center ${disabled ? "opacity-30" : "cursor-pointer"} ${customClass}`}>
                 {children}
             </Link>
         )

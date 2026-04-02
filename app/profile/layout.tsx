@@ -8,10 +8,10 @@ export default function ProfileLayout({ children }: { children: any }) {
         <>
             <HeaderSectionWrapper>
                 <TabBar>
-                    <TabBarItem href='/profile/settings'>Settings</TabBarItem>
-                    <TabBarItem href='/profile/categories'>Categories</TabBarItem>
-                    <TabBarItem href='/profile/units'>Units</TabBarItem>
-                    <TabBarItem href='/profile/ingredients'>Ingredients</TabBarItem>
+                    <TabBarItem href='/profile/settings' text='Settings'/>
+                    <TabBarItem href='/profile/categories' text='Categories'/>
+                    <TabBarItem href='/profile/units' text='Units'/>
+                    <TabBarItem href='/profile/ingredients' text='Ingredients'/>
                 </TabBar>
             </HeaderSectionWrapper>
             <GeneralSection>

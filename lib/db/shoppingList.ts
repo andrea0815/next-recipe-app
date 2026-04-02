@@ -41,3 +41,19 @@ export async function updateShoppingListStatus(
         },
     });
 }
+
+export async function setShoppingListStatusByUser(
+    userId: string,
+    onShoppingList: boolean
+) {
+    console.log("db upadte shopping list");
+
+    await prisma.recipe_ingredients.updateMany({
+        where: {
+            owner_id: userId,
+        },
+        data: {
+            on_shopping_list: onShoppingList,
+        },
+    });
+}

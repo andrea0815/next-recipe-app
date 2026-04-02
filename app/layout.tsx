@@ -26,7 +26,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${recursive.variable} text-text antialiased bg-greay-100`}
+          className={`${recursive.variable} text-text antialiased bg-greay-100 min-h-screen flex flex-col justify-between`}
         >
           <SignedIn>
             <Header />
@@ -38,8 +38,8 @@ export default function RootLayout({
               <h1>You are currently not signed in.</h1>
             </header>
           </SignedOut>
-          <main className="min-h-screen flex flex-col justify-start items-center">
-            {children}
+          <main className="flex flex-col justify-start items-center flex-1">
+            {children} 
           </main>
           <Footer />
         </body>

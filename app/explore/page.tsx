@@ -1,5 +1,3 @@
-import ButtonLink from '@/components/buttons/ButtonLink';
-
 import React from 'react';
 import { getOtherRecipes } from "@/lib/db/recipes";
 import { getCategoryIdFromName } from "@/lib/db/categories";
@@ -26,7 +24,7 @@ export default async function ExplorePage({ searchParams }: { searchParams: Prom
         undefined,
         user?.id ?? undefined,
         categoryId ? [categoryId] : []
-    );
+    );    
 
     return (
         <div className='flex flex-col gap-6'>

@@ -6,6 +6,7 @@ import ListAddButton from "./ListAddButton";
 import ErrorDialog from "../errors/ErrorDialog";
 import type { ActionResult } from "@/types/actions";
 import type { ItemType } from "@/types/general"
+import SectionWrapper from "../containers/SectionWrapper";
 
 type PreparedItem = {
     id: string;
@@ -50,12 +51,15 @@ export default function ListSection({ type, items, removeItem }: ListSectionProp
                 onClose={() => setErrorMessage("")}
             />
 
-            <section className="my-6">
-                <ul className="flex flex-col">
-                    <li className="flex justify-start mb-2">
-                        <ListAddButton type={type} />
+            <SectionWrapper customClass="max-w-200 w-full flex-1 flex flex-col justify-center items-center">
+                <ListAddButton type={type} />
+                <ul className="flex flex-col w-full">
+                    <li className="flex ">
+                        <p>Name</p>
+                        <p>Plural</p>
+                        <p >Abbreviation</p>
                     </li>
-                    {optimisticItems.map((item, index) => (
+                    {optimisticItems.map((item) => (
                         <ListItem
                             key={item.id}
                             id={item.id}
@@ -65,7 +69,7 @@ export default function ListSection({ type, items, removeItem }: ListSectionProp
                         />
                     ))}
                 </ul>
-            </section>
+            </SectionWrapper>
         </>
     );
 }

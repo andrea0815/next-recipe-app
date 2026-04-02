@@ -39,7 +39,7 @@ export default function Tag({
     }
 
     const colorClasses = {
-        primary: `bg-${isInverted ? 'white' : color} text-${isInverted ? color : 'white'} `,
+        primary: `bg-${isInverted ? 'white' : color} text-${isInverted ? color : 'white'}`,
         secondary: `text-${color} bg-transparent border-2 border-${color} `,
         tertiary: `text-${color} fill-${color} stroke-${color} bg-transparent underline underline-offset-4`,
     }
@@ -51,7 +51,7 @@ export default function Tag({
         href === "" && onClick === undefined ? (
             <span
                 title={title}
-                className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} rounded-full transition-all cursor-pointer ${disabled ? "opacity-50" : ""} ${customClass}`}
+                className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} rounded-full whitespace-nowrap transition-all cursor-pointer${disabled ? "opacity-50" : ""} ${customClass}`}
             >
                 {children}
             </span>
@@ -63,7 +63,7 @@ export default function Tag({
                     type={type}
                     title={title}
                     disabled={disabled}
-                    className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} transition-all cursor-pointer ${disabled ? "opacity-50" : ""} ${customClass}`}>
+                    className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} rounded-full whitespace-nowrap transition-all cursor-pointer ${disabled ? "opacity-50" : ""} ${customClass}`}>
                     {children}
                 </button>
             ) : (
@@ -71,7 +71,7 @@ export default function Tag({
                     href={href ? href : ""}
                     title={title}
                     onClick={onClick}
-                    className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} transition-all cursor-pointer ${disabled ? "opacity-50" : ""} ${customClass}`}>
+                    className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} rounded-full whitespace-nowrap transition-all cursor-pointer ${disabled ? "opacity-50" : ""} ${customClass}`}>
                     {children}
                 </Link>
             ))

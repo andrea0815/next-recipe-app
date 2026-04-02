@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import Link from 'next/link';
+import Image from "next/image";
 
 import type { RecipeListItem } from '@/types/recipe';
 
@@ -8,15 +9,24 @@ import Tag from '../general/Tag';
 
 export default function RecipeCard({ recipe }: { recipe: RecipeListItem }) {
     return (
-        <Link href={`/collection/${recipe.slug}`}
+        <div
             className="flex flex-col h-full">
+
 
             <div className="relative aspect-square">
 
                 {recipe.image_uri && (
-                    <Suspense fallback={<div className="min-w-full min-h-full h-48 rounded-xl bg-gray-200 animate-pulse" />}>
-                        <img src={recipe.image_uri} alt={recipe.name} className="min-w-full min-h-full h-48 rounded-xl object-cover" />
-                    </Suspense>
+                    <Link href={`/collection/${recipe.slug}`}>
+
+                        <Image
+                            src={recipe.image_uri}
+                            alt={recipe.name}
+                            fill
+                            className="object-cover rounded-xl"
+                            placeholder="blur"
+                            blurDataURL="/placeholder.png" // or base64
+                        />
+                    </Link>
                 )}
                 {/* <p className="absolute top-3 right-3">{recipe.is_public ? 'Public' : 'Private'}</p> */}
                 {recipe.is_public &&
@@ -28,17 +38,19 @@ export default function RecipeCard({ recipe }: { recipe: RecipeListItem }) {
             </div>
 
             {recipe.categories && (
-                <div className="mt-2 flex flex-row overflow-scroll no-scrollbar gap-2 flex-1 items-end">
+                <div className="mt-2 flex flex-row overflow-scroll no-scrollbar gap-2 items-end">
                     {recipe.categories.map((category) => (
                         <Tag
                             key={category.id}
                             customClass="text-xs"
+                            href={`/collection?category=${category.name}`}
                             isInverted={true}
-                        >{category.name}</Tag>
+                        > {category.name}</Tag>
                     ))
                     }
                 </div>
-            )}
+            )
+            }
 
             <h2 className="text-xl font-semibold mt-3 leading-[1.4rem]">
                 {recipe.name}
@@ -48,6 +60,6 @@ export default function RecipeCard({ recipe }: { recipe: RecipeListItem }) {
 
 
 
-        </Link>
+        </div >
     );
 }

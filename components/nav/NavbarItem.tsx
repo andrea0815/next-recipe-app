@@ -1,21 +1,43 @@
 "use client"
 
 import Link from 'next/link';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { usePathname } from "next/navigation";
 
 
-export default function NavbarItem({ link, iconSrc, text }: { link: string, iconSrc: string, text: string }) {
+export default function NavbarItem({
+  icon,
+  link,
+  text,
+}: {
+  icon: React.ReactNode;
+  link: string;
+  text: string;
+}) {
+  const pathname = usePathname();
+  const isActive = pathname === link || pathname.startsWith(`${link}/`);
 
-    const pathname = usePathname();
-    const isActive = pathname.startsWith(link);
-    
-    return (
-        <Link href={link}>
-            <div className={`flex items-center gap-3 px-3 py-2 hover:bg-white rounded-full ${isActive ? "bg-white" : ""} `}>
-                <img src={iconSrc} alt={text} className='w-5 h-5' />
-                <p>{text}</p>
-            </div>
-        </Link>
-    );
+  return (
+    <Link href={link}>
+      <div
+        className={`flex items-center rounded-full px-3 py-2 transition-all duration-300 ${
+          isActive ? "bg-white" : "hover:bg-white/70"
+        }`}
+      >
+        <div className="shrink-0">
+          {icon}
+        </div>
+
+        <span
+          className={`overflow-hidden whitespace-nowrap transition-all duration-700 pl-2 ${
+            isActive
+              ? "max-w-40 opacity-100 ml-3 translate-x-0"
+              : "max-w-0 opacity-0 ml-0 -translate-x-2"
+          }`}
+        >
+          {text}
+        </span>
+      </div>
+    </Link>
+  );
 }
