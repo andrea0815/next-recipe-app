@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { ClerkProvider, SignedIn, SignedOut } from '@clerk/nextjs'
 import { Recursive } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/nav/Navbar";
-import Link from "next/link";
+
 import Header from "@/components/nav/Header";
 import Footer from "@/components/footer/Footer";
 
@@ -28,11 +27,9 @@ export default function RootLayout({
         <body
           className={`${recursive.variable} text-text antialiased bg-greay-100 min-h-screen flex flex-col justify-between no-scrollbar`}
         >
-          <SignedIn>
-            <Header />
-          </SignedIn>
+          <Header />
           <main className="flex flex-col justify-start items-center flex-1 no-scrollbar">
-            {children} 
+            {children}
           </main>
           <Footer />
         </body>

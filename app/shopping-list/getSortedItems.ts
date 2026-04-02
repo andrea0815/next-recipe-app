@@ -4,21 +4,13 @@ import { UNIT_DEFINITIONS } from "./unitDefinitions";
 
 export function getSortedItems(items: ShoppingItem[]): ShoppingListEntry[] {
   const grouped = new Map<string, ShoppingItem[]>();
-  const singlesWithoutKnownUnit: ShoppingListEntry[] = [];
 
   for (const item of items) {
     const ingredientId = item.ingredient.id;
-    const unitDef = getUnitDefinition(item.unit);
+    const unitId = item.unit?.id ?? "no-unit";
 
-    if (!unitDef) {
-      singlesWithoutKnownUnit.push({
-        type: "single",
-        item,
-      });
-      continue;
-    }
+    const key = `${ingredientId}__${unitId}`;
 
-    const key = `${ingredientId}__${unitDef.family}`;
     const current = grouped.get(key) ?? [];
     current.push(item);
     grouped.set(key, current);
@@ -36,41 +28,21 @@ export function getSortedItems(items: ShoppingItem[]): ShoppingListEntry[] {
     }
 
     const first = groupItems[0];
-    const unitDef = getUnitDefinition(first.unit);
-
-    if (!unitDef) {
-      result.push({
-        type: "single",
-        item: first,
-      });
-      continue;
-    }
-
-    const totalInBaseUnit = groupItems.reduce((sum, item) => {
-      const def = getUnitDefinition(item.unit);
-      if (!def) return sum;
-      return sum + Number(item.amount) * def.toBase;
-    }, 0);
-
-    const { amount, unit } = formatAmountFromBase(
-      totalInBaseUnit,
-      unitDef.family,
-      first.unit
+    const totalAmount = groupItems.reduce(
+      (sum, item) => sum + Number(item.amount ?? 0),
+      0
     );
 
     result.push({
       type: "group",
       ingredientId: first.ingredient.id,
       ingredientName: first.ingredient.name,
-      unitFamily: unitDef.family,
-      totalAmount: amount,
-      displayUnit: unit,
+      totalAmount,
+      displayUnit: first.unit?.abbreviation ?? first.unit?.name ?? "",
       items: groupItems,
       on_shopping_list: groupItems.some((item) => item.on_shopping_list),
     });
   }
-
-  result.push(...singlesWithoutKnownUnit);
 
   return result.sort(sortEntries);
 }

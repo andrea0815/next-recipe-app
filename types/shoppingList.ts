@@ -20,11 +20,10 @@ export type SingleListEntry = {
   item: ShoppingItem;
 };
 
-export type GroupListEntry = {
+type GroupListEntry = {
   type: "group";
   ingredientId: string;
   ingredientName: string;
-  unitFamily: string;
   totalAmount: number;
   displayUnit: string;
   items: ShoppingItem[];
