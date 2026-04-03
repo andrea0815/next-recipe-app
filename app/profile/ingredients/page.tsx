@@ -10,6 +10,7 @@ import { ItemType } from "@/types/general"
 import ListSection from '@/components/general/ListSection';
 import PageHeadline from "@/components/typography/PageHeadline";
 import GeneralSection from "@/components/containers/GeneralSection";
+import AddIngredientPanel from "@/components/ingredient/AddIngredientPanel";
 
 
 export default async function IngredientsPage() {
@@ -26,7 +27,6 @@ export default async function IngredientsPage() {
   return (
     <>
       <PageHeadline>Ingredients</PageHeadline>
-      {/* <IngredientList /> */}
       <ListSection items={preparedIngredients} removeItem={removeIngredient} type={ItemType.INGREDIENT} />
     </>
   );

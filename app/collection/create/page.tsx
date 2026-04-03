@@ -11,7 +11,7 @@ import { FormMode } from '@/types/general';
 
 import RecipeForm from '@/components/recipe/RecipeForm';
 import SectionWrapper from "@/components/containers/SectionWrapper";
-import PageHeadline from "@/components/typography/PageHeadline";
+import AddIngredientPanel from "@/components/ingredient/AddIngredientPanel";
 import FormSection from "@/components/containers/FormSection";
 
 export default async function AddRecipePage() {
@@ -52,6 +52,7 @@ export default async function AddRecipePage() {
   return (
     <FormSection headline="Create Recipe">
       <RecipeForm categories={categories} ingredients={ingredients} units={units} initialDraft={emptyDraft} mode={FormMode.CREATE} />
+      <AddIngredientPanel />
     </FormSection>
   );
 }

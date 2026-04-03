@@ -184,6 +184,8 @@ export default function IngredientEditor({
                 customClass="flex-1 min-w-0"
                 error=""
               />
+             
+
 
               <Button
                 onClick={() => addLine(index)}
