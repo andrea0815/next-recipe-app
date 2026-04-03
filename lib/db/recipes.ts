@@ -58,6 +58,9 @@ export async function getOtherRecipes(query?: string, userId?: string, categoryI
                 owner_id: {
                     not: userId,
                 },
+                is_public: {
+                    not: false,
+                },
             }),
             ...(query && {
                 OR: [
@@ -81,6 +84,11 @@ export async function getOtherRecipes(query?: string, userId?: string, categoryI
                     categories: true,
                 },
             },
+            users: {
+                select: {
+                    username: true,
+                },
+            },
         },
     });
 
@@ -92,7 +100,7 @@ export async function getOtherRecipes(query?: string, userId?: string, categoryI
         is_public: recipe.is_public,
         image_uri: recipe.image_uri,
         owner_id: recipe.owner_id,
-        is_owner: recipe.owner_id === userId,
+        username: recipe.users.username,
         categories: recipe.recipe_categories.map((rc) => ({
             id: rc.categories.id,
             name: rc.categories.name,

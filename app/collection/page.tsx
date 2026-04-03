@@ -2,11 +2,14 @@ import React from 'react';
 import { getUserRecipes } from "@/lib/db/recipes";
 import { getCategoryIdFromName } from "@/lib/db/categories";
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
-import RecipeList from '@/components/recipe/RecipeList';
+
 import type { RecipeListItem } from '@/types/recipe';
-import { redirect } from 'next/navigation';
-import { get } from 'http';
+
+import RecipeList from '@/components/recipe/RecipeList';
 import Button from '@/components/buttons/Button';
+import RecipeGalleryWrapper from '@/components/containers/RecipeGalleryWrapper';
+import { RecipeListType } from '@/types/general';
+
 
 
 export default async function CollectionPage({ searchParams }: { searchParams: Promise<{ category: string }> }) {
@@ -28,9 +31,10 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
     );
 
     return (
-        <div className='flex flex-col gap-6'>
+        <RecipeGalleryWrapper>
+
             <Button href='/collection/create'>Create new Recipe</Button>
-            <RecipeList recipes={recipes}></RecipeList>
-        </div>
+            <RecipeList recipes={recipes} type={RecipeListType.COLLECTION}></RecipeList>
+        </RecipeGalleryWrapper>
     );
 }

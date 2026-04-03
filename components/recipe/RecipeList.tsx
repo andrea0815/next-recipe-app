@@ -9,8 +9,10 @@ import type { RecipeListItem } from '@/types/recipe';
 import Icon from "../icons/Icon";
 import Tag from "../general/Tag";
 import RecipeCard from "./RecipeCard";
+import { RecipeListType } from '@/types/general';
 
-export default function RecipeList({ recipes }: { recipes: RecipeListItem[] }) {
+
+export default function RecipeList({ recipes, type }: { recipes: RecipeListItem[], type: RecipeListType }) {
 
     const [optimisticRecipes, setOptimisticRecipes] = useOptimistic(
         recipes,
@@ -36,7 +38,7 @@ export default function RecipeList({ recipes }: { recipes: RecipeListItem[] }) {
                     key={recipe.id}
                     className="p-3 bg-section rounded-2xl text-text"
                 >
-                    <RecipeCard recipe={recipe} />
+                    <RecipeCard recipe={recipe} type={type} />
                 </li>
             ))
             }

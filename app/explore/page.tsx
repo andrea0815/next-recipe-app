@@ -6,6 +6,9 @@ import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 import type { RecipeListItem } from '@/types/recipe';
 
 import RecipeList from '@/components/recipe/RecipeList';
+import RecipeGalleryWrapper from '@/components/containers/RecipeGalleryWrapper';
+import { RecipeListType } from '@/types/general';
+
 
 
 export default async function ExplorePage({ searchParams }: { searchParams: Promise<{ category: string }> }) {
@@ -24,11 +27,11 @@ export default async function ExplorePage({ searchParams }: { searchParams: Prom
         undefined,
         user?.id ?? undefined,
         categoryId ? [categoryId] : []
-    );    
+    );
 
     return (
-        <div className='flex flex-col gap-6'>
-            <RecipeList recipes={recipes}></RecipeList>
-        </div>
+        <RecipeGalleryWrapper>
+            <RecipeList recipes={recipes} type={RecipeListType.EXPLORE}></RecipeList>
+        </RecipeGalleryWrapper>
     );
 }

@@ -11,6 +11,11 @@ export enum ItemType {
     CATEGORY = "category",
 }
 
+export enum RecipeListType {
+    EXPLORE = "explore",
+    COLLECTION = "collection",
+}
+
 type ItemMeta = {
     name: string;
     plural: string;

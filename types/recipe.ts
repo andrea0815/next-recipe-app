@@ -23,6 +23,7 @@ export type RecipeListItem = {
     image_uri: string;
     owner_id: string;
     categories: Category[];
+    username?: string | null;
 }
 
 export type IngredientLineInput = {
