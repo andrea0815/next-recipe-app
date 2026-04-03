@@ -10,6 +10,8 @@ import { removeCheckedShoppingItems } from "@/actions/shoppingList";
 
 import type { ShoppingListEntry, ShoppingItem } from "@/types/shoppingList";
 import IconCheck from "@/components/icons/IconCheck";
+import IconArrowDown from "@/components/icons/IconArrowDown";
+import IconArrowUp from "@/components/icons/IconArrowUp";
 
 export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
     const sortedItems: ShoppingListEntry[] = getSortedItems(items);
@@ -82,6 +84,31 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
 
         return ids;
     }, [sortedItems, toBeRemovedKeys]);
+
+
+    // Group Dropdown
+
+    const [openGroups, setOpenGroups] = useState<Set<string>>(new Set());
+
+    const isGroupOpen = (entry: ShoppingListEntry) => {
+        return openGroups.has(getEntryKey(entry));
+    };
+
+    const toggleGroup = (entry: ShoppingListEntry) => {
+        const key = getEntryKey(entry);
+
+        setOpenGroups((prev) => {
+            const next = new Set(prev);
+
+            if (next.has(key)) {
+                next.delete(key);
+            } else {
+                next.add(key);
+            }
+
+            return next;
+        });
+    };
 
     return (
         <form action={removeCheckedShoppingItems} className="w-full flex flex-col gap-4">
@@ -161,25 +188,30 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
                                 {entry.sharedUnit}
                             </p>
 
-                            <p className={`py-2 border-b border-gray-300 flex-1 flex justify-between transition-opacity ${rowClass}`}>
+                            <button
+                                type="button"
+                                onClick={() => toggleGroup(entry)}
+                                className={`py-2 border-b border-gray-300 flex-1 flex justify-between items-center text-left transition-opacity cursor-pointer ${rowClass}`}
+                            >
                                 <span>{entry.ingredientName}</span>
-                                <span>^</span>
-                            </p>
+                                {isGroupOpen(entry) ? <IconArrowUp /> : <IconArrowDown />}
+                            </button>
 
-                            {entry.items.map((item) => (
-                                <React.Fragment key={item.id}>
-                                    <div className="w-10" />
-                                    <p className={`py-2 border-b border-gray-300 text-sm text-gray-500 transition-opacity ${rowClass}`}>
-                                        {Number(item.amount)}
-                                    </p>
-                                    <p className={`py-2 border-b border-gray-300 text-sm text-gray-500 transition-opacity ${rowClass}`}>
-                                        <UnitDisplay amount={Number(item.amount)} unit={item.unit} />
-                                    </p>
-                                    <p className={`py-2 border-b border-gray-300 text-sm text-gray-500 flex-1 transition-opacity ${rowClass}`}>
-                                        <IngredientDisplay amount={item.amount} ingredient={item.ingredient} />
-                                    </p>
-                                </React.Fragment>
-                            ))}
+                            {isGroupOpen(entry) &&
+                                entry.items.map((item) => (
+                                    <React.Fragment key={item.id}>
+                                        <div className="w-10" />
+                                        <p className={`py-2 border-b border-gray-300 text-sm text-gray-500 transition-opacity ${rowClass}`}>
+                                            {Number(item.amount)}
+                                        </p>
+                                        <p className={`py-2 border-b border-gray-300 text-sm text-gray-500 transition-opacity ${rowClass}`}>
+                                            <UnitDisplay amount={Number(item.amount)} unit={item.unit} />
+                                        </p>
+                                        <p className={`py-2 border-b border-gray-300 text-sm text-gray-500 flex-1 transition-opacity ${rowClass}`}>
+                                            <IngredientDisplay amount={item.amount} ingredient={item.ingredient} />
+                                        </p>
+                                    </React.Fragment>
+                                ))}
                         </React.Fragment>
                     );
                 })}
