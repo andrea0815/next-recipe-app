@@ -2,7 +2,7 @@
 import Button from '@/components/buttons/Button';
 import Checkbox from '@/components/form/Checkbox';
 import IngredientDisplay from '@/components/ingredient/InrgredientDisplay';
-import ShoppingListCheckbox from '@/components/recipe/ShoppingListCheckbox';
+import ShoppingListCheckbox from '@/components/shoppinglist/ShoppingListCheckbox';
 import UnitDisplay from '@/components/unit/UnitDisplay';
 import { formatAmount } from "@/lib/db/utils/formatDecimals";
 import { IngredientLineInput } from '@/types/recipe';
@@ -11,11 +11,13 @@ import React, { useState } from 'react';
 
 export default function IngredientSection({
     groupedIngredients,
+    recipeId,
     portions,
     groupsEnabled
 }: {
     groupedIngredients: Record<string, any[]>,
     portions: number,
+    recipeId: string,
     groupsEnabled: boolean
 }) {
 
@@ -77,7 +79,9 @@ export default function IngredientSection({
                                 <React.Fragment key={recipeIngredient.id}>
                                     <ShoppingListCheckbox
                                         recipeIngredientId={recipeIngredient.id}
-                                        initialChecked={!!recipeIngredient.on_shopping_list}
+                                        recipeId={recipeId}
+                                        recipePortions={portionsDisplay}
+                                        initialOnList={!!recipeIngredient.on_shopping_list}
                                     />
 
                                     <p className="py-1 min-w-10 text-right border-b border-gray-400">

@@ -9,14 +9,23 @@ export default function UnitDisplay({
 }) {
   if (!unit) return <>No unit passed</>;
 
-  if (amount === undefined || amount === null) {
-    return <>{unit.abbreviation ?? unit.name}</>;
+  // 1. Abbreviation hat immer Vorrang
+  if (unit.abbreviation) {
+    return <>{unit.abbreviation}</>;
   }
 
-  const displayed =
-    Number(amount) > 1
-      ? unit.abbreviation ?? unit.plural ??  unit.name
-      : unit.abbreviation ?? unit.name;
+  // 2. Kein Amount → fallback auf name
+  if (amount === undefined || amount === null) {
+    return <>{unit.name}</>;
+  }
 
-  return <>{displayed}</>;
+  // 3. Plural-Logik
+  const isPlural = Number(amount) > 1;
+
+  if (isPlural && unit.plural) {
+    return <>{unit.plural}</>;
+  }
+
+  // 4. Fallback
+  return <>{unit.name}</>;
 }

@@ -41,18 +41,19 @@ model recipe_categories {
 }
 
 model recipe_ingredients {
-  id               String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  recipe_id        String      @db.Uuid
-  ingredient_id    String      @db.Uuid
-  unit_id          String      @db.Uuid
-  amount           Decimal     @db.Decimal
-  on_shopping_list Boolean     @default(false)
-  owner_id         String?     @db.Uuid
+  id               String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  recipe_id        String         @db.Uuid
+  ingredient_id    String         @db.Uuid
+  unit_id          String         @db.Uuid
+  amount           Decimal        @db.Decimal
+  on_shopping_list Boolean        @default(false)
+  owner_id         String?        @db.Uuid
   group_name       String?
-  position         Decimal?    @db.Decimal
-  ingredients      ingredients @relation(fields: [ingredient_id], references: [id], onUpdate: NoAction)
-  recipes          recipes     @relation(fields: [recipe_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  units            units       @relation(fields: [unit_id], references: [id], onUpdate: NoAction)
+  position         Decimal?       @db.Decimal
+  ingredients      ingredients    @relation(fields: [ingredient_id], references: [id], onUpdate: NoAction)
+  recipes          recipes        @relation(fields: [recipe_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  units            units          @relation(fields: [unit_id], references: [id], onUpdate: NoAction)
+  shoppinglists    shoppinglist[]
 
   @@index([recipe_id], map: "ix_recipe_ingredients_recipe")
 }
@@ -85,6 +86,7 @@ model recipes {
   recipe_ingredients recipe_ingredients[]
   recipe_steps       recipe_steps[]
   users              users                @relation(fields: [owner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  shoppinglists      shoppinglist[]
 
   @@unique([owner_id, slug])
   @@index([owner_id], map: "ix_recipes_owner")
@@ -103,16 +105,33 @@ model units {
   users              users?               @relation(fields: [owner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
+model shoppinglist {
+  id                   String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  portions             Decimal
+  owner_id             String   @db.Uuid
+  recipe_id            String   @db.Uuid
+  recipe_ingredient_id String   @db.Uuid
+  created_at           DateTime @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime @updatedAt @db.Timestamptz(6)
+
+  user              users              @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  recipe            recipes            @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+  recipe_ingredient recipe_ingredients @relation(fields: [recipe_ingredient_id], references: [id], onDelete: Cascade)
+
+  @@unique([owner_id, recipe_id, recipe_ingredient_id])
+}
+
 model users {
-  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  clerk_user_id String        @unique
-  email         String        @unique @db.Citext
+  id            String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clerk_user_id String         @unique
+  email         String         @unique @db.Citext
   name          String
-  created_at    DateTime      @default(now()) @db.Timestamptz(6)
-  updated_at    DateTime      @default(now()) @db.Timestamptz(6)
-  username      String?       @unique
+  created_at    DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime       @default(now()) @db.Timestamptz(6)
+  username      String?        @unique
   categories    categories[]
   ingredients   ingredients[]
   recipes       recipes[]
   units         units[]
+  shoppinglists shoppinglist[]
 }

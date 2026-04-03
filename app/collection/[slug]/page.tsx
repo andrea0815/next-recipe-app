@@ -93,6 +93,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
                             groupedIngredients={groupedIngredients}
                             portions={Number(recipe.portions)}
                             groupsEnabled={recipe.groups_enabled}
+                            recipeId={recipe.id}
                         />
                     </SectionWrapper>
 

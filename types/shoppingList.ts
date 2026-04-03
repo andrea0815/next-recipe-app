@@ -1,40 +1,49 @@
+import { Recipe } from "@/types/recipe";
+import { Unit } from "@/types/unit";
+import { Ingredient } from "./ingredient";
+
 export type ShoppingItem = {
-  id: string;
-  amount: number;
-  unit: {
-    id: string;
-    name: string;
-    abbreviation: string | null;
-    plural: string | null;
-  } | null;
-  ingredient: {
-    id: string;
-    name: string;
-    plural: string | null;
-  };
-  on_shopping_list: boolean;
-};
+    id: string,
+    portions: number,
+    amount: number,
+    owner_id: string,
+    unit: any,
+    ingredient: any,
+    recipe: any
+}
+
+export type ShoppingItemDraft = {
+    id?: string,
+    portions: number,
+    recipe_id: string,
+    recipe_ingredient_id: string,
+    owner_id: string,
+}
+
+export type ShoppingItemFields = {
+    id?: string,
+    portions: string,
+    recipe_id: string,
+    recipe_ingredient_id: string,
+    owner_id: string,
+}
+
+// For Shopping List Display
+
 
 export type SingleListEntry = {
-  type: "single";
-  item: ShoppingItem;
+    type: "single";
+    totalAmount: number;
+    item: ShoppingItem;
 };
 
 type GroupListEntry = {
-  type: "group";
-  ingredientId: string;
-  ingredientName: string;
-  totalAmount: number;
-  displayUnit: string;
-  items: ShoppingItem[];
-  on_shopping_list: boolean;
+    type: "group";
+    ingredientId: string;
+    ingredientName: string;
+    totalAmount: number;
+    sharedUnit: string;
+    items: ShoppingItem[];
 };
 
 export type ShoppingListEntry = SingleListEntry | GroupListEntry;
-
-export type UnitDefinition = {
-  aliases: string[];
-  family: "weight" | "volume" | "count";
-  toBase: number;
-  baseUnit: string;
-};

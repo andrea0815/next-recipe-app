@@ -2,29 +2,40 @@
 
 import { useState, useTransition } from "react";
 import Checkbox from "@/components/form/Checkbox";
-import { editShoppingListStatus } from "@/actions/shoppingList";
+// import { editShoppingListStatus } from "@/actions/shoppingList";
 
 type Props = {
-  recipeIngredientId: string;
+  recipeIngredientIds: string[];
   initialChecked: boolean;
   inverseDisplay?: boolean;
 };
 
-export default function ShoppingListCheckbox({
-  recipeIngredientId,
+export default function ShoppingListGroupCheckbox({
+  recipeIngredientIds,
   initialChecked,
   inverseDisplay = false,
 }: Props) {
   const [checked, setChecked] = useState(initialChecked);
   const [isPending, startTransition] = useTransition();
 
-  const handleChange = (nextChecked: boolean) => {
+  const displayedChecked = inverseDisplay ? !checked : checked;
+
+  const handleChange = (nextDisplayedChecked: boolean) => {
+    const nextRealChecked = inverseDisplay
+      ? !nextDisplayedChecked
+      : nextDisplayedChecked;
+
     const previous = checked;
-    setChecked(nextChecked);
+    setChecked(nextRealChecked);
 
     startTransition(async () => {
       try {
-        await editShoppingListStatus(recipeIngredientId, nextChecked);
+        await Promise.all(
+          recipeIngredientIds.map((id) =>
+            console.log("hey")
+            // editShoppingListStatus(id, nextRealChecked)
+          )
+        );
       } catch {
         setChecked(previous);
       }
@@ -32,7 +43,7 @@ export default function ShoppingListCheckbox({
   };
 
   return (
-    <Checkbox checked={inverseDisplay ? !checked : checked} onChange={handleChange}>
+    <Checkbox checked={displayedChecked} onChange={handleChange}>
       <svg
         viewBox="0 0 24 24"
         fill="none"

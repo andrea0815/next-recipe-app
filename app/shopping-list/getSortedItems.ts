@@ -1,6 +1,15 @@
 import type { ShoppingItem, ShoppingListEntry } from "@/types/shoppingList";
 import { UNIT_DEFINITIONS } from "./unitDefinitions";
 
+export type ShoppingItem2 = {
+  id: string,
+  portions: number,
+  amount: number,
+  owner_id: string,
+  unit: any,
+  ingredient: any,
+  recipe: any
+}
 
 export function getSortedItems(items: ShoppingItem[]): ShoppingListEntry[] {
   const grouped = new Map<string, ShoppingItem[]>();
@@ -20,27 +29,35 @@ export function getSortedItems(items: ShoppingItem[]): ShoppingListEntry[] {
 
   for (const [, groupItems] of grouped) {
     if (groupItems.length === 1) {
+      const item = groupItems[0];
+
       result.push({
         type: "single",
-        item: groupItems[0],
+        item,
+        totalAmount: getScaledAmount(item), 
       });
+
       continue;
     }
 
     const first = groupItems[0];
-    const totalAmount = groupItems.reduce(
-      (sum, item) => sum + Number(item.amount ?? 0),
-      0
-    );
+    const totalAmount = groupItems.reduce((sum, item) => {
+      const recipePortions = Number(item.recipe.portions ?? 0);
+      const itemAmount = Number(item.amount ?? 0);
+      const selectedPortions = Number(item.portions ?? 0);
+
+      if (recipePortions <= 0) return sum;
+
+      return sum + (itemAmount / recipePortions) * selectedPortions;
+    }, 0);
 
     result.push({
       type: "group",
       ingredientId: first.ingredient.id,
       ingredientName: first.ingredient.name,
       totalAmount,
-      displayUnit: first.unit?.abbreviation ?? first.unit?.name ?? "",
-      items: groupItems,
-      on_shopping_list: groupItems.some((item) => item.on_shopping_list),
+      sharedUnit: first.unit?.abbreviation ?? first.unit?.name ?? "",
+      items: groupItems
     });
   }
 
@@ -102,4 +119,14 @@ function sortEntries(a: ShoppingListEntry, b: ShoppingListEntry) {
     b.type === "group" ? b.ingredientName : b.item.ingredient.name;
 
   return nameA.localeCompare(nameB);
+}
+
+function getScaledAmount(item: ShoppingItem) {
+  const recipePortions = Number(item.recipe.portions ?? 0);
+  const itemAmount = Number(item.amount ?? 0);
+  const selectedPortions = Number(item.portions ?? 0);
+
+  if (recipePortions <= 0) return 0;
+
+  return (itemAmount / recipePortions) * selectedPortions;
 }

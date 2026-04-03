@@ -1,59 +1,105 @@
-import { Prisma } from "@/app/generated/prisma/wasm";
 import { prisma } from "@/lib/prisma";
-import { generateUniqueRecipeSlug } from "@/lib/db/utils/generateSlug";
+import { mapPrismaError } from "@/lib/errors/map-prisma-errors";
+import { ForbiddenError, NotFoundError } from "@/lib/errors/app-errors";
 
-export async function getShoppingListItems(userId?: string) {
+export async function getShoppingItemsByUser(userId?: string) {
 
-    const ingredientLines = await prisma.recipe_ingredients.findMany({
+    const ingredientLines = await prisma.shoppinglist.findMany({
         where: {
-            AND: [
-                ...(userId ? [{ owner_id: userId }] : []),
-                { on_shopping_list: true }
-            ]
+            ...(userId && { owner_id: userId }),
         },
         include: {
-            units: true,
-            ingredients: true
+            recipe_ingredient: {
+                include: {
+                    ingredients: true,
+                    units: true,
+                },
+            },
+            recipe: {
+                select: {
+                    id: true,
+                    name: true,
+                    portions: true,
+                },
+            },
         },
     });
 
-    return ingredientLines.map((recipe) => ({
-        id: recipe.id,
-        amount: Number(recipe.amount),
-        unit: recipe.units,
-        ingredient: recipe.ingredients,
-        on_shopping_list: recipe.on_shopping_list,
-        position: recipe.position,
-        owner_id: recipe.owner_id
+    return ingredientLines.map((listItem) => ({
+        id: listItem.id,
+        portions: Number(listItem.portions),
+        amount: Number(listItem.recipe_ingredient.amount),
+        unit: listItem.recipe_ingredient.units,
+        ingredient: listItem.recipe_ingredient.ingredients,
+        owner_id: listItem.owner_id,
+        recipe: {
+            name: listItem.recipe.name,
+            id: listItem.recipe.id,
+            portions: Number(listItem.recipe.portions),
+        }
     }));
 }
 
-export async function updateShoppingListStatus(
+export async function addShoppingItem(
+    portions: number,
+    recipeId: string,
     recipeIngredientId: string,
-    onShoppingList: boolean
+    userId: string
 ) {
-    await prisma.recipe_ingredients.update({
-        where: {
-            id: recipeIngredientId,
-        },
-        data: {
-            on_shopping_list: onShoppingList,
-        },
-    });
+    try {
+        return await prisma.shoppinglist.create({
+            data: {
+                portions,
+                recipe: {
+                    connect: { id: recipeId },
+                },
+                recipe_ingredient: {
+                    connect: { id: recipeIngredientId },
+                },
+                user: {
+                    connect: { id: userId },
+                },
+            },
+        });
+    } catch (error) {
+        mapPrismaError(error);
+    }
 }
 
-export async function setShoppingListStatusByUser(
-    userId: string,
-    onShoppingList: boolean
-) {
-    console.log("db upadte shopping list");
+export async function deleteShoppingItem(id: string, userId: string) {
+    try {
+        return await prisma.shoppinglist.deleteMany({
+            where: {
+                id,
+                owner_id: userId,
+            },
+        });
+    } catch (error) {
+        mapPrismaError(error);
+    }
+}
 
-    await prisma.recipe_ingredients.updateMany({
-        where: {
-            owner_id: userId,
-        },
-        data: {
-            on_shopping_list: onShoppingList,
-        },
-    });
+export async function deleteAllShoppingItems(userId: string) {
+    try {
+        return await prisma.shoppinglist.deleteMany({
+            where: {
+                owner_id: userId,
+            },
+        });
+    } catch (error) {
+        mapPrismaError(error);
+    }
+}
+
+export async function deleteManyShoppingItemsById(itemIds: string[], userId: string) {
+    try {
+        return await prisma.shoppinglist.deleteMany({
+            where: {
+                id: { in: itemIds },
+                owner_id: userId,
+            },
+        });
+    } catch (error) {
+        mapPrismaError(error);
+    }
 }

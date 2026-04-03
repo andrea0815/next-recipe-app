@@ -133,6 +133,16 @@ export async function getRecipeBySlug(slug: string, userId?: string) {
                 include: {
                     ingredients: true,
                     units: true,
+                    shoppinglists: userId
+                        ? {
+                            where: {
+                                owner_id: userId,
+                            },
+                            select: {
+                                id: true,
+                            },
+                        }
+                        : false,
                 },
             },
             recipe_steps: {
@@ -148,10 +158,15 @@ export async function getRecipeBySlug(slug: string, userId?: string) {
     return {
         ...recipe,
         portions: Number(recipe.portions),
-        recipe_ingredients: recipe.recipe_ingredients.map((ingredient) => ({
-            ...ingredient,
-            amount: Number(ingredient.amount),
-        })),
+        recipe_ingredients: recipe.recipe_ingredients.map((ingredient) => {
+            const { shoppinglists, ...rest } = ingredient;
+
+            return {
+                ...rest,
+                amount: Number(ingredient.amount),
+                on_shopping_list: userId ? shoppinglists.length > 0 : false,
+            };
+        }),
     };
 }
 
