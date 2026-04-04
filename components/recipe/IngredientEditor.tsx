@@ -153,7 +153,7 @@ export default function IngredientEditor({
 
           <div className="mb-4 flex flex-col gap-2">
             {/* Draft input row */}
-            <div className="flex gap-2 items-end justify-between">
+            <div className="flex sm:flex-row flex-col gap-2 items-end justify-between bg-gray-200 px-2 py-3 rounded-lg">
 
               <InputFieldNumber<RecipeLineDraft, "amount">
                 labelName="Amount"
@@ -163,7 +163,7 @@ export default function IngredientEditor({
                 min={0}
                 step={0.1}
                 error={state?.errors?.amounts}
-                customClass="w-[10%] min-w-15 flex-shrink"
+                customClass="w-full sm:w-[10%]  min-w-15 flex-shrink "
               />
 
               <InputSelect<RecipeLineDraft, "unit_id", typeof units[number]>
@@ -172,7 +172,7 @@ export default function IngredientEditor({
                 labelName="Unit"
                 draftValue={group.draft.unit_id}
                 updateDraftValue={(_, value) => updateDraft(index, "unit_id", value)}
-                customClass="w-[20%] flex-shrink"
+                customClass="w-full sm:w-[20%] flex-shrink"
               />
 
               <InputSelect<RecipeLineDraft, "ingredient_id", typeof ingredients[number]>
@@ -181,17 +181,16 @@ export default function IngredientEditor({
                 labelName="Ingredient"
                 draftValue={group.draft.ingredient_id}
                 updateDraftValue={(_, value) => updateDraft(index, "ingredient_id", value)}
-                customClass="flex-1 min-w-0"
+                customClass="flex-1 w-full "
                 error=""
               />
              
-
-
               <Button
                 onClick={() => addLine(index)}
                 disabled={!group.draft.amount || !group.draft.unit_id || !group.draft.ingredient_id}
                 priority="secondary"
                 size="small"
+                customClass="w-full sm:w-[inherit] mt-2 sm:mt-0"
               >Add</Button>
             </div>
 

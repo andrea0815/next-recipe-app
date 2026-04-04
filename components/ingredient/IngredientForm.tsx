@@ -1,7 +1,7 @@
 "use client"
 
 import { useActionState, useState } from 'react';
-import { editIngredient, createIngredient } from '@/actions/ingredients';
+import { editIngredient, createIngredient, createIngredientWithoutRedirect } from '@/actions/ingredients';
 import { ActionResult } from "@/types/actions";
 import type { IngredientFields } from "@/types/ingredient"
 
@@ -9,9 +9,19 @@ import { IngredientDraft } from "@/types/ingredient";
 import { FormMode } from "@/types/general";
 import { SubmitButtonText } from "@/types/general";
 
-export default function IngredientForm({ initialDraft, mode, submitButtonText }: { initialDraft: IngredientDraft, mode: FormMode, submitButtonText: SubmitButtonText }) {
+export default function IngredientForm({
+    initialDraft,
+    mode,
+    submitButtonText,
+    onCreated
+}: {
+    initialDraft: IngredientDraft,
+    mode: FormMode,
+    submitButtonText: SubmitButtonText,
+    onCreated?: (ingredient: IngredientDraft) => void;
+}) {
 
-    const initialState: ActionResult<IngredientFields> = {
+    const initialState: ActionResult<IngredientFields, IngredientFields> = {
         success: false,
         message: "",
         fieldErrors: {},

@@ -20,7 +20,11 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
                 <div className="relative aspect-square">
 
                     {recipe.image_uri && (
-                        <Link href={`/collection/${recipe.slug}`}>
+                        <Link href={
+                            type === RecipeListType.COLLECTION ?
+                                `/collection/${recipe.slug}` :
+                                `/explore/${recipe.slug}`
+                        }>
 
                             <Image
                                 src={recipe.image_uri}
@@ -49,7 +53,11 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
                             <Tag
                                 key={category.id}
                                 customClass="text-xs"
-                                href={`/collection?category=${category.name}`}
+                                href={
+                                    type === RecipeListType.COLLECTION ?
+                                        `/collection?category=${category.name}` :
+                                        `/explore?category=${category.name}`
+                                }
                                 isInverted={true}
                             > {category.name}</Tag>
                         ))

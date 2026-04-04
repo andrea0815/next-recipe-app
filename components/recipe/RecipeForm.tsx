@@ -1,11 +1,12 @@
 "use client";
-import { useActionState, useState } from 'react';
+import { useActionState, useState, useRef } from 'react';
 import { FormState, createRecipe, editRecipe } from '@/actions/recipes';
 
 import type { Category } from '@/types/category';
 import type { Unit } from '@/types/unit';
-import type { Ingredient } from '@/types/ingredient';
+import type { Ingredient, IngredientDraft } from '@/types/ingredient';
 import type { RecipeDraft } from '@/types/recipe';
+import type { AddIngredientPanelRef } from '@/components/ingredient/AddIngredientPanel';
 import { FormMode } from '@/types/general';
 
 import CategoryMultiSelect from './CategoryMultiSelect';
@@ -17,18 +18,20 @@ import InputFieldText from '../form/InputFieldText';
 import InputMultiSelect from '../form/InputMultiSelect';
 import InputFieldNumber from '../form/InputFieldNumber';
 import Button from '../buttons/Button';
+import AddIngredientPanel from '../ingredient/AddIngredientPanel';
+import IconAdd from '../icons/IconAdd';
 
 
 
 export default function RecipeForm({
     categories,
-    ingredients,
+    initialIngredients,
     units,
     initialDraft,
     mode
 }: {
     categories: Category[];
-    ingredients: Ingredient[];
+    initialIngredients: Ingredient[];
     units: Unit[];
     initialDraft: RecipeDraft;
     mode: FormMode;
@@ -44,6 +47,10 @@ export default function RecipeForm({
 
     const [state, formAction, isPending] = useActionState(action, initialState);
     const [draft, setDraft] = useState<RecipeDraft>(initialDraft);
+
+    const [ingredients, setIngredients] = useState(initialIngredients);
+    const [selectedIngredientId, setSelectedIngredientId] = useState("");
+    const addIngredientPanelRef = useRef<AddIngredientPanelRef>(null);
 
     const submitButtonText = mode === FormMode.CREATE ?
         {
@@ -125,6 +132,18 @@ export default function RecipeForm({
                     error={state.errors.portions}
                 />
 
+                <div className='flex justify-end'>
+                    <Button
+                        type="button"
+                        priority='secondary'
+                        size='small'
+                        stretch={false}
+                        onClick={() => addIngredientPanelRef.current?.open()}
+                    >
+                        <IconAdd />  Add ingredient
+                    </Button>
+                </div>
+
                 <IngredientEditor
                     state={state}
                     ingredients={ingredients}
@@ -134,6 +153,8 @@ export default function RecipeForm({
                     onGroupsChange={(groups) => updateDraft("groups", groups)}
                     onGroupsEnabledChange={(enabled) => updateDraft("groups_enabled", enabled)}
                 />
+
+
 
                 <h2 className="text-text text-lg font-semibold mt-10 pt-4 border-t border-gray-400">Steps</h2>
 
@@ -157,6 +178,15 @@ export default function RecipeForm({
                     {isPending ? submitButtonText.pending : submitButtonText.static}
                 </Button>
             </form >
+
+            <AddIngredientPanel
+                ref={addIngredientPanelRef}
+                onCreated={(ingredient) => {
+                    setIngredients((prev) => [...prev, ingredient]);
+                    setSelectedIngredientId(ingredient.id);
+                }}
+            />
+
         </>
     );
 }

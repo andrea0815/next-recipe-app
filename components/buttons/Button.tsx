@@ -33,7 +33,7 @@ export default function Button({
     const sizeClasses = {
         big: "px-6 py-4 text-lg rounded-xl",
         medium: "px-4 py-3 rounded-lg",
-        small: "px-3 py-2 text-sm rounded-md"
+        small: `text-sm rounded-md ${priority === "tertiary" ? "" : "px-3 py-2"}`
     }
 
     const colorClasses = {
@@ -52,7 +52,7 @@ export default function Button({
                 type={type}
                 title={title}
                 disabled={disabled}
-                className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} transition-all text-center ${disabled ? "opacity-30" : "cursor-pointer"} ${customClass}`}>
+                className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} transition-all text-center flex justify-center items-center gap-2 ${disabled ? "opacity-30" : "cursor-pointer"} ${customClass}`}>
                 {children}
             </button>
         ) : (

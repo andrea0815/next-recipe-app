@@ -78,7 +78,7 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
 
     return (
         <FormSection headline="Edit Recipe">
-            <RecipeForm categories={categories} ingredients={ingredients} units={units} initialDraft={propagatedDraft} mode={FormMode.EDIT} />
+            <RecipeForm categories={categories} initialIngredients={ingredients} units={units} initialDraft={propagatedDraft} mode={FormMode.EDIT} />
         </FormSection>
     );
 }

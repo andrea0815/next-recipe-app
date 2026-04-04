@@ -2,7 +2,7 @@ export type Ingredient = {
     id: string;
     name: string;
     plural: string | null;
-    owner_id: string | null;
+    owner_id?: string | null;
 }
 
 export type IngredientDraft = {
@@ -12,6 +12,13 @@ export type IngredientDraft = {
 }
 
 export type IngredientFields = {
+    id?: string;
+    name: string;
+    plural: string;
+};
+
+export type IngredientPayload = {
+    id: string;
     name: string;
     plural: string;
 };

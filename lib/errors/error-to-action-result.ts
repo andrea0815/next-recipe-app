@@ -1,13 +1,15 @@
-import { ActionResult } from "@/lib/actions/action-result";
+import { ActionResult } from "@/types/actions";
 import {
   AppError,
   ValidationError,
 } from "./app-errors";
 
-export function errorToActionResult<TFields extends Record<string, string>>(
+export function errorToActionResult<
+  TFields extends Record<string, string>,
+  TData = undefined
+>(
   error: unknown
-): ActionResult<TFields> {
-
+): ActionResult<TFields, TData> {
   if (error instanceof ValidationError) {
     return {
       success: false,
