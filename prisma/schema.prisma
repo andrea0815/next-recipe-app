@@ -106,32 +106,32 @@ model units {
 }
 
 model shoppinglist {
-  id                   String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id                   String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   portions             Decimal
-  owner_id             String   @db.Uuid
-  recipe_id            String   @db.Uuid
-  recipe_ingredient_id String   @db.Uuid
-  created_at           DateTime @default(now()) @db.Timestamptz(6)
-  updated_at           DateTime @updatedAt @db.Timestamptz(6)
-
-  user              users              @relation(fields: [owner_id], references: [id], onDelete: Cascade)
-  recipe            recipes            @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
-  recipe_ingredient recipe_ingredients @relation(fields: [recipe_ingredient_id], references: [id], onDelete: Cascade)
+  owner_id             String             @db.Uuid
+  recipe_id            String             @db.Uuid
+  recipe_ingredient_id String             @db.Uuid
+  created_at           DateTime           @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime           @updatedAt @db.Timestamptz(6)
+  user                 users              @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  recipe               recipes            @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+  recipe_ingredient    recipe_ingredients @relation(fields: [recipe_ingredient_id], references: [id], onDelete: Cascade)
 
   @@unique([owner_id, recipe_id, recipe_ingredient_id])
 }
 
 model users {
-  id            String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  clerk_user_id String         @unique
-  email         String         @unique @db.Citext
-  name          String
-  created_at    DateTime       @default(now()) @db.Timestamptz(6)
-  updated_at    DateTime       @default(now()) @db.Timestamptz(6)
-  username      String?        @unique
-  categories    categories[]
-  ingredients   ingredients[]
-  recipes       recipes[]
-  units         units[]
-  shoppinglists shoppinglist[]
+  id                       String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clerk_user_id            String         @unique
+  email                    String         @unique @db.Citext
+  name                     String
+  created_at               DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at               DateTime       @default(now()) @db.Timestamptz(6)
+  username                 String?        @unique
+  recipe_public_by_default Boolean?       @default(true)
+  categories               categories[]
+  ingredients              ingredients[]
+  recipes                  recipes[]
+  shoppinglists            shoppinglist[]
+  units                    units[]
 }

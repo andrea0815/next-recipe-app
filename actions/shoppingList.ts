@@ -3,7 +3,7 @@
 import { ShoppingItemFields } from '@/types/shoppingList';
 import { getCurrentDbUser } from '@/lib/auth/getCurrentDbUser';
 import { addShoppingItem, deleteShoppingItem, deleteAllShoppingItems, deleteManyShoppingItemsById } from '@/lib/db/shoppingList';
-import { ActionResult } from '@/lib/states/form-result';
+import { ActionResult } from '@/types/actions';
 import { ValidationError } from '@/lib/errors/app-errors';
 import { errorToActionResult } from "@/lib/errors/error-to-action-result";
 import { revalidatePath } from "next/cache";

@@ -11,6 +11,7 @@ export type UpdateUserInput = {
   email?: string;
   name?: string;
   username?: string | null;
+  recipe_public_by_default?: string | null;
   clerk_user_id?: string;
 };
 
@@ -111,7 +112,7 @@ export async function createOrLinkUserByEmail(params: {
     return updateUserByClerkId(clerk_user_id, {
       email: email ?? existingByClerkId.email,
       name,
-      username,
+      username
     });
   }
 

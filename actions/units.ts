@@ -9,7 +9,7 @@ import type { UnitFieldErrors, UnitFields } from "@/types/unit";
 
 import { ValidationError } from "@/lib/errors/app-errors";
 import { errorToActionResult } from "@/lib/errors/error-to-action-result";
-import { ActionResult } from "@/lib/actions/action-result";
+import { ActionResult } from "@/types/actions";
 
 export async function createUnit(
     prevState: ActionResult<UnitFieldErrors>,
