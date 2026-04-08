@@ -6,6 +6,9 @@ import { ActionResult } from "@/types/actions";
 
 import type { UnitDraft, UnitFieldErrors } from "@/types/unit";
 import { FormMode, SubmitButtonText } from "@/types/general";
+import SectionWrapper from "../containers/SectionWrapper";
+import InputFieldText from "../form/InputFieldText";
+import FormSection from "../form/FormSection";
 
 export default function UnitForm({
     initialDraft,
@@ -41,62 +44,37 @@ export default function UnitForm({
     }
 
     return (
-        <form action={formAction} className="p-4 space-y-4 max-w-96">
-            <div>
-                <label className="text-text">
-                    Name
-                    <input
-                        type="text"
-                        className="block w-full p-2 bg-white text-text border rounded"
-                        name="name"
-                        value={draft.name}
-                        onChange={(e) => updateDraft("name", e.target.value)}
-                    />
-                </label>
-                {!state.success && state.fieldErrors?.name && (
-                    <p className="text-red-500">{state.fieldErrors.name}</p>
-                )}
-            </div>
-
-            <div>
-                <label className="text-text">
-                    Plural
-                    <input
-                        type="text"
-                        className="block w-full p-2 bg-white text-text border rounded"
-                        name="plural"
-                        value={draft.plural ?? ""}
-                        onChange={(e) => updateDraft("plural", e.target.value)}
-                    />
-                </label>
-                {!state.success && state.fieldErrors?.plural && (
-                    <p className="text-red-500">{state.fieldErrors.plural}</p>
-                )}
-            </div>
-
-            <div>
-                <label className="text-text">
-                    Shorthand
-                    <input
-                        type="text"
-                        className="block w-full p-2 bg-white text-text border rounded"
-                        name="abbreviation"
-                        value={draft.abbreviation ?? ""}
-                        onChange={(e) => updateDraft("abbreviation", e.target.value)}
-                    />
-                </label>
-                {!state.success && state.fieldErrors?.abbreviation && (
-                    <p className="text-red-500">{state.fieldErrors.abbreviation}</p>
-                )}
-            </div>
-
-            <button
-                type="submit"
-                className="block w-full p-2 text-text bg-blue-500 rounded disabled:bg-gray-500 cursor-pointer"
-                disabled={isPending}
+        <FormSection
+            submitButtonText={submitButtonText}
+            formAction={formAction}
+            isPending={isPending}
             >
-                {isPending ? submitButtonText.pending : submitButtonText.default}
-            </button>
-        </form>
+
+            <InputFieldText<UnitDraft, "name">
+                field="name"
+                labelName="Name*"
+                draftValue={draft.name}
+                updateDraftValue={updateDraft}
+                error={!state.success ? state.fieldErrors?.name : undefined}
+            />
+
+            <InputFieldText<UnitDraft, "plural">
+                field="plural"
+                labelName="Plural"
+                draftValue={draft.plural}
+                updateDraftValue={updateDraft}
+                error={!state.success ? state.fieldErrors?.plural : undefined}
+            />
+
+            <InputFieldText<UnitDraft, "abbreviation">
+                field="abbreviation"
+                labelName="Shorthand"
+                draftValue={draft.abbreviation}
+                updateDraftValue={updateDraft}
+                error={!state.success ? state.fieldErrors?.abbreviation : undefined}
+            />
+
+        </FormSection>
+
     );
 }

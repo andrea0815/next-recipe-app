@@ -11,6 +11,7 @@ export default function ErrorDialog({
     message,
     onClose,
 }: ErrorDialogProps) {
+    
     if (!open) return null;
 
     return (
