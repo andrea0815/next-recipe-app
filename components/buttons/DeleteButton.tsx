@@ -7,7 +7,6 @@ import Button from '@/components/buttons/Button';
 import ConfirmAction from '@/components/errors/ConfirmaAction';
 import IconTrash from '@/components/icons/IconTrash';
 
-
 export default function DeleteButton({ itemId }: { itemId: string }) {
 
     const removeById = async (id: string) => {
@@ -15,11 +14,6 @@ export default function DeleteButton({ itemId }: { itemId: string }) {
     }
 
     return (
-        // <Form action={removeById.bind(null, itemId)}>
-        //     <Button type="submit" color='red' size='small'>
-        //         Delete
-        //     </Button>
-        // </Form>
         <ConfirmAction
             title="Delete item?"
             description="This action cannot be undone."
@@ -27,7 +21,7 @@ export default function DeleteButton({ itemId }: { itemId: string }) {
             onConfirm={removeById.bind(null, itemId)}
             trigger={(openConfirm) => (
                 <Button onClick={openConfirm} color="red-800" size='small' priority="secondary">
-                    Delete Recipe
+                    <IconTrash /> Delete Recipe
                 </Button>
             )}
         />

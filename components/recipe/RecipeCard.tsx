@@ -10,8 +10,6 @@ import Tag from '../general/Tag';
 
 export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, type: RecipeListType }) {
 
-    console.log(recipe);
-
     return (
         <div
             className="flex flex-col h-full justify-between">
@@ -32,11 +30,10 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
                                 fill
                                 className="object-cover rounded-xl"
                                 placeholder="blur"
-                                blurDataURL="/placeholder.png" // or base64
+                                blurDataURL="/images/placeholder.png" // or base64
                             />
                         </Link>
                     )}
-                    {/* <p className="absolute top-3 right-3">{recipe.is_public ? 'Public' : 'Private'}</p> */}
                     {
                         recipe.is_public &&
                         type === RecipeListType.COLLECTION &&

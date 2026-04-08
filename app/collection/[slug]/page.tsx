@@ -5,7 +5,7 @@ import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 
 import { notFound } from "next/navigation";
 
-import DeleteButton from "./DeleteButton";
+import DeleteButton from "@/components/buttons/DeleteButton";
 import Button from "@/components/buttons/Button";
 import Tag from "@/components/general/Tag";
 import SectionWrapper from "@/components/containers/SectionWrapper";

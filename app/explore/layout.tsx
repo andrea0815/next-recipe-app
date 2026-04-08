@@ -7,6 +7,8 @@ import HeaderSectionWrapper from '@/components/containers/HeaderSectionWrapper';
 import GeneralSection from '@/components/containers/GeneralSection';
 import TabBar from '@/components/nav/TabBar';
 import TabBarItem from '@/components/nav/TabBarItem';
+import HeaderSection from '@/components/nav/HeaderSection';
+import HeaderTabBar from '@/components/nav/HeaderTabBar';
 
 export default async function CollectionLayout({ children }: { children: any }) {
 
@@ -15,14 +17,7 @@ export default async function CollectionLayout({ children }: { children: any }) 
 
     return (
         <>
-            <HeaderSectionWrapper>
-                <TabBar>
-                    <TabBarItem key={0} href={`/collection`} text='All' />
-                    {categories.map((category) => (
-                        <TabBarItem key={category.id} href={`/collection?category=${category.name}`} text={category.name} />
-                    ))}
-                </TabBar>
-            </HeaderSectionWrapper>
+            <HeaderSection rootUrl="/explore" tabBarHeader={<HeaderTabBar />} />
             <GeneralSection>
                 {children}
             </GeneralSection>

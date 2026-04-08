@@ -4,8 +4,19 @@ import { generateUniqueRecipeSlug } from "@/lib/db/utils/generateSlug";
 
 import type { IngredientLineInput, RecipeStep } from "@/types/recipe";
 
-export async function getUserRecipes(query?: string, userId?: string, categoryIds?: string[]) {
-
+export async function getUserRecipes({
+    query,
+    userId,
+    categoryIds,
+    cursor,
+    take = 12,
+}: {
+    query?: string;
+    userId?: string;
+    categoryIds?: string[];
+    cursor?: string;
+    take?: number;
+} = {}) {
     const recipes = await prisma.recipes.findMany({
         where: {
             ...(userId && { owner_id: userId }),
@@ -25,6 +36,15 @@ export async function getUserRecipes(query?: string, userId?: string, categoryId
                 },
             }),
         },
+        orderBy: [
+            { created_at: "desc" },
+            { id: "desc" },
+        ],
+        take: take + 1,
+        ...(cursor && {
+            cursor: { id: cursor },
+            skip: 1,
+        }),
         include: {
             recipe_categories: {
                 include: {
@@ -34,34 +54,51 @@ export async function getUserRecipes(query?: string, userId?: string, categoryId
         },
     });
 
-    return recipes.map((recipe) => ({
-        id: recipe.id,
-        name: recipe.name,
-        slug: recipe.slug,
-        subtitle: recipe.subtitle,
-        is_public: recipe.is_public,
-        image_uri: recipe.image_uri,
-        owner_id: recipe.owner_id,
-        categories: recipe.recipe_categories.map((rc) => ({
-            id: rc.categories.id,
-            name: rc.categories.name,
-            owner_id: rc.categories.owner_id
+    const hasMore = recipes.length > take;
+    const items = hasMore ? recipes.slice(0, take) : recipes;
+    const nextCursor = hasMore ? items[items.length - 1].id : null;
+
+    return {
+        recipes: items.map((recipe) => ({
+            id: recipe.id,
+            name: recipe.name,
+            slug: recipe.slug,
+            subtitle: recipe.subtitle,
+            is_public: recipe.is_public,
+            image_uri: recipe.image_uri,
+            owner_id: recipe.owner_id,
+            categories: recipe.recipe_categories.map((rc) => ({
+                id: rc.categories.id,
+                name: rc.categories.name,
+                owner_id: rc.categories.owner_id,
+            })),
         })),
-    }));
+        nextCursor,
+        hasMore,
+    };
 }
 
-export async function getOtherRecipes(query?: string, userId?: string, categoryIds?: string[]) {
-
+export async function getOtherRecipes({
+    query,
+    userId,
+    categoryIds,
+    cursor,
+    take = 12,
+}: {
+    query?: string;
+    userId?: string;
+    categoryIds?: string[];
+    cursor?: string;
+    take?: number;
+} = {}) {
     const recipes = await prisma.recipes.findMany({
         where: {
             ...(userId && {
                 owner_id: {
                     not: userId,
                 },
-                is_public: {
-                    not: false,
-                },
             }),
+            is_public: true,
             ...(query && {
                 OR: [
                     { name: { contains: query, mode: "insensitive" } },
@@ -78,6 +115,15 @@ export async function getOtherRecipes(query?: string, userId?: string, categoryI
                 },
             }),
         },
+        orderBy: [
+            { created_at: "desc" },
+            { id: "desc" },
+        ],
+        take: take + 1,
+        ...(cursor && {
+            cursor: { id: cursor },
+            skip: 1,
+        }),
         include: {
             recipe_categories: {
                 include: {
@@ -92,21 +138,29 @@ export async function getOtherRecipes(query?: string, userId?: string, categoryI
         },
     });
 
-    return recipes.map((recipe) => ({
-        id: recipe.id,
-        name: recipe.name,
-        slug: recipe.slug,
-        subtitle: recipe.subtitle,
-        is_public: recipe.is_public,
-        image_uri: recipe.image_uri,
-        owner_id: recipe.owner_id,
-        username: recipe.users.username,
-        categories: recipe.recipe_categories.map((rc) => ({
-            id: rc.categories.id,
-            name: rc.categories.name,
-            owner_id: rc.categories.owner_id
+    const hasMore = recipes.length > take;
+    const items = hasMore ? recipes.slice(0, take) : recipes;
+    const nextCursor = hasMore ? items[items.length - 1].id : null;
+
+    return {
+        recipes: items.map((recipe) => ({
+            id: recipe.id,
+            name: recipe.name,
+            slug: recipe.slug,
+            subtitle: recipe.subtitle,
+            is_public: recipe.is_public,
+            image_uri: recipe.image_uri,
+            owner_id: recipe.owner_id,
+            username: recipe.users.username,
+            categories: recipe.recipe_categories.map((rc) => ({
+                id: rc.categories.id,
+                name: rc.categories.name,
+                owner_id: rc.categories.owner_id,
+            })),
         })),
-    }));
+        nextCursor,
+        hasMore,
+    };
 }
 
 export async function getRecipeById(id: string) {
