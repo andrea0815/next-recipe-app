@@ -1,6 +1,5 @@
-import type { UnitDefinition } from "@/types/shoppingList";
 
-export const UNIT_DEFINITIONS: UnitDefinition[] = [
+export const UNIT_DEFINITIONS = [
   { aliases: ["g", "gram", "grams"], family: "weight", toBase: 1, baseUnit: "g" },
   { aliases: ["kg", "kilogram", "kilograms"], family: "weight", toBase: 1000, baseUnit: "g" },
   { aliases: ["ml", "milliliter", "milliliters", "millilitre", "millilitres"], family: "volume", toBase: 1, baseUnit: "ml" },

@@ -1,10 +1,6 @@
-export type ActionResult<TFields, TData = undefined> =
-  | ({
-    success: true;
-    message?: string;
-  } & (TData extends undefined ? {} : { data: TData }))
-  | {
-    success: false;
-    message: string;
-    fieldErrors?: Partial<TFields>;
-  };
+export type ActionResult<TFields = never, TData = never> = {
+  success: boolean;
+  message?: string;
+  fieldErrors?: Partial<Record<keyof TFields, string>>;
+  data?: TData;
+};

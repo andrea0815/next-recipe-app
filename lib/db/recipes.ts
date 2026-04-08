@@ -1,4 +1,4 @@
-import { Prisma } from "@/app/generated/prisma/wasm";
+import { Prisma } from "@/app/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { generateUniqueRecipeSlug } from "@/lib/db/utils/generateSlug";
 

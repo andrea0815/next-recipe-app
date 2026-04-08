@@ -34,7 +34,7 @@ export default function ListSection({ type, items, removeItem }: ListSectionProp
         const result = await removeItem(itemId);
 
         if (!result.success) {
-            setErrorMessage(result.message);
+            setErrorMessage(result.message ?? "Something went wrong.");
             return;
         }
 
