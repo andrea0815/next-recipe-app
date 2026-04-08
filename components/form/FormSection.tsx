@@ -8,14 +8,17 @@ import type { UnitDraft, UnitFieldErrors } from "@/types/unit";
 import { FormMode, SubmitButtonText } from "@/types/general";
 import SectionWrapper from "../containers/SectionWrapper";
 import Button from "../buttons/Button";
+import SectionHeadline from "../typography/SectionHeadline";
 
 
 export default function FormSection({
+    headlineText,
     formAction,
     children,
     isPending,
     submitButtonText,
 }: {
+    headlineText: string;
     formAction: any;
     children: any;
     isPending: boolean;
@@ -24,6 +27,7 @@ export default function FormSection({
 
     return (
         <SectionWrapper customClass="w-full max-w-100">
+            <SectionHeadline>{headlineText}</SectionHeadline>
             <form action={formAction} className=" flex flex-col gap-2">
 
                 {children}

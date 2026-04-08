@@ -30,15 +30,17 @@ export async function createIngredient(
         }
 
         if (Object.keys(fieldErrors).length > 0) {
-            throw new ValidationError("Please correct the highlighted fields.", fieldErrors);
+            throw new ValidationError(
+                "Please correct the highlighted fields.",
+                fieldErrors
+            );
         }
-        console.log("default");
-
 
         await addIngredient(name, plural, user.id);
     } catch (error) {
         return errorToActionResult<IngredientFields>(error);
     }
+
     redirect("/profile/ingredients");
 }
 

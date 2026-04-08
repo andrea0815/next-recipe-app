@@ -154,8 +154,6 @@ export default function RecipeForm({
                     onGroupsEnabledChange={(enabled) => updateDraft("groups_enabled", enabled)}
                 />
 
-
-
                 <h2 className="text-text text-lg font-semibold mt-10 pt-4 border-t border-gray-400">Steps</h2>
 
                 <StepEditor

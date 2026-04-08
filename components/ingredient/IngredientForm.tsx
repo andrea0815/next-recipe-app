@@ -21,7 +21,7 @@ export default function IngredientForm({
     onCreated?: (ingredient: IngredientDraft) => void;
 }) {
 
-    const initialState: ActionResult<IngredientFields, IngredientFields> = {
+    const initialState: ActionResult<IngredientFields> = {
         success: false,
         message: "",
         fieldErrors: {},

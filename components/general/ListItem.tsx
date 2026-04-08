@@ -28,21 +28,24 @@ export default function ListItem({
                 ))}
             </div>
 
-            <Link href={editHref}>
-                <IconEdit />
-            </Link>
+            <div className='flex items-center'>
 
-            <ConfirmAction
-                title="Delete item?"
-                description="This action cannot be undone."
-                confirmText="Delete"
-                onConfirm={onDeleteAction}
-                trigger={(openConfirm) => (
-                    <Button onClick={openConfirm} color="red-800" priority="tertiary" customClass='p-1'>
-                        <IconTrash />
-                    </Button>
-                )}
-            />
+                <Link href={editHref}>
+                    <IconEdit />
+                </Link>
+
+                <ConfirmAction
+                    title="Delete item?"
+                    description="This action cannot be undone."
+                    confirmText="Delete"
+                    onConfirm={onDeleteAction}
+                    trigger={(openConfirm) => (
+                        <Button onClick={openConfirm} color="red-800" priority="tertiary" customClass='p-1'>
+                            <IconTrash />
+                        </Button>
+                    )}
+                />
+            </div>
         </li>
     );
 }

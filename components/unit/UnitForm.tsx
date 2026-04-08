@@ -48,6 +48,7 @@ export default function UnitForm({
             submitButtonText={submitButtonText}
             formAction={formAction}
             isPending={isPending}
+            headlineText="Create new Unit"
             >
 
             <InputFieldText<UnitDraft, "name">

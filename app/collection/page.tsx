@@ -32,7 +32,6 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
 
     return (
         <RecipeGalleryWrapper>
-
             <Button href='/collection/create'>Create new Recipe</Button>
             <RecipeList recipes={recipes} type={RecipeListType.COLLECTION}></RecipeList>
         </RecipeGalleryWrapper>

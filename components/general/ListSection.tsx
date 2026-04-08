@@ -52,7 +52,7 @@ export default function ListSection({ type, items, removeItem }: ListSectionProp
             />
 
             <SectionWrapper customClass="max-w-200 w-full flex-1 flex flex-col justify-center items-center">
-                <ListAddButton type={type} />
+                {/* <ListAddButton type={type} /> */}
                 <ul className="flex flex-col w-full">
                     <li className="flex ">
                         <p>Name</p>

@@ -30,8 +30,6 @@ export default function CategoryForm({
     const [state, formAction, isPending] = useActionState(action, initialState);
     const [draft, setDraft] = useState<CategoryDraft>(initialDraft);
 
-    const submitText = submitButtonText;
-
     function updateDraft<K extends keyof CategoryDraft>(
         field: K,
         value: CategoryDraft[K]
