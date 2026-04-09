@@ -15,7 +15,7 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
             className="flex flex-col h-full justify-between">
             <div>
 
-                <div className="relative aspect-square">
+                <div className="relative aspect-square bg-gray-500 rounded-xl overflow-hidden">
 
                     {recipe.image_uri && (
                         <Link href={
@@ -28,7 +28,7 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
                                 src={recipe.image_uri}
                                 alt={recipe.name}
                                 fill
-                                className="object-cover rounded-xl"
+                                className="object-cover "
                                 placeholder="blur"
                                 blurDataURL="/images/placeholder.png" // or base64
                             />

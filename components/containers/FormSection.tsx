@@ -4,13 +4,11 @@ import PageHeadline from '../typography/PageHeadline';
 
 export default function FormSection({ children, headline }: { children: any, headline: string }) {
     return (
-        <div className='w-full flex justify-center items-center'>
-            <div className='w-200 flex flex-col gap-4'>
+        <div className='w-full flex flex-col justify-center items-center'>
                 <PageHeadline>{headline}</PageHeadline>
-                <SectionWrapper>
+                <SectionWrapper customClass='w-full flex justify-center items-center'>
                     {children}
                 </SectionWrapper>
-            </div>
         </div>
     );
 }

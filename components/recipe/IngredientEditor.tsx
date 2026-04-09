@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { ReactNode, useMemo } from "react";
 import type { Unit } from "@/types/unit";
 import type { Ingredient } from "@/types/ingredient";
 import type { RecipeGroupDraft, RecipeLineDraft, IngredientLineInput } from "@/types/recipe";
@@ -13,6 +13,7 @@ import Switch from "../form/Switch";
 import Button from "../buttons/Button";
 import InputFieldNumber from "../form/InputFieldNumber";
 import InputSelect from "../form/InputSelect";
+import InputSearchableSelect from "../form/InputSearchableSelect";
 
 export default function IngredientEditor({
   state,
@@ -20,6 +21,7 @@ export default function IngredientEditor({
   units,
   groups,
   groupsEnabled,
+  addButton,
   onGroupsChange,
   onGroupsEnabledChange,
 }: {
@@ -28,6 +30,7 @@ export default function IngredientEditor({
   units: Unit[];
   groups: RecipeGroupDraft[],
   groupsEnabled: boolean,
+  addButton: ReactNode,
   onGroupsChange: (groups: RecipeGroupDraft[]) => void,
   onGroupsEnabledChange: (enabled: boolean) => void,
 }) {
@@ -163,28 +166,30 @@ export default function IngredientEditor({
                 min={0}
                 step={0.1}
                 error={state?.errors?.amounts}
-                customClass="w-full sm:w-[10%]  min-w-15 flex-shrink "
+                customClass="w-full sm:w-[10%]  min-w-15 flex-shrink"
               />
 
-              <InputSelect<RecipeLineDraft, "unit_id", typeof units[number]>
+              <InputSearchableSelect<RecipeLineDraft, "unit_id", typeof units[number]>
                 items={units}
                 field="unit_id"
                 labelName="Unit"
                 draftValue={group.draft.unit_id}
+                addButton={addButton}
                 updateDraftValue={(_, value) => updateDraft(index, "unit_id", value)}
-                customClass="w-full sm:w-[20%] flex-shrink"
+                customClass="w-full sm:basis-[20%] shrink-0"
               />
 
-              <InputSelect<RecipeLineDraft, "ingredient_id", typeof ingredients[number]>
+              <InputSearchableSelect<RecipeLineDraft, "ingredient_id", typeof ingredients[number]>
                 items={ingredients}
                 field="ingredient_id"
                 labelName="Ingredient"
                 draftValue={group.draft.ingredient_id}
+                addButton={addButton}
                 updateDraftValue={(_, value) => updateDraft(index, "ingredient_id", value)}
-                customClass="flex-1 w-full "
+                customClass="flex-1 w-full"
                 error=""
               />
-             
+
               <Button
                 onClick={() => addLine(index)}
                 disabled={!group.draft.amount || !group.draft.unit_id || !group.draft.ingredient_id}

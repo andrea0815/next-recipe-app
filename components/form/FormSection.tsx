@@ -26,7 +26,7 @@ export default function FormSection({
 }) {
 
     return (
-        <SectionWrapper customClass="w-full max-w-100">
+        <SectionWrapper customClass="">
             <SectionHeadline>{headlineText}</SectionHeadline>
             <form action={formAction} className=" flex flex-col gap-2">
 

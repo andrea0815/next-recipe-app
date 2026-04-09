@@ -52,6 +52,7 @@ const AddIngredientPanel = forwardRef<AddIngredientPanelRef, AddIngredientPanelP
                                 pending: "Creating ingredient …",
                             }}
                             onCreated={(ingredient) => {
+                                console.log("Ingredient is created");
                                 onCreated(ingredient);
                                 setOpen(false);
                             }}

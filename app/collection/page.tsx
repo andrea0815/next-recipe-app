@@ -25,14 +25,11 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
     const categoryIds = categoryId ? [categoryId] : [];
     const listKey = categoryIds.join(",") || "all";
 
-
     const initialData = await getUserRecipes({
         userId: user?.id,
         categoryIds: categoryIds,
         take: 12,
     });
-
-    console.log(initialData);
 
     return (
         <>

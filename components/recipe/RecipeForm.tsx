@@ -78,7 +78,7 @@ export default function RecipeForm({
         <>
             <form
                 action={formAction}
-                className='flex flex-col gap-4'
+                className='w-full max-w-[600px] flex flex-col gap-4'
             >
 
                 <InputFieldText<RecipeDraft, "name">
@@ -132,15 +132,15 @@ export default function RecipeForm({
                     error={state.errors.portions}
                 />
 
-                <div className='flex justify-end'>
+                <div>
                     <Button
                         type="button"
                         priority='secondary'
                         size='small'
-                        stretch={false}
+                        stretch={true}
                         onClick={() => addIngredientPanelRef.current?.open()}
                     >
-                        <IconAdd />  Add ingredient
+                        <IconAdd />  Add Ingredient
                     </Button>
                 </div>
 
@@ -150,6 +150,19 @@ export default function RecipeForm({
                     units={units}
                     groups={draft.groups}
                     groupsEnabled={draft.groups_enabled}
+                    addButton={
+                        <div className='w-full px-2 pt-2'>
+                            <Button
+                                type="button"
+                                priority='secondary'
+                                size='small'
+                                stretch={true}
+                                onClick={() => addIngredientPanelRef.current?.open()}
+                            >
+                                <IconAdd />  Add
+                            </Button>
+                        </div>
+                    }
                     onGroupsChange={(groups) => updateDraft("groups", groups)}
                     onGroupsEnabledChange={(enabled) => updateDraft("groups_enabled", enabled)}
                 />

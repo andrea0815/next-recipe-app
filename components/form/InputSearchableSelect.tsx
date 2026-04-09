@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import InputWrapper from "./InputWrapper";
 
 type SelectItem = {
@@ -20,7 +20,10 @@ type InputSelectSearchableProps<
     draftValue?: string;
     updateDraftValue: (field: K, value: string) => void;
     customClass?: string;
+    addButton?: ReactNode;
     error?: string;
+    placeholder?: string;
+    searchPlaceholder?: string;
 };
 
 export default function InputSelectSearchable<
@@ -35,7 +38,10 @@ export default function InputSelectSearchable<
     draftValue,
     updateDraftValue,
     customClass = "",
+    addButton,
     error,
+    placeholder = "Select an option...",
+    searchPlaceholder = "Search...",
 }: InputSelectSearchableProps<TDraft, K, TItem>) {
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState("");
@@ -72,19 +78,29 @@ export default function InputSelectSearchable<
 
     function handleOpen() {
         setOpen(true);
+        setSearch("");
+
         setTimeout(() => {
             inputRef.current?.focus();
         }, 0);
     }
 
-    function handleSelect(value: string) {
-        updateDraftValue(field, value);
+    function handleClose() {
         setOpen(false);
         setSearch("");
     }
 
+    function handleSelect(value: string) {
+        updateDraftValue(field, value);
+        handleClose();
+    }
+
     return (
-        <InputWrapper labelName={labelName} customClass={customClass} error={error}>
+        <InputWrapper
+            labelName={labelName}
+            customClass={customClass}
+            error={error}
+        >
             <div ref={wrapperRef} className={`relative w-full ${customClass}`}>
                 <input
                     type="hidden"
@@ -94,28 +110,31 @@ export default function InputSelectSearchable<
 
                 <button
                     type="button"
-                    onClick={() => (open ? setOpen(false) : handleOpen())}
-                    className="block w-full h-10 p-2 bg-white text-text rounded-lg border border-gray-500 text-left"
+                    onClick={() => (open ? handleClose() : handleOpen())}
+                    className="block h-10 w-full rounded-lg border border-gray-500 bg-white p-2 text-left text-text overflow-clip"
                 >
-                    {selectedItem?.name ?? "Select an option…"}
+                    {selectedItem?.name ?? placeholder}
                 </button>
 
                 {open && (
-                    <div className="absolute left-0 top-full z-50 mt-2 w-full rounded-lg border border-gray-300 bg-white shadow-lg overflow-hidden">
-                        <div className="p-2 border-b border-gray-200">
+                    <div className="absolute left-0 top-full z-50 mt-2 w-full min-w-50 overflow-hidden rounded-lg border border-gray-300 bg-white shadow-lg">
+                        
+                        {addButton}
+
+                        <div className="border-b border-gray-200 p-2">
                             <input
                                 ref={inputRef}
                                 type="text"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                placeholder="Search..."
-                                className="block w-full h-10 p-2 bg-white text-text rounded-lg border border-gray-300 outline-none"
+                                placeholder={searchPlaceholder}
+                                className="block h-10 w-full rounded-lg border border-gray-300 bg-white p-2 text-text outline-none"
                             />
                         </div>
 
                         <ul className="max-h-60 overflow-y-auto">
                             {filteredItems.length === 0 ? (
-                                <li className="px-3 py-2 text-text-light text-sm">
+                                <li className="px-3 py-2 text-sm text-text-light">
                                     No results found
                                 </li>
                             ) : (
@@ -127,9 +146,10 @@ export default function InputSelectSearchable<
                                             <button
                                                 type="button"
                                                 onClick={() => handleSelect(item.id)}
-                                                className={`w-full px-3 py-2 text-left hover:bg-gray-100 ${
-                                                    isSelected ? "bg-gray-100 font-medium" : ""
-                                                }`}
+                                                className={`w-full px-3 py-2 text-left hover:bg-gray-300 ${isSelected
+                                                        ? "bg-gray-100 font-medium"
+                                                        : ""
+                                                    }`}
                                             >
                                                 {item.name}
                                             </button>
