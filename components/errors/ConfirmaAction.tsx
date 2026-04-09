@@ -66,7 +66,7 @@ export default function ConfirmAction({
                 onClick={handleConfirm}
                 disabled={loading}
 
-                color="red-800"
+                color="red"
               >
                 {loading ? "Loading..." : confirmText}
               </Button>

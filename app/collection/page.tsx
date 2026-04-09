@@ -1,17 +1,13 @@
 import React from 'react';
 import { getUserRecipes } from "@/lib/db/recipes";
-import { getCategoryIdFromName, getCategoriesByUserId } from "@/lib/db/categories";
+import { getCategoryIdFromName } from "@/lib/db/categories";
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
-
 
 import Button from '@/components/buttons/Button';
 import RecipeGalleryWrapper from '@/components/containers/RecipeGalleryWrapper';
 import { RecipeListType } from '@/types/general';
 import RecipeListClient from '@/components/recipe/RecipeListClient';
-import HeaderSectionWrapper from '@/components/containers/HeaderSectionWrapper';
-import GeneralSection from '@/components/containers/GeneralSection';
-import TabBar from '@/components/nav/TabBar';
-import TabBarItem from '@/components/nav/TabBarItem';
+import SearchPanelServer from '@/components/search/SearchPanelServer';
 
 export default async function CollectionPage({ searchParams }: { searchParams: Promise<{ category: string }> }) {
 
@@ -33,18 +29,19 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
 
     return (
         <>
-                <RecipeGalleryWrapper>
-                    <Button href='/collection/create'>Create new Recipe</Button>
-                    <RecipeListClient
-                        key={listKey}
-                        initialRecipes={initialData.recipes}
-                        initialNextCursor={initialData.nextCursor}
-                        initialHasMore={initialData.hasMore}
-                        categoryIds={categoryIds}
-                        getUrl={"/api/recipes/user"}
-                        mode={RecipeListType.COLLECTION}
-                    />
-                </RecipeGalleryWrapper>
+            <RecipeGalleryWrapper>
+                <Button href='/collection/create'>Create new Recipe</Button>
+                <SearchPanelServer />
+                <RecipeListClient
+                    key={listKey}
+                    initialRecipes={initialData.recipes}
+                    initialNextCursor={initialData.nextCursor}
+                    initialHasMore={initialData.hasMore}
+                    categoryIds={categoryIds}
+                    getUrl={"/api/recipes/user"}
+                    mode={RecipeListType.COLLECTION}
+                />
+            </RecipeGalleryWrapper>
         </>
 
     );

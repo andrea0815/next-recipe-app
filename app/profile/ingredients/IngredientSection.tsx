@@ -38,13 +38,13 @@ export default function IngredientSection({
         };
     }
 
-    return (<>
+    return (<div className='w-full max-w-200 flex flex-col gap-4'>
         <PageHeadline>Ingredients</PageHeadline>
         <Button
             type="button"
             priority='secondary'
-            size='small'
-            stretch={false}
+            size='medium'
+            stretch={true}
             onClick={() => addIngredientPanelRef.current?.open()}
         >
             <IconAdd />  Add ingredient
@@ -57,6 +57,6 @@ export default function IngredientSection({
                 setSelectedIngredientId(ingredient.id);
             }}
         />
-    </>
+    </div>
     );
 }

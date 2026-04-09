@@ -10,16 +10,27 @@ begin;
 -- -------------------------
 insert into categories (name, owner_id)
 values
-  ('Breakfast', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Lunch', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Dinner', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Suppe', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Salat', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Pfanne', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Ofen', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Auflauf', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Eintopf', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Vegetarisch', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Vegan', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Asiatisch', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Italienisch', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Vietnamesisch', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Österreichisch', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Mexikanisch', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Gebäck', 'c69a8909-8a14-4a38-9c30-1569defee9da')
   ('Dessert', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Vegetarian', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Quick', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Pasta', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Healthy', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Comfort Food', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Baking', 'c69a8909-8a14-4a38-9c30-1569defee9da')
+  ('Kuchen', 'c69a8909-8a14-4a38-9c30-1569defee9da')
+  ('Kekse', 'c69a8909-8a14-4a38-9c30-1569defee9da')
+  ('Getränke', 'c69a8909-8a14-4a38-9c30-1569defee9da')
+  ('Soße', 'c69a8909-8a14-4a38-9c30-1569defee9da')
+  ('Warm', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Kalt', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
 on conflict do nothing;
 
 -- -------------------------
@@ -27,16 +38,27 @@ on conflict do nothing;
 -- -------------------------
 insert into units (name, abbreviation, plural, owner_id)
 values
-  ('Gram', 'g', 'Grams', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Kilogram', 'kg', 'Kilograms', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Milliliter', 'ml', 'Milliliters', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Liter', 'l', 'Liters', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Piece', 'pc', 'Pieces', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Tablespoon', 'tbsp', 'Tablespoons', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Teaspoon', 'tsp', 'Teaspoons', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Clove', 'clove', 'Cloves', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Pinch', 'pinch', 'Pinches', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Cup', 'cup', 'Cups', 'c69a8909-8a14-4a38-9c30-1569defee9da')
+  ('Gramm', 'g', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Milligramm', 'mg', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Kilogramm', 'kg', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Milliliter', 'ml', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Deziliter', 'dl', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Centiliter', 'cl', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Liter', 'l', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Stück', 'Stk', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Packung', 'Pck', 'Packungen', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Beutel', 'Btl', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Dose', null, 'Dosen', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Kanne', null, 'Kannen', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Esslöffel', 'EL', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Teelöffel', 'TL', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Zehe', null, 'Zehen', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Prise', null, 'Prisen', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Tasse', null, 'Tassen', 'c69a8909-8a14-4a38-9c30-1569defee9da')
+  ('Bund', null, 'Bünde', 'c69a8909-8a14-4a38-9c30-1569defee9da')
+  ('Knolle', null, 'Knollen', 'c69a8909-8a14-4a38-9c30-1569defee9da')
+  ('Ounce', 'oz', 'ounces', 'c69a8909-8a14-4a38-9c30-1569defee9da')
+  ('Messerspitze', "Msp", null, 'c69a8909-8a14-4a38-9c30-1569defee9da')
 on conflict do nothing;
 
 -- -------------------------
@@ -44,41 +66,49 @@ on conflict do nothing;
 -- -------------------------
 insert into ingredients (name, plural, owner_id)
 values
-  ('Egg', 'Eggs', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Milk', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Flour', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Sugar', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Salt', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Ei', 'Eier', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Milch', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Mehl', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Zucker', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Salz', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
   ('Butter', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Olive Oil', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Garlic', 'Garlic cloves', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Onion', 'Onions', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Tomato', 'Tomatoes', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Olivenöl', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Knoblauch', 'Knoblauchzehen', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Zwiebel', 'Zwiebeln', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Tomate', 'Tomaten', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
   ('Pasta', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
   ('Parmesan', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Rice', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Chicken Breast', 'Chicken Breasts', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Reis', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Hühnerbrust', 'Hühnerbrüste', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
   ('Paprika', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Black Pepper', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Carrot', 'Carrots', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Zucchini', 'Zucchinis', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Bell Pepper', 'Bell Peppers', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Broccoli', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Soy Sauce', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Honey', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Lemon', 'Lemons', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Greek Yogurt', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Oats', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Banana', 'Bananas', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Baking Powder', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Cocoa Powder', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Schwarzer Pfeffer', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Karotte', 'Karotten', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Zucchini', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Paprikaschote', 'Paprikaschoten', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Brokkoli', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Sojasauce', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Honig', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Zitrone', 'Zitronen', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Griechischer Joghurt', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Haferflocken', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Banane', 'Bananen', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Backpulver', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Kakaopulver', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
   ('Mozzarella', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Basil', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Spinach', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Cream', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Mushroom', 'Mushrooms', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
-  ('Vegetable Broth', null, 'c69a8909-8a14-4a38-9c30-1569defee9da')
+  ('Basilikum', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Spinat', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Sahne', null, 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Pilz', 'Pilze', 'c69a8909-8a14-4a38-9c30-1569defee9da'),
+  ('Gemüsebrühe', null, 'c69a8909-8a14-4a38-9c30-1569defee9da')
 on conflict do nothing;
+
+begin;
+
+-- =========================================================
+-- RECIPES THAT FIT THE SEEDED GERMAN TABLES
+-- Owner ID used everywhere:
+-- c69a8909-8a14-4a38-9c30-1569defee9da
+-- =========================================================
 
 -- -------------------------
 -- Recipes
@@ -95,65 +125,66 @@ insert into recipes (
 )
 values
   (
-    'Classic Pancakes',
-    'Fluffy breakfast pancakes for lazy weekends',
+    'Klassische Palatschinken',
+    'Schnelle süße Palatschinken für Frühstück oder Dessert',
     'c69a8909-8a14-4a38-9c30-1569defee9da',
     false,
     'https://images.unsplash.com/photo-1528207776546-365bb710ee93',
-    'classic-pancakes',
+    'klassische-palatschinken',
     false,
     2
   ),
   (
-    'Creamy Garlic Pasta',
-    'Simple weeknight pasta with garlic, cream and parmesan',
+    'Cremige Knoblauch Pasta',
+    'Einfache Pasta mit Knoblauch, Sahne und Parmesan',
     'c69a8909-8a14-4a38-9c30-1569defee9da',
     false,
     'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9',
-    'creamy-garlic-pasta',
+    'cremige-knoblauch-pasta',
     false,
     2
   ),
   (
-    'Chicken Rice Bowl',
-    'Balanced bowl with seasoned chicken and vegetables',
+    'Hühner Reis Bowl',
+    'Reis mit gebratener Hühnerbrust und Gemüse',
     'c69a8909-8a14-4a38-9c30-1569defee9da',
     false,
     'https://images.unsplash.com/photo-1547592180-85f173990554',
-    'chicken-rice-bowl',
+    'huehner-reis-bowl',
     true,
     2
   ),
   (
-    'Vegetable Stir Fry',
-    'Quick colorful vegetables with a sweet-savory sauce',
+    'Gemüsepfanne mit Sojasauce',
+    'Bunte schnelle Gemüsepfanne mit würziger Sauce',
     'c69a8909-8a14-4a38-9c30-1569defee9da',
     false,
     'https://images.unsplash.com/photo-1512058564366-18510be2db19',
-    'vegetable-stir-fry',
+    'gemuesepfanne-mit-sojasauce',
     true,
     2
   ),
   (
-    'Tomato Mozzarella Pasta Bake',
-    'Comforting baked pasta with tomato and melted cheese',
+    'Pasta Auflauf mit Tomate und Mozzarella',
+    'Herzhafter Auflauf mit Tomaten, Pasta und Käse',
     'c69a8909-8a14-4a38-9c30-1569defee9da',
     false,
     'https://images.unsplash.com/photo-1622973536968-3ead9e780960',
-    'tomato-mozzarella-pasta-bake',
+    'pasta-auflauf-tomate-mozzarella',
     true,
     4
   ),
   (
-    'Chocolate Banana Overnight Oats',
-    'Easy make-ahead breakfast with cocoa and banana',
+    'Schoko Bananen Overnight Oats',
+    'Einfaches Frühstück zum Vorbereiten mit Banane und Kakao',
     'c69a8909-8a14-4a38-9c30-1569defee9da',
     false,
     'https://images.unsplash.com/photo-1517673400267-0251440c45dc',
-    'chocolate-banana-overnight-oats',
+    'schoko-bananen-overnight-oats',
     false,
     1
-  );
+  )
+on conflict do nothing;
 
 -- -------------------------
 -- Recipe <-> Categories
@@ -161,28 +192,30 @@ values
 insert into recipe_categories (recipe_id, category_id)
 select r.id, c.id
 from recipes r
-join categories c on c.owner_id = r.owner_id
+join categories c
+  on c.owner_id = r.owner_id
 where r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
 and (
-  (r.slug = 'classic-pancakes' and c.name in ('Breakfast', 'Quick'))
+  (r.slug = 'klassische-palatschinken' and c.name in ('Dessert', 'Kuchen', 'Kalt'))
   or
-  (r.slug = 'creamy-garlic-pasta' and c.name in ('Dinner', 'Pasta', 'Comfort Food'))
+  (r.slug = 'cremige-knoblauch-pasta' and c.name in ('Italienisch', 'Warm'))
   or
-  (r.slug = 'chicken-rice-bowl' and c.name in ('Lunch', 'Dinner', 'Healthy'))
+  (r.slug = 'huehner-reis-bowl' and c.name in ('Warm'))
   or
-  (r.slug = 'vegetable-stir-fry' and c.name in ('Lunch', 'Dinner', 'Vegetarian', 'Healthy', 'Quick'))
+  (r.slug = 'gemuesepfanne-mit-sojasauce' and c.name in ('Pfanne', 'Vegetarisch', 'Asiatisch', 'Warm'))
   or
-  (r.slug = 'tomato-mozzarella-pasta-bake' and c.name in ('Dinner', 'Pasta', 'Comfort Food'))
+  (r.slug = 'pasta-auflauf-tomate-mozzarella' and c.name in ('Auflauf', 'Italienisch', 'Vegetarisch', 'Warm'))
   or
-  (r.slug = 'chocolate-banana-overnight-oats' and c.name in ('Breakfast', 'Healthy', 'Quick'))
-);
+  (r.slug = 'schoko-bananen-overnight-oats' and c.name in ('Dessert', 'Kalt'))
+)
+on conflict do nothing;
 
 -- =========================================================
 -- RECIPE INGREDIENTS
 -- =========================================================
 
 -- -------------------------
--- Classic Pancakes
+-- Klassische Palatschinken
 -- -------------------------
 insert into recipe_ingredients (
   recipe_id, ingredient_id, unit_id, amount, owner_id, group_name, position
@@ -198,20 +231,25 @@ select
 from recipes r
 join (
   values
-    ('Flour', 'Gram', 180, 1),
-    ('Milk', 'Milliliter', 250, 2),
-    ('Egg', 'Piece', 2, 3),
-    ('Sugar', 'Tablespoon', 2, 4),
-    ('Baking Powder', 'Teaspoon', 2, 5),
-    ('Salt', 'Pinch', 1, 6),
-    ('Butter', 'Gram', 20, 7)
+    ('Mehl', 'Gramm', 180, 1),
+    ('Milch', 'Milliliter', 300, 2),
+    ('Ei', 'Stück', 2, 3),
+    ('Zucker', 'Esslöffel', 2, 4),
+    ('Salz', 'Prise', 1, 5),
+    ('Butter', 'Gramm', 20, 6)
 ) as x(ingredient_name, unit_name, amount, position) on true
-join ingredients i on i.name = x.ingredient_name and i.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
-join units u on u.name = x.unit_name and u.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
-where r.slug = 'classic-pancakes' and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da';
+join ingredients i
+  on i.name = x.ingredient_name
+ and i.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+join units u
+  on u.name = x.unit_name
+ and u.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+where r.slug = 'klassische-palatschinken'
+  and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+on conflict do nothing;
 
 -- -------------------------
--- Creamy Garlic Pasta
+-- Cremige Knoblauch Pasta
 -- -------------------------
 insert into recipe_ingredients (
   recipe_id, ingredient_id, unit_id, amount, owner_id, group_name, position
@@ -227,21 +265,27 @@ select
 from recipes r
 join (
   values
-    ('Pasta', 'Gram', 250, 1),
-    ('Garlic', 'Clove', 3, 2),
-    ('Butter', 'Gram', 20, 3),
-    ('Cream', 'Milliliter', 200, 4),
-    ('Parmesan', 'Gram', 50, 5),
-    ('Salt', 'Teaspoon', 1, 6),
-    ('Black Pepper', 'Teaspoon', 1, 7),
-    ('Olive Oil', 'Tablespoon', 1, 8)
+    ('Pasta', 'Gramm', 250, 1),
+    ('Knoblauch', 'Zehe', 3, 2),
+    ('Butter', 'Gramm', 20, 3),
+    ('Sahne', 'Milliliter', 200, 4),
+    ('Parmesan', 'Gramm', 50, 5),
+    ('Salz', 'Teelöffel', 1, 6),
+    ('Schwarzer Pfeffer', 'Teelöffel', 1, 7),
+    ('Olivenöl', 'Esslöffel', 1, 8)
 ) as x(ingredient_name, unit_name, amount, position) on true
-join ingredients i on i.name = x.ingredient_name and i.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
-join units u on u.name = x.unit_name and u.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
-where r.slug = 'creamy-garlic-pasta' and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da';
+join ingredients i
+  on i.name = x.ingredient_name
+ and i.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+join units u
+  on u.name = x.unit_name
+ and u.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+where r.slug = 'cremige-knoblauch-pasta'
+  and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+on conflict do nothing;
 
 -- -------------------------
--- Chicken Rice Bowl
+-- Hühner Reis Bowl
 -- -------------------------
 insert into recipe_ingredients (
   recipe_id, ingredient_id, unit_id, amount, owner_id, group_name, position
@@ -257,23 +301,29 @@ select
 from recipes r
 join (
   values
-    ('Rice', 'Gram', 150, 'Base', 1),
-    ('Vegetable Broth', 'Milliliter', 300, 'Base', 2),
-    ('Chicken Breast', 'Gram', 300, 'Protein', 3),
-    ('Olive Oil', 'Tablespoon', 1, 'Protein', 4),
-    ('Paprika', 'Teaspoon', 1, 'Protein', 5),
-    ('Salt', 'Teaspoon', 1, 'Protein', 6),
-    ('Black Pepper', 'Teaspoon', 1, 'Protein', 7),
-    ('Broccoli', 'Gram', 150, 'Veggies', 8),
-    ('Carrot', 'Piece', 1, 'Veggies', 9),
-    ('Bell Pepper', 'Piece', 1, 'Veggies', 10)
+    ('Reis', 'Gramm', 150, 'Basis', 1),
+    ('Gemüsebrühe', 'Milliliter', 300, 'Basis', 2),
+    ('Hühnerbrust', 'Gramm', 300, 'Protein', 3),
+    ('Olivenöl', 'Esslöffel', 1, 'Protein', 4),
+    ('Paprika', 'Teelöffel', 1, 'Protein', 5),
+    ('Salz', 'Teelöffel', 1, 'Protein', 6),
+    ('Schwarzer Pfeffer', 'Teelöffel', 1, 'Protein', 7),
+    ('Brokkoli', 'Gramm', 150, 'Gemüse', 8),
+    ('Karotte', 'Stück', 1, 'Gemüse', 9),
+    ('Paprikaschote', 'Stück', 1, 'Gemüse', 10)
 ) as x(ingredient_name, unit_name, amount, group_name, position) on true
-join ingredients i on i.name = x.ingredient_name and i.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
-join units u on u.name = x.unit_name and u.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
-where r.slug = 'chicken-rice-bowl' and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da';
+join ingredients i
+  on i.name = x.ingredient_name
+ and i.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+join units u
+  on u.name = x.unit_name
+ and u.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+where r.slug = 'huehner-reis-bowl'
+  and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+on conflict do nothing;
 
 -- -------------------------
--- Vegetable Stir Fry
+-- Gemüsepfanne mit Sojasauce
 -- -------------------------
 insert into recipe_ingredients (
   recipe_id, ingredient_id, unit_id, amount, owner_id, group_name, position
@@ -289,23 +339,29 @@ select
 from recipes r
 join (
   values
-    ('Broccoli', 'Gram', 150, 'Vegetables', 1),
-    ('Carrot', 'Piece', 1, 'Vegetables', 2),
-    ('Bell Pepper', 'Piece', 1, 'Vegetables', 3),
-    ('Zucchini', 'Piece', 1, 'Vegetables', 4),
-    ('Onion', 'Piece', 1, 'Vegetables', 5),
-    ('Garlic', 'Clove', 2, 'Sauce', 6),
-    ('Soy Sauce', 'Tablespoon', 3, 'Sauce', 7),
-    ('Honey', 'Tablespoon', 1, 'Sauce', 8),
-    ('Olive Oil', 'Tablespoon', 1, 'Sauce', 9),
-    ('Black Pepper', 'Teaspoon', 1, 'Sauce', 10)
+    ('Brokkoli', 'Gramm', 150, 'Gemüse', 1),
+    ('Karotte', 'Stück', 1, 'Gemüse', 2),
+    ('Paprikaschote', 'Stück', 1, 'Gemüse', 3),
+    ('Zucchini', 'Stück', 1, 'Gemüse', 4),
+    ('Zwiebel', 'Stück', 1, 'Gemüse', 5),
+    ('Knoblauch', 'Zehe', 2, 'Soße', 6),
+    ('Sojasauce', 'Esslöffel', 3, 'Soße', 7),
+    ('Honig', 'Esslöffel', 1, 'Soße', 8),
+    ('Olivenöl', 'Esslöffel', 1, 'Soße', 9),
+    ('Schwarzer Pfeffer', 'Teelöffel', 1, 'Soße', 10)
 ) as x(ingredient_name, unit_name, amount, group_name, position) on true
-join ingredients i on i.name = x.ingredient_name and i.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
-join units u on u.name = x.unit_name and u.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
-where r.slug = 'vegetable-stir-fry' and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da';
+join ingredients i
+  on i.name = x.ingredient_name
+ and i.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+join units u
+  on u.name = x.unit_name
+ and u.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+where r.slug = 'gemuesepfanne-mit-sojasauce'
+  and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+on conflict do nothing;
 
 -- -------------------------
--- Tomato Mozzarella Pasta Bake
+-- Pasta Auflauf mit Tomate und Mozzarella
 -- -------------------------
 insert into recipe_ingredients (
   recipe_id, ingredient_id, unit_id, amount, owner_id, group_name, position
@@ -321,22 +377,28 @@ select
 from recipes r
 join (
   values
-    ('Pasta', 'Gram', 300, 'Pasta', 1),
-    ('Tomato', 'Piece', 4, 'Sauce', 2),
-    ('Garlic', 'Clove', 2, 'Sauce', 3),
-    ('Olive Oil', 'Tablespoon', 1, 'Sauce', 4),
-    ('Salt', 'Teaspoon', 1, 'Sauce', 5),
-    ('Black Pepper', 'Teaspoon', 1, 'Sauce', 6),
-    ('Mozzarella', 'Gram', 200, 'Topping', 7),
-    ('Parmesan', 'Gram', 40, 'Topping', 8),
-    ('Basil', 'Tablespoon', 2, 'Topping', 9)
+    ('Pasta', 'Gramm', 300, 'Pasta', 1),
+    ('Tomate', 'Stück', 4, 'Soße', 2),
+    ('Knoblauch', 'Zehe', 2, 'Soße', 3),
+    ('Olivenöl', 'Esslöffel', 1, 'Soße', 4),
+    ('Salz', 'Teelöffel', 1, 'Soße', 5),
+    ('Schwarzer Pfeffer', 'Teelöffel', 1, 'Soße', 6),
+    ('Mozzarella', 'Gramm', 200, 'Belag', 7),
+    ('Parmesan', 'Gramm', 40, 'Belag', 8),
+    ('Basilikum', 'Esslöffel', 2, 'Belag', 9)
 ) as x(ingredient_name, unit_name, amount, group_name, position) on true
-join ingredients i on i.name = x.ingredient_name and i.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
-join units u on u.name = x.unit_name and u.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
-where r.slug = 'tomato-mozzarella-pasta-bake' and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da';
+join ingredients i
+  on i.name = x.ingredient_name
+ and i.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+join units u
+  on u.name = x.unit_name
+ and u.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+where r.slug = 'pasta-auflauf-tomate-mozzarella'
+  and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+on conflict do nothing;
 
 -- -------------------------
--- Chocolate Banana Overnight Oats
+-- Schoko Bananen Overnight Oats
 -- -------------------------
 insert into recipe_ingredients (
   recipe_id, ingredient_id, unit_id, amount, owner_id, group_name, position
@@ -352,106 +414,124 @@ select
 from recipes r
 join (
   values
-    ('Oats', 'Gram', 60, 1),
-    ('Milk', 'Milliliter', 150, 2),
-    ('Greek Yogurt', 'Gram', 80, 3),
-    ('Banana', 'Piece', 1, 4),
-    ('Cocoa Powder', 'Tablespoon', 1, 5),
-    ('Honey', 'Tablespoon', 1, 6)
+    ('Haferflocken', 'Gramm', 60, 1),
+    ('Milch', 'Milliliter', 150, 2),
+    ('Griechischer Joghurt', 'Gramm', 80, 3),
+    ('Banane', 'Stück', 1, 4),
+    ('Kakaopulver', 'Esslöffel', 1, 5),
+    ('Honig', 'Esslöffel', 1, 6)
 ) as x(ingredient_name, unit_name, amount, position) on true
-join ingredients i on i.name = x.ingredient_name and i.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
-join units u on u.name = x.unit_name and u.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
-where r.slug = 'chocolate-banana-overnight-oats' and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da';
+join ingredients i
+  on i.name = x.ingredient_name
+ and i.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+join units u
+  on u.name = x.unit_name
+ and u.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+where r.slug = 'schoko-bananen-overnight-oats'
+  and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+on conflict do nothing;
 
 -- =========================================================
 -- RECIPE STEPS
 -- =========================================================
 
--- Classic Pancakes
+-- Klassische Palatschinken
 insert into recipe_steps (recipe_id, step_index, text, hint)
 select r.id, s.step_index, s.text, s.hint
 from recipes r
 join (
   values
-    (1, 'Mix flour, sugar, baking powder and salt in a bowl.', 'Combine the dry ingredients first.'),
-    (2, 'Whisk milk and eggs in a second bowl.', 'This helps avoid lumps later.'),
-    (3, 'Add the wet ingredients to the dry ingredients and stir briefly.', 'Do not overmix. A few lumps are fine.'),
-    (4, 'Heat butter in a pan over medium heat.', 'Wait until the pan is evenly hot.'),
-    (5, 'Pour small portions of batter into the pan and cook until bubbles form.', 'That is the sign to flip.'),
-    (6, 'Flip and cook the other side until golden brown.', 'Serve warm.')
+    (1, 'Mehl, Zucker und Salz in einer Schüssel vermischen.', 'Die trockenen Zutaten zuerst verrühren.'),
+    (2, 'Milch und Eier in einer zweiten Schüssel verquirlen.', 'So entstehen später weniger Klümpchen.'),
+    (3, 'Die flüssigen Zutaten zu den trockenen geben und kurz verrühren.', 'Nicht zu lange rühren.'),
+    (4, 'Butter in einer Pfanne bei mittlerer Hitze erhitzen.', 'Die Pfanne sollte gleichmäßig heiß sein.'),
+    (5, 'Teig portionsweise eingießen und backen, bis die Unterseite goldbraun ist.', 'Dann vorsichtig wenden.'),
+    (6, 'Die zweite Seite fertig backen und warm servieren.', 'Mit Zucker, Marmelade oder Obst servieren.')
 ) as s(step_index, text, hint) on true
-where r.slug = 'classic-pancakes' and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da';
+where r.slug = 'klassische-palatschinken'
+  and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+on conflict do nothing;
 
--- Creamy Garlic Pasta
+-- Cremige Knoblauch Pasta
 insert into recipe_steps (recipe_id, step_index, text, hint)
 select r.id, s.step_index, s.text, s.hint
 from recipes r
 join (
   values
-    (1, 'Cook the pasta in salted water until al dente.', 'Reserve a little pasta water before draining.'),
-    (2, 'Melt butter with olive oil in a large pan.', 'Use medium heat so the garlic does not burn.'),
-    (3, 'Add minced garlic and cook for about 30 seconds.', 'Stir constantly.'),
-    (4, 'Pour in the cream and simmer gently.', 'Do not boil too hard.'),
-    (5, 'Add parmesan, salt and black pepper.', 'Stir until smooth.'),
-    (6, 'Add the drained pasta and toss until coated.', 'Loosen with pasta water if needed.')
+    (1, 'Die Pasta in reichlich Salzwasser al dente kochen.', 'Etwas Kochwasser aufheben.'),
+    (2, 'Butter und Olivenöl in einer großen Pfanne erhitzen.', 'Mittlere Hitze reicht aus.'),
+    (3, 'Knoblauch fein hacken und kurz anschwitzen.', 'Er soll nicht braun werden.'),
+    (4, 'Sahne zugießen und kurz köcheln lassen.', 'Nur sanft köcheln, nicht stark kochen.'),
+    (5, 'Parmesan, Salz und schwarzen Pfeffer einrühren.', 'Gut verrühren, bis die Soße cremig ist.'),
+    (6, 'Pasta in die Soße geben und gut vermengen.', 'Bei Bedarf mit Kochwasser verdünnen.')
 ) as s(step_index, text, hint) on true
-where r.slug = 'creamy-garlic-pasta' and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da';
+where r.slug = 'cremige-knoblauch-pasta'
+  and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+on conflict do nothing;
 
--- Chicken Rice Bowl
+-- Hühner Reis Bowl
 insert into recipe_steps (recipe_id, step_index, text, hint)
 select r.id, s.step_index, s.text, s.hint
 from recipes r
 join (
   values
-    (1, 'Cook the rice in vegetable broth until tender.', 'This adds more flavor than plain water.'),
-    (2, 'Season the chicken with paprika, salt and black pepper.', 'Rub the seasoning in well.'),
-    (3, 'Cook the chicken in olive oil until golden and fully cooked.', 'Let it rest before slicing.'),
-    (4, 'Steam or sauté the vegetables until just tender.', 'Keep some bite for texture.'),
-    (5, 'Arrange rice, sliced chicken and vegetables in bowls.', 'Serve immediately.')
+    (1, 'Reis in Gemüsebrühe garen, bis er weich ist.', 'Das gibt mehr Geschmack als Wasser.'),
+    (2, 'Hühnerbrust mit Paprika, Salz und schwarzem Pfeffer würzen.', 'Die Gewürze gut einreiben.'),
+    (3, 'Hühnerbrust in Olivenöl goldbraun braten und durchgaren.', 'Danach kurz ruhen lassen.'),
+    (4, 'Brokkoli, Karotte und Paprikaschote garen oder anbraten.', 'Das Gemüse sollte noch etwas Biss haben.'),
+    (5, 'Reis, Hühnerbrust und Gemüse in Schüsseln anrichten.', 'Am besten sofort servieren.')
 ) as s(step_index, text, hint) on true
-where r.slug = 'chicken-rice-bowl' and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da';
+where r.slug = 'huehner-reis-bowl'
+  and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+on conflict do nothing;
 
--- Vegetable Stir Fry
+-- Gemüsepfanne mit Sojasauce
 insert into recipe_steps (recipe_id, step_index, text, hint)
 select r.id, s.step_index, s.text, s.hint
 from recipes r
 join (
   values
-    (1, 'Cut all vegetables into bite-sized pieces.', 'Try to keep sizes even so they cook evenly.'),
-    (2, 'Mix soy sauce, honey and black pepper in a small bowl.', 'This is the stir fry sauce.'),
-    (3, 'Heat olive oil in a large pan or wok.', 'High heat works best.'),
-    (4, 'Cook onion and garlic briefly, then add the other vegetables.', 'Do not overcrowd the pan.'),
-    (5, 'Stir fry until the vegetables are crisp-tender.', 'A few browned edges are great.'),
-    (6, 'Add the sauce and toss everything together for 1 to 2 minutes.', 'Serve hot.')
+    (1, 'Gemüse in mundgerechte Stücke schneiden.', 'Möglichst gleich groß schneiden.'),
+    (2, 'Sojasauce, Honig und schwarzen Pfeffer verrühren.', 'Das ist die Soße für die Pfanne.'),
+    (3, 'Olivenöl in einer großen Pfanne erhitzen.', 'Die Pfanne sollte gut heiß sein.'),
+    (4, 'Zwiebel und Knoblauch kurz anbraten, dann das übrige Gemüse dazugeben.', 'Nicht zu voll beladen.'),
+    (5, 'Alles unter Rühren braten, bis das Gemüse bissfest ist.', 'Leichte Röstaromen sind ideal.'),
+    (6, 'Die Soße dazugeben und 1 bis 2 Minuten schwenken.', 'Heiß servieren.')
 ) as s(step_index, text, hint) on true
-where r.slug = 'vegetable-stir-fry' and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da';
+where r.slug = 'gemuesepfanne-mit-sojasauce'
+  and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+on conflict do nothing;
 
--- Tomato Mozzarella Pasta Bake
+-- Pasta Auflauf mit Tomate und Mozzarella
 insert into recipe_steps (recipe_id, step_index, text, hint)
 select r.id, s.step_index, s.text, s.hint
 from recipes r
 join (
   values
-    (1, 'Cook the pasta until slightly underdone, then drain.', 'It will finish cooking in the oven.'),
-    (2, 'Sauté garlic in olive oil, then add chopped tomatoes.', 'Cook until the tomatoes soften into a sauce.'),
-    (3, 'Season the sauce with salt and black pepper.', 'Taste before baking.'),
-    (4, 'Mix the pasta with the tomato sauce and place in a baking dish.', 'Spread evenly.'),
-    (5, 'Top with mozzarella, parmesan and basil.', 'Cover the surface well for a nice crust.'),
-    (6, 'Bake until bubbly and golden on top.', 'About 20 minutes at 200°C works well.')
+    (1, 'Die Pasta knapp bissfest kochen und abgießen.', 'Im Ofen gart sie noch nach.'),
+    (2, 'Knoblauch in Olivenöl anbraten und die Tomaten hinzufügen.', 'Die Tomaten weich kochen lassen.'),
+    (3, 'Mit Salz und schwarzem Pfeffer abschmecken.', 'Vor dem Backen kosten.'),
+    (4, 'Pasta mit der Tomatensoße vermischen und in eine Auflaufform geben.', 'Gleichmäßig verteilen.'),
+    (5, 'Mozzarella, Parmesan und Basilikum darübergeben.', 'Die Oberfläche gut bedecken.'),
+    (6, 'Bei 200 Grad backen, bis der Käse geschmolzen und goldbraun ist.', 'Etwa 20 Minuten sind ideal.')
 ) as s(step_index, text, hint) on true
-where r.slug = 'tomato-mozzarella-pasta-bake' and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da';
+where r.slug = 'pasta-auflauf-tomate-mozzarella'
+  and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+on conflict do nothing;
 
--- Chocolate Banana Overnight Oats
+-- Schoko Bananen Overnight Oats
 insert into recipe_steps (recipe_id, step_index, text, hint)
 select r.id, s.step_index, s.text, s.hint
 from recipes r
 join (
   values
-    (1, 'Mash half of the banana in a jar or bowl.', 'This adds natural sweetness.'),
-    (2, 'Add oats, milk, yogurt, cocoa powder and honey.', 'Mix thoroughly.'),
-    (3, 'Cover and chill overnight.', 'At least 6 hours is ideal.'),
-    (4, 'Top with the remaining banana before serving.', 'Great cold, or slightly warmed.')
+    (1, 'Die halbe Banane in einem Glas oder einer Schüssel zerdrücken.', 'So wird es natürlich süßer.'),
+    (2, 'Haferflocken, Milch, Joghurt, Kakaopulver und Honig dazugeben.', 'Alles gut verrühren.'),
+    (3, 'Abdecken und über Nacht kalt stellen.', 'Mindestens 6 Stunden kühlen.'),
+    (4, 'Vor dem Servieren mit der restlichen Banane garnieren.', 'Schmeckt direkt aus dem Kühlschrank.')
 ) as s(step_index, text, hint) on true
-where r.slug = 'chocolate-banana-overnight-oats' and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da';
+where r.slug = 'schoko-bananen-overnight-oats'
+  and r.owner_id = 'c69a8909-8a14-4a38-9c30-1569defee9da'
+on conflict do nothing;
 
 commit;

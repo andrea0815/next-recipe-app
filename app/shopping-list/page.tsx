@@ -21,7 +21,7 @@ export default async function ShoppingListPage() {
       <div className="flex flex-col gap-6 w-full items-center flex-1">
         <PageHeadline>Shopping List</PageHeadline>
 
-        <SectionWrapper customClass="max-w-200 w-full flex flex-col justify-start items-center">
+        <SectionWrapper customClass="max-w-200 w-full flex-1 flex flex-col justify-start items-center">
           <ShoppingList items={ShoppingItems} />
         </SectionWrapper>
       </div>

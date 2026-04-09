@@ -34,7 +34,7 @@ export default function InputFieldText<
         >
             <input
                 type="text"
-                className={`block h-10 w-full p-2 bg-white text-text rounded-lg border border-gray-500 ${customClass ? customClass : ""}`}
+                className={`block h-(--btn-h-sm) w-full p-2 bg-white text-text rounded-lg border border-gray-500 ${customClass ? customClass : ""}`}
                 name={String(name ? name : field)}
                 value={typeof draftValue === "string" ? draftValue : ""}
                 onChange={(e) => updateDraftValue(field, e.target.value)}

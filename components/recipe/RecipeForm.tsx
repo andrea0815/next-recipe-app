@@ -117,7 +117,7 @@ export default function RecipeForm({
                         error={state.errors.image_uri}
                     />
 
-                    <InputMultiSelect
+                    <InputMultiSelect<Category>
                         labelName="Categories"
                         items={categories}
                         selectedIds={draft.category_ids}

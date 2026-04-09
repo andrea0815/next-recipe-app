@@ -81,7 +81,7 @@ export default function StepEditor({
                                 priority="tertiary"
                                 size="small"
                                 onClick={() => switchWithAbove(index)}
-                                color="gray-500 "
+                                color="gray"
                                 customClass="cursor-pointer"
                                 disabled={index === 0}
                             >
@@ -93,10 +93,9 @@ export default function StepEditor({
                                 priority="tertiary"
                                 size="small"
                                 onClick={() => switchWithBelow(index)}
-                                color="gray-500 "
+                                color="gray"
                                 customClass="cursor-pointer"
                                 disabled={index === steps.length - 1}
-
                             >
                                 <IconArrowDown />
                             </Button>

@@ -111,7 +111,7 @@ export default function InputSelectSearchable<
                 <button
                     type="button"
                     onClick={() => (open ? handleClose() : handleOpen())}
-                    className="block h-10 w-full rounded-lg border border-gray-500 bg-white p-2 text-left text-text overflow-clip"
+                    className="block h-(--btn-h-sm) w-full rounded-lg border border-gray-500 bg-white p-2 text-left text-text overflow-clip"
                 >
                     {selectedItem?.name ?? placeholder}
                 </button>

@@ -12,7 +12,9 @@ export default function BackButton() {
     return (
         <Button
             onClick={() => router.back()}
-            priority="tertiary">
+            priority="tertiary"
+            customClass="px-0"
+        >
             <IconBack /> back
         </Button>
     );

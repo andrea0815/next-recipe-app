@@ -8,6 +8,7 @@ import type { RecipeListItem } from '@/types/recipe';
 import RecipeGalleryWrapper from '@/components/containers/RecipeGalleryWrapper';
 import { RecipeListType } from '@/types/general';
 import RecipeListClient from '@/components/recipe/RecipeListClient';
+import SearchPanelServer from '@/components/search/SearchPanelServer';
 
 
 
@@ -34,7 +35,7 @@ export default async function ExplorePage({ searchParams }: { searchParams: Prom
 
     return (
         <RecipeGalleryWrapper>
-            {/* <RecipeList recipes={initialData} type={RecipeListType.EXPLORE}></RecipeList> */}
+            <SearchPanelServer />
             <RecipeListClient
                 key={listKey}
                 initialRecipes={initialData.recipes}

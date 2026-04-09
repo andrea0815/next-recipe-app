@@ -2,6 +2,10 @@
 @import "tailwindcss";
 
 :root {
+  --btn-h-sm: 40px;
+  --btn-h-md: 50px;
+  --btn-h-lg: 60px;
+
   --cream: #f5eeee;
   --white: #ffffff;
   --red: #E5614F;
@@ -29,7 +33,6 @@
 }
 
 @theme {
-
   --color-green-300: var(--green-light2);
   --color-green-400: var(--green-light);
   --color-green-500: var(--green-default);

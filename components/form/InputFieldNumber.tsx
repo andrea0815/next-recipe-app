@@ -32,7 +32,7 @@ export default function InputFieldNumber<TDraft, K extends keyof TDraft>({
                 name={String(name ?? field)}
                 value={draftValue}
                 onChange={(e) => updateDraftValue(field, Number(e.target.value))}
-                className={`block w-full h-10 p-2 bg-white text-text rounded-lg border border-gray-500 ${customClass ? customClass : ""}`}
+                className={`block w-full h-(--btn-h-sm) p-2 bg-white text-text rounded-lg border border-gray-500 ${customClass ? customClass : ""}`}
                 min={min}
                 step={step}
             />

@@ -25,7 +25,11 @@ export default async function ProfileAccountPage() {
                     <UserProfile path='/profile/settings' />
                 </div>
                 <SignOutButton>
-                    <Button color='red w-full'>Sign out</Button>
+                    <Button
+                        color='red'
+                        stretch={true}
+                        customClass='w-full'
+                    >Sign out</Button>
                 </SignOutButton>
             </div>
         </>

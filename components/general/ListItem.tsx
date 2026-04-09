@@ -40,7 +40,7 @@ export default function ListItem({
                     confirmText="Delete"
                     onConfirm={onDeleteAction}
                     trigger={(openConfirm) => (
-                        <Button onClick={openConfirm} color="red-800" priority="tertiary" customClass='p-1'>
+                        <Button onClick={openConfirm} color="red" priority="tertiary" customClass='p-1'>
                             <IconTrash />
                         </Button>
                     )}

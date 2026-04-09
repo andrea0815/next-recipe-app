@@ -3,9 +3,12 @@ import React from 'react';
 
 type ButtonProps = {
     children: any,
-    color?: string,
+    color?: "primary" | "red" | "gray" | "white",
     title?: string,
     stretch?: boolean,
+    xPadding?: boolean,
+    yPadding?: boolean,
+    underline?: boolean,
     disabled?: boolean,
     onClick?: React.MouseEventHandler<HTMLButtonElement>,
     type?: "button" | "submit" | "reset";
@@ -22,6 +25,9 @@ export default function Button({
     onClick,
     type = "button",
     stretch = false,
+    underline = true,
+    xPadding = true,
+    yPadding = true,
     disabled = false,
     size = "medium",
     priority = "primary",
@@ -30,20 +36,56 @@ export default function Button({
 }
     : ButtonProps) {
 
+    const colorToneClasses = {
+        primary: {
+            solid: "bg-primary text-white border-primary",
+            outline: "text-primary bg-transparent border-2 border-primary",
+            ghost: "text-primary fill-primary stroke-primary bg-transparent",
+        },
+        red: {
+            solid: "bg-red-800 text-white border-red-800",
+            outline: "text-red-800 bg-transparent border-2 border-red-800",
+            ghost: "text-red-800 fill-red-800 stroke-red-800 bg-transparent",
+        },
+        white: {
+            solid: "bg-white text-black border-white",
+            outline: "text-white bg-transparent border-2 border-white",
+            ghost: "text-white fill-white stroke-white bg-transparent",
+        },
+        gray: {
+            solid: "bg-gray-500 text-white border-gray-500",
+            outline: "text-gray-500 bg-transparent border-2 border-gray-500",
+            ghost: "text-gray-500 fill-gray-500 stroke-gray-500 bg-transparent",
+        },
+    } as const;
+
     const sizeClasses = {
-        big: "px-6 py-4 text-lg rounded-xl",
-        medium: "px-4 py-3 rounded-lg",
-        small: `text-sm rounded-md ${priority === "tertiary" ? "" : "px-3 py-2"}`
-    }
+        big: `text-lg rounded-xl ${xPadding ? "px-6" : ""} ${yPadding ? "h-[var(--btn-h-lg)]" : ""}`,
+        medium: `rounded-lg ${xPadding ? "px-4" : ""} ${yPadding ? "h-[var(--btn-h-md)]" : ""}`,
+        small: `text-sm rounded-md ${yPadding ? "h-[var(--btn-h-sm)]" : ""} ${priority === "tertiary" ? "" : "px-3 py-2"}`,
+    } as const;
 
-    const colorClasses = {
-        primary: `bg-${color} text-white`,
-        secondary: `text-${color} bg-transparent border-2 border-${color} `,
-        tertiary: `text-${color} fill-${color} stroke-${color} bg-transparent underline underline-offset-4`,
-    }
+    const priorityKeyMap = {
+        primary: "solid",
+        secondary: "outline",
+        tertiary: "ghost",
+    } as const;
 
-    const selectedSizeClasses = sizeClasses[size] || sizeClasses.medium;
-    const selectedPriorityClasses = colorClasses[priority] || colorClasses.primary;
+    const selectedColor = colorToneClasses[color] ?? colorToneClasses.primary;
+    const selectedSize = sizeClasses[size] ?? sizeClasses.medium;
+    const selectedPriority = selectedColor[priorityKeyMap[priority] ?? "solid"];
+
+    const underlineClasses =
+        priority === "tertiary" && !underline
+            ? "underline underline-offset-4"
+            : "";
+
+    const className = [
+        selectedPriority,
+        selectedSize,
+        underlineClasses,
+        `transition-all text-center flex justify-center items-center gap-2 ${stretch ? "w-full" : ""} ${disabled ? "opacity-30" : "cursor-pointer"} ${customClass}`,
+    ].join(" ");
 
     return (
         href === "" ? (
@@ -52,13 +94,13 @@ export default function Button({
                 type={type}
                 title={title}
                 disabled={disabled}
-                className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} transition-all text-center flex justify-center items-center gap-2 ${disabled ? "opacity-30" : "cursor-pointer"} ${customClass}`}>
+                className={className}>
                 {children}
             </button>
         ) : (
             <Link
                 href={href ? href : ""}
-                className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} transition-all text-center ${disabled ? "opacity-30" : "cursor-pointer"} ${customClass}`}>
+                className={className}>
                 {children}
             </Link>
         )

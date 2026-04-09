@@ -20,7 +20,7 @@ export default function DeleteButton({ itemId }: { itemId: string }) {
             confirmText="Delete"
             onConfirm={removeById.bind(null, itemId)}
             trigger={(openConfirm) => (
-                <Button onClick={openConfirm} color="red-800" size='small' priority="secondary">
+                <Button onClick={openConfirm} color="red" size='small' priority="secondary">
                     <IconTrash /> Delete Recipe
                 </Button>
             )}

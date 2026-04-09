@@ -12,8 +12,7 @@ import InputWrapper from "../form/InputWrapper";
 import Switch from "../form/Switch";
 import Button from "../buttons/Button";
 import InputFieldNumber from "../form/InputFieldNumber";
-import InputSelect from "../form/InputSelect";
-import InputSearchableSelect from "../form/InputSearchableSelect";
+import InputSelectSearchable from "../form/InputSelectSearchable";
 
 export default function IngredientEditor({
   state,
@@ -169,7 +168,7 @@ export default function IngredientEditor({
                 customClass="w-full sm:basis-[12%] sm:shrink-0 min-w-15"
               />
 
-              <InputSearchableSelect<RecipeLineDraft, "unit_id", typeof units[number]>
+              <InputSelectSearchable<RecipeLineDraft, "unit_id", typeof units[number]>
                 items={units}
                 field="unit_id"
                 labelName="Unit"
@@ -179,7 +178,7 @@ export default function IngredientEditor({
                 customClass="w-full sm:basis-[20%] shrink-0"
               />
 
-              <InputSearchableSelect<RecipeLineDraft, "ingredient_id", typeof ingredients[number]>
+              <InputSelectSearchable<RecipeLineDraft, "ingredient_id", typeof ingredients[number]>
                 items={ingredients}
                 field="ingredient_id"
                 labelName="Ingredient"

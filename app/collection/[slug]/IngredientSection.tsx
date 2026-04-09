@@ -35,7 +35,7 @@ export default function IngredientSection({
         <>
             <h2 className='text-2xl font-bold'>Portionen</h2>
 
-            <div className='flex gap-2 items-center my-4'>
+            <div className='flex gap-2 items-stretch my-4 h-[var(--btn-h-sm)]'>
                 <Button
                     onClick={subtractPortion}
                     size='small'
@@ -43,7 +43,7 @@ export default function IngredientSection({
                 >
                     -
                 </Button>
-                <p className='w-10 text-center bg-white p-1 rounded-md'>{portionsDisplay.toString()}</p>
+                <p className='w-10 flex justify-center items-center bg-white p-1 rounded-md'>{portionsDisplay.toString()}</p>
                 <Button
                     onClick={addPortion}
                     size='small'

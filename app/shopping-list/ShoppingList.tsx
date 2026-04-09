@@ -17,13 +17,7 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
     const sortedItems: ShoppingListEntry[] = getSortedItems(items);
     const [toBeRemovedKeys, setToBeRemovedKeys] = useState<Set<string>>(new Set());
 
-    if (items.length === 0) {
-        return (
-            <p className="text-center text-gray-500 self-center">
-                Your shopping list is empty.
-            </p>
-        );
-    }
+
 
     const getEntryKey = (entry: ShoppingListEntry) => {
         if (entry.type === "single") {
@@ -109,6 +103,14 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
             return next;
         });
     };
+
+    if (items.length === 0) {
+        return (
+            <p className="text-center flex-1 text-gray-500 flex justify-center items-center">
+                Your shopping list is empty.
+            </p>
+        );
+    }
 
     return (
         <form action={removeCheckedShoppingItems} className="w-full flex flex-col gap-4">
