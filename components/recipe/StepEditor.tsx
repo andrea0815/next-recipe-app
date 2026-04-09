@@ -56,13 +56,13 @@ export default function StepEditor({
 
     function switchWithAbove(index: number): void {
         console.log("HIER");
-        
+
         if (index === 0) return;
         onChange(swapElements(steps, index, index - 1));
     }
 
     function switchWithBelow(index: number): void {
-                console.log("Nicht");
+        console.log("Nicht");
 
         if (index === steps.length + 1) return;
         onChange(swapElements(steps, index, index + 1));
@@ -76,21 +76,30 @@ export default function StepEditor({
                     <div className="flex flex-col justify-center items-center py-2">
 
                         <div className="flex-1 flex flex-col justify-start text-center">
-                            <button
+                            <Button
                                 type="button"
+                                priority="tertiary"
+                                size="small"
                                 onClick={() => switchWithAbove(index)}
-                                className="text-gray-500 cursor-pointer"
+                                color="gray-500 "
+                                customClass="cursor-pointer"
+                                disabled={index === 0}
                             >
                                 <IconArrowUp />
-                            </button>
+                            </Button>
                             <p className="font-bold text-lg">{index + 1}</p>
-                            <button
+                            <Button
                                 type="button"
+                                priority="tertiary"
+                                size="small"
                                 onClick={() => switchWithBelow(index)}
-                                className="text-gray-500 cursor-pointer"
+                                color="gray-500 "
+                                customClass="cursor-pointer"
+                                disabled={index === steps.length - 1}
+
                             >
                                 <IconArrowDown />
-                            </button>
+                            </Button>
                         </div>
                         <button
                             type="button"
@@ -140,11 +149,14 @@ export default function StepEditor({
                     </div>
 
                 </div>
-            ))}
+            ))
+            }
 
-            {steps.length === 0 && (
-                <p className="text-text/70 text-sm text-center m-6">No steps added yet.</p>
-            )}
+            {
+                steps.length === 0 && (
+                    <p className="text-text/70 text-sm text-center m-6">No steps added yet.</p>
+                )
+            }
 
             <Button
                 type="button"
@@ -157,6 +169,6 @@ export default function StepEditor({
             </Button>
 
 
-        </div>
+        </div >
     );
 }

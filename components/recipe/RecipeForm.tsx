@@ -20,6 +20,8 @@ import InputFieldNumber from '../form/InputFieldNumber';
 import Button from '../buttons/Button';
 import AddIngredientPanel from '../ingredient/AddIngredientPanel';
 import IconAdd from '../icons/IconAdd';
+import SectionWrapper from '../containers/SectionWrapper';
+import SectionHeadline from '../typography/SectionHeadline';
 
 
 
@@ -78,95 +80,107 @@ export default function RecipeForm({
         <>
             <form
                 action={formAction}
-                className='w-full flex flex-col gap-4'
+                className='w-full max-w-200 flex flex-col gap-4 justify-center items-center'
             >
+                <SectionWrapper customClass='w-full max-w-200 flex flex-col gap-4'>
+                    <SectionHeadline>General</SectionHeadline>
 
-                <InputFieldText<RecipeDraft, "name">
-                    field="name"
-                    labelName="Name"
-                    draftValue={draft.name}
-                    updateDraftValue={updateDraft}
-                    error={state.errors.name}
-                />
-
-                <InputFieldText<RecipeDraft, "subtitle">
-                    field="subtitle"
-                    labelName="Subtitle"
-                    draftValue={draft.subtitle}
-                    updateDraftValue={updateDraft}
-                    error={state.errors.subtitle}
-                />
-
-                <InputWrapper labelName='Should this recipe be public?'>
-                    <Switch
-                        checked={draft.is_public}
-                        name="is_public"
-                        onChange={(checked) => updateDraft("is_public", checked)}
+                    <InputFieldText<RecipeDraft, "name">
+                        field="name"
+                        labelName="Name"
+                        draftValue={draft.name}
+                        updateDraftValue={updateDraft}
+                        error={state.errors.name}
                     />
-                </InputWrapper>
 
-                <InputFieldText<RecipeDraft, "image_uri">
-                    field="image_uri"
-                    labelName="Image"
-                    draftValue={draft.image_uri}
-                    updateDraftValue={updateDraft}
-                    error={state.errors.image_uri}
-                />
+                    <InputFieldText<RecipeDraft, "subtitle">
+                        field="subtitle"
+                        labelName="Subtitle"
+                        draftValue={draft.subtitle}
+                        updateDraftValue={updateDraft}
+                        error={state.errors.subtitle}
+                    />
 
-                <InputMultiSelect
-                    labelName="Categories"
-                    items={categories}
-                    selectedIds={draft.category_ids}
-                    onChange={(ids) => updateDraft("category_ids", ids)}
-                />
+                    <InputWrapper labelName='Should this recipe be public?'>
+                        <Switch
+                            checked={draft.is_public}
+                            name="is_public"
+                            onChange={(checked) => updateDraft("is_public", checked)}
+                        />
+                    </InputWrapper>
 
-                <h2 className="text-text text-lg font-semibold mt-10 pt-4 border-t border-gray-400">Ingredients</h2>
+                    <InputFieldText<RecipeDraft, "image_uri">
+                        field="image_uri"
+                        labelName="Image"
+                        draftValue={draft.image_uri}
+                        updateDraftValue={updateDraft}
+                        error={state.errors.image_uri}
+                    />
 
-                <InputFieldNumber<RecipeDraft, "portions">
-                    labelName="Portions"
-                    field="portions"
-                    draftValue={draft.portions}
-                    updateDraftValue={updateDraft}
-                    min={1}
-                    step={1}
-                    error={state.errors.portions}
-                />
+                    <InputMultiSelect
+                        labelName="Categories"
+                        items={categories}
+                        selectedIds={draft.category_ids}
+                        onChange={(ids) => updateDraft("category_ids", ids)}
+                    />
+                </SectionWrapper>
 
-                <IngredientEditor
-                    state={state}
-                    ingredients={ingredients}
-                    units={units}
-                    groups={draft.groups}
-                    groupsEnabled={draft.groups_enabled}
-                    addButton={
-                        <div className='w-full px-2 pt-2'>
-                            <Button
-                                type="button"
-                                priority='secondary'
-                                size='small'
-                                stretch={true}
-                                onClick={() => addIngredientPanelRef.current?.open()}
-                            >
-                                <IconAdd />  Add
-                            </Button>
-                        </div>
-                    }
-                    onGroupsChange={(groups) => updateDraft("groups", groups)}
-                    onGroupsEnabledChange={(enabled) => updateDraft("groups_enabled", enabled)}
-                />
+                <SectionWrapper customClass='w-full max-w-200 flex flex-col gap-4'>
 
-                <h2 className="text-text text-lg font-semibold mt-10 pt-4 border-t border-gray-400">Steps</h2>
+                    <SectionHeadline>Ingredients</SectionHeadline>
 
-                <StepEditor
-                    state={state}
-                    steps={draft.steps}
-                    onChange={(steps) => updateDraft("steps", steps)}
-                />
+                    <InputFieldNumber<RecipeDraft, "portions">
+                        labelName="Portions"
+                        field="portions"
+                        draftValue={draft.portions}
+                        updateDraftValue={updateDraft}
+                        min={1}
+                        step={1}
+                        error={state.errors.portions}
+                    />
+
+                    <IngredientEditor
+                        state={state}
+                        ingredients={ingredients}
+                        units={units}
+                        groups={draft.groups}
+                        groupsEnabled={draft.groups_enabled}
+                        addButton={
+                            <div className='w-full px-2 pt-2'>
+                                <Button
+                                    type="button"
+                                    priority='secondary'
+                                    size='small'
+                                    stretch={true}
+                                    onClick={() => addIngredientPanelRef.current?.open()}
+                                >
+                                    <IconAdd />  Add
+                                </Button>
+                            </div>
+                        }
+                        onGroupsChange={(groups) => updateDraft("groups", groups)}
+                        onGroupsEnabledChange={(enabled) => updateDraft("groups_enabled", enabled)}
+                    />
+                </SectionWrapper>
+
+                <SectionWrapper customClass='w-full max-w-200 flex flex-col gap-4'>
+
+
+                    <SectionHeadline>Steps</SectionHeadline>
+
+                    <StepEditor
+                        state={state}
+                        steps={draft.steps}
+                        onChange={(steps) => updateDraft("steps", steps)}
+                    />
+                </SectionWrapper>
+
 
                 <Button
                     type="submit"
                     size='big'
                     customClass=''
+                    stretch={true}
                     disabled={
                         isPending ||
                         Object.keys(state.errors).length > 0 ||
