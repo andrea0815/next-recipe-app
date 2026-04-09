@@ -30,8 +30,13 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
     return (
         <>
             <RecipeGalleryWrapper>
-                <Button href='/collection/create'>Create new Recipe</Button>
-                <SearchPanelServer />
+                <div className='flex flex-col gap-2'>
+                    <SearchPanelServer />
+                    <Button
+                        href='/collection/create'
+                        customClass='h-[74px]'
+                    >Create new Recipe</Button>
+                </div>
                 <RecipeListClient
                     key={listKey}
                     initialRecipes={initialData.recipes}

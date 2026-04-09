@@ -37,7 +37,7 @@ export default function SearchPanel({
     }
 
     return (
-        <div className='relative h-20 w-full my-5 flex justify-center items-start'>
+        <div className='relative h-20 w-full sm:my-5 flex justify-center items-start'>
             <div className='absolute left-1/2 top-0 -translate-x-1/2 z-5 flex flex-col justify-start items-center rounded-xl w-full sm:max-w-200'>
                 <SearchBar onFilterClick={() => setOpen((prev) => !prev)} isOpen={open} query={searchParams.query} onQueryChange={(query) => updateSearchParams("query", query)} />
                 <SearchPanelContent
