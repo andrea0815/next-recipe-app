@@ -136,11 +136,11 @@ export default function IngredientEditor({
       </InputWrapper>
 
       {(groupsEnabled ? groups : [groups[0]]).map((group, index) => (
-        <div key={index} className="bg-gray-300 p-4 rounded-2xl flex flex-col">
+        <div key={index} className="border border-gray-500 p-4 rounded-2xl flex flex-col">
 
           {groupsEnabled &&
 
-            <div className="border-b border-b-gray-500 pb-6 mb-4">
+            <div className=" mb-4">
 
               <InputFieldText<RecipeGroupDraft, "group_name">
                 field="group_name"
@@ -156,7 +156,7 @@ export default function IngredientEditor({
 
           <div className="mb-4 flex flex-col gap-2">
             {/* Draft input row */}
-            <div className="flex sm:flex-row flex-col gap-2 items-end justify-between bg-gray-200 px-2 py-3 rounded-lg">
+            <div className="flex sm:flex-row flex-col gap-2 items-end justify-between bg-gray-300 px-2 py-3 rounded-lg">
 
               <InputFieldNumber<RecipeLineDraft, "amount">
                 labelName="Amount"
@@ -166,7 +166,7 @@ export default function IngredientEditor({
                 min={0}
                 step={0.1}
                 error={state?.errors?.amounts}
-                customClass="w-full sm:w-[10%]  min-w-15 flex-shrink"
+                customClass="w-full sm:basis-[12%] sm:shrink-0 min-w-15"
               />
 
               <InputSearchableSelect<RecipeLineDraft, "unit_id", typeof units[number]>

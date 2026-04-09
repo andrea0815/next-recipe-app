@@ -6,7 +6,7 @@ export default function FormSection({ children, headline }: { children: any, hea
     return (
         <div className='w-full flex flex-col justify-center items-center'>
                 <PageHeadline>{headline}</PageHeadline>
-                <SectionWrapper customClass='w-full flex justify-center items-center'>
+                <SectionWrapper customClass='w-full max-w-200 flex justify-center items-center'>
                     {children}
                 </SectionWrapper>
         </div>

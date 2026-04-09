@@ -78,7 +78,7 @@ export default function RecipeForm({
         <>
             <form
                 action={formAction}
-                className='w-full max-w-[600px] flex flex-col gap-4'
+                className='w-full flex flex-col gap-4'
             >
 
                 <InputFieldText<RecipeDraft, "name">
@@ -131,18 +131,6 @@ export default function RecipeForm({
                     step={1}
                     error={state.errors.portions}
                 />
-
-                <div>
-                    <Button
-                        type="button"
-                        priority='secondary'
-                        size='small'
-                        stretch={true}
-                        onClick={() => addIngredientPanelRef.current?.open()}
-                    >
-                        <IconAdd />  Add Ingredient
-                    </Button>
-                </div>
 
                 <IngredientEditor
                     state={state}

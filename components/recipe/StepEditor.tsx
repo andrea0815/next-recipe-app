@@ -48,6 +48,26 @@ export default function StepEditor({
         );
     }
 
+    const swapElements = <T,>(array: T[], index1: number, index2: number): T[] => {
+        const newArray = [...array];
+        [newArray[index1], newArray[index2]] = [newArray[index2], newArray[index1]];
+        return newArray;
+    };
+
+    function switchWithAbove(index: number): void {
+        console.log("HIER");
+        
+        if (index === 0) return;
+        onChange(swapElements(steps, index, index - 1));
+    }
+
+    function switchWithBelow(index: number): void {
+                console.log("Nicht");
+
+        if (index === steps.length + 1) return;
+        onChange(swapElements(steps, index, index + 1));
+    }
+
     return (
         <div className="space-y-3 flex flex-col justify-end">
 
@@ -58,16 +78,16 @@ export default function StepEditor({
                         <div className="flex-1 flex flex-col justify-start text-center">
                             <button
                                 type="button"
-                                onClick={() => removeStep}
-                                className="text-gray-500"
+                                onClick={() => switchWithAbove(index)}
+                                className="text-gray-500 cursor-pointer"
                             >
                                 <IconArrowUp />
                             </button>
                             <p className="font-bold text-lg">{index + 1}</p>
                             <button
                                 type="button"
-                                onClick={() => removeStep}
-                                className="text-gray-500"
+                                onClick={() => switchWithBelow(index)}
+                                className="text-gray-500 cursor-pointer"
                             >
                                 <IconArrowDown />
                             </button>
