@@ -26,6 +26,17 @@ export async function getUserRecipes({
                 OR: [
                     { name: { contains: query, mode: "insensitive" } },
                     { subtitle: { contains: query, mode: "insensitive" } },
+
+                    { users: { username: { contains: query, mode: "insensitive" } } },
+                    {
+                        recipe_categories: {
+                            some: {
+                                categories: {
+                                    name: { contains: query, mode: "insensitive" },
+                                },
+                            },
+                        },
+                    },
                 ],
             }),
             ...(categoryIds && categoryIds.length > 0 && {
@@ -116,6 +127,17 @@ export async function getOtherRecipes({
                 OR: [
                     { name: { contains: query, mode: "insensitive" } },
                     { subtitle: { contains: query, mode: "insensitive" } },
+
+                    { users: { username: { contains: query, mode: "insensitive" } } },
+                    {
+                        recipe_categories: {
+                            some: {
+                                categories: {
+                                    name: { contains: query, mode: "insensitive" },
+                                },
+                            },
+                        },
+                    },
                 ],
             }),
             ...(categoryIds && categoryIds.length > 0 && {
@@ -244,13 +266,12 @@ export async function getRecipeBySlug(slug: string, userId?: string) {
         portions: Number(recipe.portions),
         recipe_ingredients: recipe.recipe_ingredients.map((ingredient) => {
             const { shoppinglists, ...rest } = ingredient;
-
             return {
                 ...rest,
                 amount: Number(ingredient.amount),
                 on_shopping_list: userId ? shoppinglists.length > 0 : false,
             };
-        }),
+        })
     };
 }
 

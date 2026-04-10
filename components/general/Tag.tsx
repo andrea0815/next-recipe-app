@@ -3,17 +3,15 @@ import React from 'react';
 
 type TagProps = {
     children: any,
-    color?: string,
+    color?: "primary" | "red" | "gray" | "white",
     title?: string,
     stretch?: boolean,
-    disabled?: boolean,
     onClick?: () => void,
     type?: "button" | "submit" | "reset";
     priority?: "primary" | "secondary" | "tertiary";
     size?: "big" | "medium" | "small";
     href?: string | null;
     customClass?: string;
-    isInverted?: boolean;
 }
 
 export default function Tag({
@@ -23,35 +21,65 @@ export default function Tag({
     onClick,
     type = "button",
     stretch = false,
-    disabled = false,
     size = "small",
     priority = "primary",
     href = "",
     customClass = "",
-    isInverted = false,
 }
     : TagProps) {
 
+    const isClickable = href !== "" || !!onClick;
+    
+    const colorToneClasses = {
+        primary: {
+            solid: `bg-primary text-white border-primary border-2 ${isClickable ? "hover:bg-primaryOn" : ""}`,
+            outline: `text-primary bg-transparent border-2 border-primary  ${isClickable ? "hover:bg-primary hover:text-white" : ""}`,
+            ghost: `text-primary fill-primary stroke-primary bg-transparent ${isClickable ? "hover:text-primaryOn" : ""}`,
+        },
+        red: {
+            solid: `bg-red text-white border-red border-2 ${isClickable ? "hover:bg-redOn" : ""}`,
+            outline: `text-red bg-transparent border-2 border-red ${isClickable ? "hover:bg-red hover:text-white" : ""}`,
+            ghost: `text-red fill-red stroke-red bg-transparent${isClickable ? "hover:text-redOn" : ""}`,
+        },
+        white: {
+            solid: `bg-white text-text border-white border-2 ${isClickable ? "hover:bg-gray-300 hover:border-gray-300" : ""}`,
+            outline: `text-white bg-transparent border-2 border-white ${isClickable ? "hover:bg-gray-300 hover:border-gray-300 hover:text-text" : ""}`,
+            ghost: `text-white fill-white stroke-white bg-transparent ${isClickable ? "hover:text-gray-300" : ""}`,
+        },
+        gray: {
+            solid: `bg-gray-500 text-white border-gray-500 border-2 ${isClickable ? "hover:bg-gray-800" : ""}`,
+            outline: `text-gray-500 bg-transparent border-2 border-gray-500 ${isClickable ? "hover:bg-gray-500 hover:text-white" : ""}`,
+            ghost: `text-gray-500 fill-gray-500 stroke-gray-500 bg-transparent ${isClickable ? "hover:text-gray-800" : ""}`,
+        },
+    } as const;
+
     const sizeClasses = {
-        big: "px-5 py-3 text-lg ",
-        medium: "px-4 py-2",
-        small: "px-3 py-1 text-sm"
-    }
+        big: `text-lg rounded-full px-6 py-3`,
+        medium: `rounded-full px-3 py-1`,
+        small: `text-sm rounded-full px-2`,
+    } as const;
 
-    const colorClasses = {
-        primary: `bg-${isInverted ? 'white' : color} text-${isInverted ? color : 'white'}`,
-        secondary: `text-${color} bg-transparent border-2 border-${color} `,
-        tertiary: `text-${color} fill-${color} stroke-${color} bg-transparent underline underline-offset-4`,
-    }
+    const priorityKeyMap = {
+        primary: "solid",
+        secondary: "outline",
+        tertiary: "ghost",
+    } as const;
 
-    const selectedSizeClasses = sizeClasses[size] || sizeClasses.medium;
-    const selectedPriorityClasses = colorClasses[priority] || colorClasses.primary;
+    const selectedColor = colorToneClasses[color] ?? colorToneClasses.primary;
+    const selectedSize = sizeClasses[size] ?? sizeClasses.medium;
+    const selectedPriority = selectedColor[priorityKeyMap[priority] ?? "solid"];
+
+    const className = [
+        selectedPriority,
+        selectedSize,
+        `transition-all text-center flex justify-center items-center gap-2 ${stretch ? "w-full" : ""} ${customClass}`,
+    ].join(" ");
 
     return (
         href === "" && onClick === undefined ? (
             <span
                 title={title}
-                className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} rounded-full whitespace-nowrap transition-all cursor-pointer${disabled ? "opacity-50" : ""} ${customClass}`}
+                className={className}
             >
                 {children}
             </span>
@@ -62,8 +90,7 @@ export default function Tag({
                     onClick={onClick}
                     type={type}
                     title={title}
-                    disabled={disabled}
-                    className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} rounded-full whitespace-nowrap transition-all cursor-pointer ${disabled ? "opacity-50" : ""} ${customClass}`}>
+                    className={className + "cursor-pointer"}>
                     {children}
                 </button>
             ) : (
@@ -71,7 +98,7 @@ export default function Tag({
                     href={href ? href : ""}
                     title={title}
                     onClick={onClick}
-                    className={`${selectedPriorityClasses} ${selectedSizeClasses} ${stretch ? "w-full" : ""} rounded-full whitespace-nowrap transition-all cursor-pointer ${disabled ? "opacity-50" : ""} ${customClass}`}>
+                    className={className + "cursor-pointer"}>
                     {children}
                 </Link>
             ))

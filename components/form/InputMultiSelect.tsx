@@ -2,6 +2,8 @@ import InputWrapper from "./InputWrapper";
 import Chip from "@/components/general/Chip";
 import { useMemo, useState } from "react";
 import InputSelectSearchable from "./InputSelectSearchable";
+import Tag from "../general/Tag";
+import IconClose from "../icons/IconClose";
 
 type SelectItem = {
   id: string;
@@ -99,11 +101,14 @@ export default function InputMultiSelect<
       {selected.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-2">
           {selected.map((item, index) => (
-            <Chip
+            <Tag
               key={`${String(item[valueKey])}-${index}`}
-              text={String(item[labelKey])}
+              color="white"
+              size="medium"
               onClick={() => remove(item[valueKey])}
-            />
+            >
+              <IconClose /> {String(item[labelKey])}
+            </Tag>
           ))}
         </div>
       )}

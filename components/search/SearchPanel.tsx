@@ -24,7 +24,7 @@ export default function SearchPanel({
     const ingredientNames = params.getAll("ingredients");
 
     const initialSearchParams = {
-        query: query ?? "",
+        query: "",
         category: category ?? "",
         ingredient_names: ingredientNames,
     }
@@ -32,7 +32,6 @@ export default function SearchPanel({
     const [open, setOpen] = useState(false)
     const [searchParams, setSearchParams] = useState<SearchParams>(initialSearchParams)
 
-    console.log(searchParams);
 
     useEffect(() => {
         setSearchParams({
@@ -54,6 +53,25 @@ export default function SearchPanel({
     }
 
     function handleClearButton() {
+
+        const params = new URLSearchParams();
+
+        if (searchParams.query?.trim()) {
+            params.set("query", "");
+        }
+
+        if (searchParams.category?.trim()) {
+            params.set("category", "");
+        }
+
+        if (searchParams.ingredient_names.length > 0) {
+            params.set("ingredients", "");
+        }
+
+        setOpen(false);
+
+        const queryString = params.toString();
+        router.push(queryString ? `${pathname}?${queryString}` : pathname);
         setSearchParams(initialSearchParams);
     }
 
@@ -98,7 +116,7 @@ export default function SearchPanel({
     return (
         <div className='relative h-20 w-full sm:my-5 flex justify-center items-start'>
             <div className='absolute left-1/2 top-0 -translate-x-1/2 z-5 flex flex-col justify-start items-center rounded-xl w-full sm:max-w-200'>
-                <SearchBar onFilterClick={() => setOpen((prev) => !prev)} isOpen={open} query={searchParams.query} onSearchClick={handleQuerySearchButton} onQueryChange={(query) => updateSearchParams("query", query)} />
+                <SearchBar onFilterClick={() => setOpen((prev) => !prev)} isOpen={open} searchParams={searchParams} onSearchClick={handleQuerySearchButton} onQueryChange={(query) => updateSearchParams("query", query)} />
                 <SearchPanelContent
                     isOpen={open}
                     ingredients={ingredients}

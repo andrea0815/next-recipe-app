@@ -4,6 +4,7 @@ import InputSelectSearchable from '../form/InputSelectSearchable';
 import InputMultiSelect from '../form/InputMultiSelect';
 import SectionHeadline from '../typography/SectionHeadline';
 import Button from '../buttons/Button';
+import IconSearch from '../icons/IconSearch';
 
 export default function SearchPanelContent({
     isOpen = true,
@@ -60,7 +61,7 @@ export default function SearchPanelContent({
                     stretch={true}
                     onClick={handleSearchButton}
                 >
-                    Search with Filters
+                    <IconSearch /> Search with Filters
                 </Button>
             </div>
         </div>

@@ -35,7 +35,7 @@ export default function TabBarItem({ children, href, text }: TabBarItemProps) {
             className="px-1 py-2 text-sm whitespace-nowrap"
         >
             {children}
-            <p className={`py-2 px-3 ${isActive ? "text-text bg-gray-200 rounded-full" : "text-text-light"}`}>
+            <p className={`py-2 px-3 ${isActive ? "text-text bg-gray-200 rounded-full" : "text-text-light"} transition-colors hover:text-text hover:bg-gray-200 hover:rounded-full`}>
                 {text}
             </p>
         </Link>

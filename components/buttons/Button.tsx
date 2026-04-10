@@ -13,7 +13,7 @@ type ButtonProps = {
     onClick?: React.MouseEventHandler<HTMLButtonElement>,
     type?: "button" | "submit" | "reset";
     priority?: "primary" | "secondary" | "tertiary";
-    size?: "big" | "medium" | "small";
+    size?: "huge" | "big" | "medium" | "small";
     href?: string | null;
     customClass?: string;
 }
@@ -38,29 +38,30 @@ export default function Button({
 
     const colorToneClasses = {
         primary: {
-            solid: "bg-primary text-white border-primary border-2 border-transparent",
-            outline: "text-primary bg-transparent border-2 border-primary",
+            solid: "bg-primary text-white border-primary border-2 hover:bg-primaryOn",
+            outline: "text-primary bg-transparent border-2 border-primary hover:bg-primary hover:text-white",
             ghost: "text-primary fill-primary stroke-primary bg-transparent",
         },
         red: {
-            solid: "bg-red-800 text-white border-red-800 border-2 border-transparent",
-            outline: "text-red-800 bg-transparent border-2 border-red-800",
-            ghost: "text-red-800 fill-red-800 stroke-red-800 bg-transparent",
+            solid: "bg-red text-white border-red border-2 hover:bg-redOn",
+            outline: "text-red bg-transparent border-2 border-red hover:bg-red hover:text-white",
+            ghost: "text-red fill-red stroke-red bg-transparent",
         },
         white: {
-            solid: "bg-white text-black border-white border-2 border-transparent",
-            outline: "text-white bg-transparent border-2 border-white",
-            ghost: "text-white fill-white stroke-white bg-transparent",
+            solid: "bg-white text-black border-white border-2 hover:bg-gray-400 hover:text-white",
+            outline: "text-white bg-transparent border-2 border-white hover:bg-gray-400 hover:text-text",
+            ghost: "text-white fill-white stroke-white bg-transparent hover:text-gray-400",
         },
         gray: {
-            solid: "bg-gray-500 text-white border-gray-500 border-2 border-transparent",
-            outline: "text-gray-500 bg-transparent border-2 border-gray-500",
+            solid: "bg-gray-500 text-white border-gray-500 border-2",
+            outline: "text-gray-500 bg-transparent border-2 border-gray-500 hover:bg-gray-500 hover:text-white",
             ghost: "text-gray-500 fill-gray-500 stroke-gray-500 bg-transparent",
         },
     } as const;
 
     const sizeClasses = {
-        big: `text-lg rounded-xl ${xPadding ? "px-6" : ""} ${yPadding ? "h-[var(--btn-h-lg)]" : ""}`,
+        huge: `text-md rounded-xl ${xPadding ? "px-6" : ""} ${yPadding ? "h-[74px]" : ""}`,
+        big: `text-md rounded-xl ${xPadding ? "px-6" : ""} ${yPadding ? "h-[var(--btn-h-lg)]" : ""}`,
         medium: `rounded-lg ${xPadding ? "px-4" : ""} ${yPadding ? "h-[var(--btn-h-md)]" : ""}`,
         small: `text-sm rounded-md ${yPadding ? "h-[var(--btn-h-sm)]" : ""} ${priority === "tertiary" ? "" : "px-3 py-2"}`,
     } as const;

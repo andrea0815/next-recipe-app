@@ -10,7 +10,9 @@
   --white: #ffffff;
   --red: #E5614F;
   --red-dark: #c53320;
+  --red-dark2: rgb(147, 38, 23);
   --green-dark: #113415;
+  --green-dark2: #1a441f;
   --green-default: #26622D;
   --green-light: #859E88;
   --green-light2: #bad1bd;
@@ -36,12 +38,13 @@
   --color-green-300: var(--green-light2);
   --color-green-400: var(--green-light);
   --color-green-500: var(--green-default);
+  --color-green-700: var(--green-dark2);
   --color-green-800: var(--green-dark);
 
   --color-white: var(--white);
   --color-cream: var(--gray-100);
-  --color-red: var(--red);
-  --color-red-800: var(--red-dark);
+  --color-red: var(--red-dark);
+  --color-redOn: var(--red-dark2);
 
   --color-gray-100: var(--gray-100);
   --color-gray-200: var(--gray-200);
@@ -58,19 +61,15 @@
   --color-text: var(--color-green-800);
   --color-text-light: var(--color-green-400);
   --color-light: var(--color-green-300);
+  --color-primaryLight: var(--color-green-300);
   --color-primary: var(--color-green-500);
+  --color-primaryOn: var(--color-green-700);
 
   --color-error: var(--color-red-800);
 
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
 }
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #f0ece9;
-  }
-} */
 
 @layer base {
   * {
@@ -79,7 +78,7 @@
   }
 
   * :focus-visible {
-    @apply outline-primary outline-2 outline-offset-2;
+    @apply outline-primary outline-2 -outline-offset-4;
   }
 
   .no-scrollbar {

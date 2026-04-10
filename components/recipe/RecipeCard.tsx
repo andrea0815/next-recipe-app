@@ -50,12 +50,12 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
                             <Tag
                                 key={category.id}
                                 customClass="text-xs"
+                                color='white'
                                 href={
                                     type === RecipeListType.COLLECTION ?
                                         `/collection?category=${category.name}` :
                                         `/explore?category=${category.name}`
                                 }
-                                isInverted={true}
                             > {category.name}</Tag>
                         ))
                         }

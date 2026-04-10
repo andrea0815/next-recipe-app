@@ -9,6 +9,8 @@ import { RecipeListType } from '@/types/general';
 import RecipeListClient from '@/components/recipe/RecipeListClient';
 import SearchPanelServer from '@/components/search/SearchPanelServer';
 import Link from 'next/link';
+import IconAdd from '@/components/icons/IconAdd';
+import Button from '@/components/buttons/Button';
 
 export default async function CollectionPage({ searchParams }: { searchParams: Promise<{ category: string, ingredients?: string | string[], query: string }> }) {
 
@@ -51,12 +53,20 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
         <>
             <RecipeGalleryWrapper>
                 <div className='flex flex-col items-center gap-2 sm:max-w-150 w-full'>
-                    <SearchPanelServer/>
-                    <Link
-                        href='/collection/create'
-                        className='w-full h-30 flex justify-center items-center rounded-xl border-2 font-semibold border-primary'>
-                        Create new Recipe
-                    </Link>
+                    <Button
+                        href="/collection/create"
+                        customClass="flex md:hidden w-full"
+                        size='huge'
+                    >
+                        <IconAdd /> Create new Recipe
+                    </Button>
+                    <Button
+                        href="/collection/create"
+                        customClass="fixed z-10 top-6 right-6 w-fit md:flex hidden"
+                    >
+                        <IconAdd /> Create new Recipe
+                    </Button>
+                    <SearchPanelServer />
                 </div>
                 <RecipeListClient
                     key={listKey}
