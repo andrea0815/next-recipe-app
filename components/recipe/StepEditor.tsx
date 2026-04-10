@@ -55,15 +55,11 @@ export default function StepEditor({
     };
 
     function switchWithAbove(index: number): void {
-        console.log("HIER");
-
         if (index === 0) return;
         onChange(swapElements(steps, index, index - 1));
     }
 
     function switchWithBelow(index: number): void {
-        console.log("Nicht");
-
         if (index === steps.length + 1) return;
         onChange(swapElements(steps, index, index + 1));
     }

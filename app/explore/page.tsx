@@ -1,9 +1,8 @@
 import React from 'react';
 import { getOtherRecipes } from "@/lib/db/recipes";
 import { getCategoryIdFromName } from "@/lib/db/categories";
+import { getIngredientIdFromName } from "@/lib/db/ingredients";
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
-
-import type { RecipeListItem } from '@/types/recipe';
 
 import RecipeGalleryWrapper from '@/components/containers/RecipeGalleryWrapper';
 import { RecipeListType } from '@/types/general';
@@ -12,30 +11,46 @@ import SearchPanelServer from '@/components/search/SearchPanelServer';
 
 
 
-export default async function ExplorePage({ searchParams }: { searchParams: Promise<{ category: string }> }) {
+export default async function ExplorePage({ searchParams }: { searchParams: Promise<{ category: string, ingredients?: string | string[], query: string }> }) {
 
     const user = await getCurrentDbUser();
 
-    const { category } = await searchParams;
+    const { category, ingredients, query } = await searchParams;
 
     let categoryId: string | undefined;
-
     if (category) {
         categoryId = await getCategoryIdFromName(category, user?.id);
     }
     const categoryIds = categoryId ? [categoryId] : [];
-    const listKey = categoryIds.join(",") || "all";
 
+    const ingredientNames = Array.isArray(ingredients)
+        ? ingredients
+        : ingredients
+            ? [ingredients]
+            : [];
+
+    const ingredientIds = (
+        await Promise.all(
+            ingredientNames.map((ingredientName) =>
+                getIngredientIdFromName(ingredientName, user?.id)
+            )
+        )
+    ).filter((id): id is string => Boolean(id));
+
+    const listKey =
+        `${categoryIds.join(",") || "all"}-${ingredientIds.join(",") || "no-ingredients"}-${query || ""}`;
 
     const initialData = await getOtherRecipes({
+        query,
         userId: user?.id,
-        categoryIds: categoryIds,
+        categoryIds,
+        ingredientIds,
         take: 12,
     });
 
     return (
         <RecipeGalleryWrapper>
-            <SearchPanelServer />
+            <SearchPanelServer/>
             <RecipeListClient
                 key={listKey}
                 initialRecipes={initialData.recipes}

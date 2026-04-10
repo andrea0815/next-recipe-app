@@ -1,5 +1,6 @@
 
 export type SearchParams = {
     query: string;
-    ingredient_ids: string[]
+    category: string;
+    ingredient_names: string[]
 }

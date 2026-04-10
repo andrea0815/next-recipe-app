@@ -168,7 +168,7 @@ export default function IngredientEditor({
                 customClass="w-full sm:basis-[12%] sm:shrink-0 min-w-15"
               />
 
-              <InputSelectSearchable<RecipeLineDraft, "unit_id", typeof units[number]>
+              <InputSelectSearchable<RecipeLineDraft, "unit_id", Unit, "id", "name">
                 items={units}
                 field="unit_id"
                 labelName="Unit"
@@ -176,9 +176,11 @@ export default function IngredientEditor({
                 addButton={addButton}
                 updateDraftValue={(_, value) => updateDraft(index, "unit_id", value)}
                 customClass="w-full sm:basis-[20%] shrink-0"
+                valueKey="id"
+                labelKey="name"
               />
 
-              <InputSelectSearchable<RecipeLineDraft, "ingredient_id", typeof ingredients[number]>
+              <InputSelectSearchable<RecipeLineDraft, "ingredient_id", Ingredient, "id", "name">
                 items={ingredients}
                 field="ingredient_id"
                 labelName="Ingredient"
@@ -186,7 +188,8 @@ export default function IngredientEditor({
                 addButton={addButton}
                 updateDraftValue={(_, value) => updateDraft(index, "ingredient_id", value)}
                 customClass="flex-1 w-full"
-                error=""
+                valueKey="id"
+                labelKey="name"
               />
 
               <Button

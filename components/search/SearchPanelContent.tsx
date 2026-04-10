@@ -30,16 +30,23 @@ export default function SearchPanelContent({
 
     return (
         <div
-            className={`${isOpen ? "max-h-[50dvh] h–[inherit]" : "max-h-0"
-                } w-full overflow-hidden transition-all duration-300 flex`}
+            className={`${isOpen ? "max-h-[50dvh] h–[inherit]" : "max-h-0 overflow-hidden"
+                } w-full transition-all duration-300 flex`}
         >
             <div className="flex-1 p-3 w-full flex flex-col gap-4 items-between">
                 <h3 className='text-xl font-semibold text-left mt-4'>Filter by Ingredients</h3>
                 <div className='flex-1 mb-10'>
-                    <InputMultiSelect<Ingredient>
+                    {/* <InputMultiSelect<Ingredient, "name", "name">
                         items={ingredients}
-                        selectedIds={selectedIngredients}
+                        selectedValues={selectedIngredients}
                         onChange={onIngredientsChange}
+                    /> */}
+                    <InputMultiSelect<Ingredient, "name", "name">
+                        items={ingredients}
+                        selectedValues={selectedIngredients}
+                        onChange={onIngredientsChange}
+                        valueKey="name"
+                        labelKey="name"
                     />
                 </div>
                 <Button

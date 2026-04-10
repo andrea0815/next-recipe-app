@@ -7,11 +7,13 @@ export default function SearchBar({
     query,
     onFilterClick,
     onQueryChange,
+    onSearchClick,
 }: {
     isOpen: boolean;
     query: string;
     onFilterClick: () => void;
     onQueryChange: (query: string) => void;
+    onSearchClick: () => void;
 }) {
     return (
         <div className="flex gap-2 w-full p-3">
@@ -25,6 +27,7 @@ export default function SearchBar({
 
             {!isOpen && <Button
                 priority="secondary"
+                onClick={onSearchClick}
             >
                 <IconSearch />
             </Button>}

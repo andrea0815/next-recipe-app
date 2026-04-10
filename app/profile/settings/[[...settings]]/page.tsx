@@ -12,7 +12,6 @@ import ProfileSettings from './ProfileSettings';
 export default async function ProfileAccountPage() {
 
     const user = await getCurrentDbUser();
-    console.log(user);
 
     return (
         <>

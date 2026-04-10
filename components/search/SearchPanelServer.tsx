@@ -11,7 +11,7 @@ export default async function SearchPanelServer() {
 
     return (
         <>
-            <SearchPanel ingredients={ingredients} />
+            <SearchPanel ingredients={ingredients}/>
         </>
     );
 }

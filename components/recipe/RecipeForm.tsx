@@ -117,10 +117,12 @@ export default function RecipeForm({
                         error={state.errors.image_uri}
                     />
 
-                    <InputMultiSelect<Category>
+                    <InputMultiSelect<Category, "id", "name">
                         labelName="Categories"
                         items={categories}
-                        selectedIds={draft.category_ids}
+                        selectedValues={draft.category_ids}
+                        valueKey="id"
+                        labelKey="name"
                         onChange={(ids) => updateDraft("category_ids", ids)}
                     />
                 </SectionWrapper>

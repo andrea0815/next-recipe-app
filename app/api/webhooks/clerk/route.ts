@@ -10,7 +10,6 @@ import { seedDefaultsForUser } from "@/lib/data/seedDefaultsForUser";
 export async function POST(req: NextRequest) {
   try {
     const evt = await verifyWebhook(req);
-    console.log("Webhook verified:", evt.type);
 
     if (evt.type === "user.created" || evt.type === "user.updated") {
       const clerkUserId = evt.data.id;

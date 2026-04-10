@@ -30,7 +30,7 @@ export default function RecipeList({ recipes, type }: { recipes: RecipeListItem[
 
 
     return (
-        <ul className="gap-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <ul className="w-full gap-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 
 
             {optimisticRecipes.map((recipe) => (

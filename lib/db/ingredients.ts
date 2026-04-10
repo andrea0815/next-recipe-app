@@ -41,6 +41,7 @@ export async function getIngredientsByUserId(query?: string, userId?: string) {
     });
 }
 
+
 export async function getIngredient(id: string) {
     try {
         const ingredient = await prisma.ingredients.findUnique({
@@ -52,6 +53,27 @@ export async function getIngredient(id: string) {
         }
 
         return ingredient;
+    } catch (error) {
+        mapPrismaError(error);
+    }
+}
+
+export async function getIngredientIdFromName(name: string, userId?: string) {
+    try {
+        const ingredient = await prisma.ingredients.findFirst({
+            where: {
+                AND: {
+                    name: name,
+                    owner_id: userId,
+                }
+            },
+        });
+
+        if (!ingredient) {
+            throw new NotFoundError("Ingredient not found");
+        }
+
+        return ingredient.id;
     } catch (error) {
         mapPrismaError(error);
     }

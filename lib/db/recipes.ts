@@ -8,12 +8,14 @@ export async function getUserRecipes({
     query,
     userId,
     categoryIds,
+    ingredientIds,
     cursor,
     take = 12,
 }: {
     query?: string;
     userId?: string;
     categoryIds?: string[];
+    ingredientIds?: string[];
     cursor?: string;
     take?: number;
 } = {}) {
@@ -31,6 +33,15 @@ export async function getUserRecipes({
                     some: {
                         category_id: {
                             in: categoryIds,
+                        },
+                    },
+                },
+            }),
+            ...(ingredientIds && ingredientIds.length > 0 && {
+                recipe_ingredients: {
+                    some: {
+                        ingredient_id: {
+                            in: ingredientIds,
                         },
                     },
                 },
@@ -82,12 +93,14 @@ export async function getOtherRecipes({
     query,
     userId,
     categoryIds,
+    ingredientIds,
     cursor,
     take = 12,
 }: {
     query?: string;
     userId?: string;
     categoryIds?: string[];
+    ingredientIds?: string[];
     cursor?: string;
     take?: number;
 } = {}) {
@@ -110,6 +123,15 @@ export async function getOtherRecipes({
                     some: {
                         category_id: {
                             in: categoryIds,
+                        },
+                    },
+                },
+            }),
+            ...(ingredientIds && ingredientIds.length > 0 && {
+                recipe_ingredients: {
+                    some: {
+                        ingredient_id: {
+                            in: ingredientIds,
                         },
                     },
                 },

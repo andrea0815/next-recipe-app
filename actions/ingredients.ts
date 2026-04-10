@@ -70,8 +70,6 @@ export async function createIngredientWithoutRedirect(
 
         const ingredient = await addIngredient(name, plural, user.id);
 
-        console.log("without redirect");
-
         return {
             success: true,
             message: "Ingredient created.",

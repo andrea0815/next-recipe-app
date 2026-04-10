@@ -38,22 +38,22 @@ export default function Button({
 
     const colorToneClasses = {
         primary: {
-            solid: "bg-primary text-white border-primary",
+            solid: "bg-primary text-white border-primary border-2 border-transparent",
             outline: "text-primary bg-transparent border-2 border-primary",
             ghost: "text-primary fill-primary stroke-primary bg-transparent",
         },
         red: {
-            solid: "bg-red-800 text-white border-red-800",
+            solid: "bg-red-800 text-white border-red-800 border-2 border-transparent",
             outline: "text-red-800 bg-transparent border-2 border-red-800",
             ghost: "text-red-800 fill-red-800 stroke-red-800 bg-transparent",
         },
         white: {
-            solid: "bg-white text-black border-white",
+            solid: "bg-white text-black border-white border-2 border-transparent",
             outline: "text-white bg-transparent border-2 border-white",
             ghost: "text-white fill-white stroke-white bg-transparent",
         },
         gray: {
-            solid: "bg-gray-500 text-white border-gray-500",
+            solid: "bg-gray-500 text-white border-gray-500 border-2 border-transparent",
             outline: "text-gray-500 bg-transparent border-2 border-gray-500",
             ghost: "text-gray-500 fill-gray-500 stroke-gray-500 bg-transparent",
         },

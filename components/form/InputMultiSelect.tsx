@@ -8,54 +8,79 @@ type SelectItem = {
   name: string;
 };
 
-type InputMultiSelectProps<TItem extends SelectItem> = {
+type InputMultiSelectProps<
+  TItem extends SelectItem,
+  TValueKey extends keyof TItem,
+  TLabelKey extends keyof TItem
+> = {
   items: TItem[];
   labelName?: string;
-  selectedIds: string[];
-  onChange: (ids: string[]) => void;
+  selectedValues: TItem[TValueKey][];
+  onChange: (values: TItem[TValueKey][]) => void;
   error?: string;
-  name?: string; // für hidden inputs
+  name?: string;
   placeholder?: string;
   customClass?: string;
+  valueKey: TValueKey;
+  labelKey: TLabelKey;
 };
 
-export default function InputMultiSelect<TItem extends SelectItem>({
+export default function InputMultiSelect<
+  TItem extends SelectItem,
+  TValueKey extends keyof TItem,
+  TLabelKey extends keyof TItem
+>({
   items,
   labelName,
-  selectedIds,
+  selectedValues,
   onChange,
   error,
   name,
   placeholder = "Select an item…",
   customClass = "",
-}: InputMultiSelectProps<TItem>) {
+  valueKey,
+  labelKey,
+}: InputMultiSelectProps<TItem, TValueKey, TLabelKey>) {
   const [draftValue, setDraftValue] = useState("");
 
   const selected = useMemo(
-    () => items.filter((item) => selectedIds.includes(item.id)),
-    [items, selectedIds]
+    () =>
+      items.filter((item) =>
+        selectedValues.includes(item[valueKey])
+      ),
+    [items, selectedValues, valueKey]
   );
 
   const available = useMemo(
-    () => items.filter((item) => !selectedIds.includes(item.id)),
-    [items, selectedIds]
+    () =>
+      items.filter((item) =>
+        !selectedValues.includes(item[valueKey])
+      ),
+    [items, selectedValues, valueKey]
   );
 
-  function add(id: string) {
-    if (!id) return;
-    if (selectedIds.includes(id)) return;
+  function add(rawValue: string) {
 
-    onChange([...selectedIds, id]);
+    if (!rawValue) return;
+
+    const item = items.find((item) => String(item[valueKey]) === rawValue);
+    if (!item) return;
+
+    const value = item[valueKey];
+
+    if (selectedValues.includes(value)) return;
+
+    onChange([...selectedValues, value]);
     setDraftValue("");
   }
 
-  function remove(id: string) {
-    onChange(selectedIds.filter((x) => x !== id));
+  function remove(valueToRemove: TItem[TValueKey]) {
+    onChange(selectedValues.filter((value) => value !== valueToRemove));
   }
 
   return (
     <InputWrapper labelName={labelName} error={error} customClass={customClass}>
-      <InputSelectSearchable<{ value: string }, "value", TItem>
+      <InputSelectSearchable<{ value: string }, "value", TItem, TValueKey, TLabelKey>
         items={available}
         field="value"
         labelName={undefined}
@@ -66,23 +91,31 @@ export default function InputMultiSelect<TItem extends SelectItem>({
         }}
         customClass="w-full"
         error=""
+        placeholder={placeholder}
+        valueKey={valueKey}
+        labelKey={labelKey}
       />
 
       {selected.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-2">
-          {selected.map((item) => (
+          {selected.map((item, index) => (
             <Chip
-              key={item.id}
-              text={item.name}
-              onClick={() => remove(item.id)}
+              key={`${String(item[valueKey])}-${index}`}
+              text={String(item[labelKey])}
+              onClick={() => remove(item[valueKey])}
             />
           ))}
         </div>
       )}
 
       {name &&
-        selectedIds.map((id) => (
-          <input key={id} type="hidden" name={name} value={id} />
+        selectedValues.map((value, index) => (
+          <input
+            key={`${String(value)}-${index}`}
+            type="hidden"
+            name={name}
+            value={String(value)}
+          />
         ))}
     </InputWrapper>
   );
