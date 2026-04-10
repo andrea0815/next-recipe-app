@@ -278,13 +278,11 @@ export async function editRecipe(id: string, slug: string, prevState: FormState,
     redirect(`/collection/${slug}`);
 }
 
-
-
 export async function removeRecipe(id: string) {
 
     const user = await getCurrentDbUser();
 
     await deleteRecipe(id, user.id);
 
-    revalidatePath("/");
+    redirect("/collection");
 }

@@ -11,6 +11,8 @@ import SearchPanelServer from '@/components/search/SearchPanelServer';
 import Link from 'next/link';
 import IconAdd from '@/components/icons/IconAdd';
 import Button from '@/components/buttons/Button';
+import GeneralSection from '@/components/containers/GeneralSection';
+import HeaderTabBar from '@/components/nav/HeaderTabBar';
 
 export default async function CollectionPage({ searchParams }: { searchParams: Promise<{ category: string, ingredients?: string | string[], query: string }> }) {
 
@@ -51,33 +53,37 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
 
     return (
         <>
-            <RecipeGalleryWrapper>
-                <div className='flex flex-col items-center gap-2 sm:max-w-150 w-full'>
-                    <Button
-                        href="/collection/create"
-                        customClass="flex md:hidden w-full"
-                        size='huge'
-                    >
-                        <IconAdd /> Create new Recipe
-                    </Button>
-                    <Button
-                        href="/collection/create"
-                        customClass="fixed z-10 top-6 right-6 w-fit md:flex hidden"
-                    >
-                        <IconAdd /> Create new Recipe
-                    </Button>
-                    <SearchPanelServer />
-                </div>
-                <RecipeListClient
-                    key={listKey}
-                    initialRecipes={initialData.recipes}
-                    initialNextCursor={initialData.nextCursor}
-                    initialHasMore={initialData.hasMore}
-                    categoryIds={categoryIds}
-                    getUrl={"/api/recipes/user"}
-                    mode={RecipeListType.COLLECTION}
-                />
-            </RecipeGalleryWrapper>
+            <HeaderTabBar />
+            <GeneralSection>
+                <RecipeGalleryWrapper>
+                    <div className='flex flex-col items-center gap-2 sm:max-w-150 w-full'>
+                        <Button
+                            href="/collection/create"
+                            customClass="flex md:hidden w-full"
+                            size='huge'
+                        >
+                            <IconAdd /> Create new Recipe
+                        </Button>
+                        <Button
+                            href="/collection/create"
+                            customClass="fixed z-10 top-6 right-6 w-fit md:flex hidden"
+                        >
+                            <IconAdd /> Create new Recipe
+                        </Button>
+                        <SearchPanelServer />
+                    </div>
+                    <RecipeListClient
+                        key={listKey}
+                        initialRecipes={initialData.recipes}
+                        initialNextCursor={initialData.nextCursor}
+                        initialHasMore={initialData.hasMore}
+                        categoryIds={categoryIds}
+                        getUrl={"/api/recipes/user"}
+                        mode={RecipeListType.COLLECTION}
+                    />
+                </RecipeGalleryWrapper>
+            </GeneralSection>
+
         </>
     );
 }

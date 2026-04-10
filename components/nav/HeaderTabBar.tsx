@@ -13,13 +13,13 @@ export default async function HeaderTabBar() {
     const categories: Category[] = await getCategoriesByUserId(undefined, user?.id ?? undefined);
 
     return (
-        <HeaderSectionWrapper>
-            <TabBar>
-                <TabBarItem key={0} href={`/collection`} text='All' />
-                {categories.map((category) => (
-                    <TabBarItem key={category.id} href={`/collection?category=${category.name}`} text={category.name} />
-                ))}
-            </TabBar>
-        </HeaderSectionWrapper>
+            <HeaderSectionWrapper>
+                <TabBar>
+                    <TabBarItem key={0} href={`/collection`} text='All' />
+                    {categories.map((category) => (
+                        <TabBarItem key={category.id} href={`/collection?category=${category.name}`} text={category.name} />
+                    ))}
+                </TabBar>
+            </HeaderSectionWrapper>
     );
 }

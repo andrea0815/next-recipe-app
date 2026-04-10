@@ -5,13 +5,10 @@ import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 
 import { notFound } from "next/navigation";
 
-import DeleteButton from "@/components/buttons/DeleteButton";
-import Button from "@/components/buttons/Button";
-import Tag from "@/components/general/Tag";
-import SectionWrapper from "@/components/containers/SectionWrapper";
-import IngredientSection from "./IngredientSection";
 import RecipeDetailSection from "@/components/recipe/RecipeDetailSection";
 import { RecipeListType } from "@/types/general";
+import GeneralSection from "@/components/containers/GeneralSection";
+import HeaderRecipeDetail from "@/components/nav/HeaderRecipeDetail";
 
 
 export default async function RecipePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -52,11 +49,16 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
     const isOwner = recipe.owner_id === user.id;
 
     return (
-        <RecipeDetailSection
-            recipe={recipe}
-            isOwnRecipe={isOwner}
-            type={RecipeListType.COLLECTION}
-            groupedIngredients={groupedIngredients}
-        />
+        <>
+            <HeaderRecipeDetail recipeId={recipe.id} />
+            <GeneralSection>
+                <RecipeDetailSection
+                    recipe={recipe}
+                    isOwnRecipe={isOwner}
+                    type={RecipeListType.COLLECTION}
+                    groupedIngredients={groupedIngredients}
+                />
+            </GeneralSection>
+        </>
     );
 }

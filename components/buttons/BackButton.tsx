@@ -14,6 +14,7 @@ export default function BackButton() {
             onClick={() => router.back()}
             priority="tertiary"
             customClass="px-0"
+            xPadding={false}
         >
             <IconBack /> back
         </Button>

@@ -8,6 +8,8 @@ import RecipeGalleryWrapper from '@/components/containers/RecipeGalleryWrapper';
 import { RecipeListType } from '@/types/general';
 import RecipeListClient from '@/components/recipe/RecipeListClient';
 import SearchPanelServer from '@/components/search/SearchPanelServer';
+import GeneralSection from '@/components/containers/GeneralSection';
+import HeaderTabBar from '@/components/nav/HeaderTabBar';
 
 
 
@@ -48,18 +50,22 @@ export default async function ExplorePage({ searchParams }: { searchParams: Prom
         take: 12,
     });
 
-    return (
-        <RecipeGalleryWrapper>
-            <SearchPanelServer/>
-            <RecipeListClient
-                key={listKey}
-                initialRecipes={initialData.recipes}
-                initialNextCursor={initialData.nextCursor}
-                initialHasMore={initialData.hasMore}
-                categoryIds={categoryIds}
-                getUrl={"/api/recipes/other"}
-                mode={RecipeListType.EXPLORE}
-            />
-        </RecipeGalleryWrapper>
+    return (<>
+        <HeaderTabBar />
+        <GeneralSection>
+            <RecipeGalleryWrapper>
+                <SearchPanelServer />
+                <RecipeListClient
+                    key={listKey}
+                    initialRecipes={initialData.recipes}
+                    initialNextCursor={initialData.nextCursor}
+                    initialHasMore={initialData.hasMore}
+                    categoryIds={categoryIds}
+                    getUrl={"/api/recipes/other"}
+                    mode={RecipeListType.EXPLORE}
+                />
+            </RecipeGalleryWrapper>
+        </GeneralSection>
+    </>
     );
 }
