@@ -36,17 +36,6 @@ export default function RecipeDetailSection({
                 )}
             </div>
 
-            {isOwnRecipe && (
-                <div className="flex items-center justify-end gap-2">
-                    <Button
-                        href={`/collection/${recipe.slug}/edit`}
-                        size="small"
-                        priority="secondary"
-                    >Edit</Button>
-                    <DeleteButton itemId={recipe.id} />
-                </div>
-            )}
-
             <h1 className='text-4xl text-center font-bold mb-1'>{recipe.name}</h1>
 
             <h2 className="text-xl text-center">{recipe.subtitle}</h2>

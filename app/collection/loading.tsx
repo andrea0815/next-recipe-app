@@ -1,10 +1,21 @@
+import GeneralSection from "@/components/containers/GeneralSection";
+import RecipeGalleryWrapper from "@/components/containers/RecipeGalleryWrapper";
+import HeaderTabBar from "@/components/nav/HeaderTabBar";
+import HeaderTabBarSkeleton from "@/components/nav/HeaderTabBarSkeleton";
 import RecipeListSkeleton from "@/components/recipe/RecipeListSkeleton";
+import SearchPanelSkeleton from "@/components/search/SearchPanelSkeleton";
 
 export default function Loading() {
-    return (
-        <div className="w-full flex flex-col gap-6">
-            <div className="h-10 w-40 rounded-xl bg-gray-200 animate-pulse" />
-            <RecipeListSkeleton />
-        </div>
+    return (<>
+        <HeaderTabBar />
+        <GeneralSection>
+            <RecipeGalleryWrapper>
+                <div className='flex flex-col items-center gap-2 w-full'>
+                    <SearchPanelSkeleton />
+                </div>
+                <RecipeListSkeleton />
+            </RecipeGalleryWrapper>
+        </GeneralSection >
+    </>
     );
 }

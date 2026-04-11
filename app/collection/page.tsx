@@ -13,6 +13,9 @@ import IconAdd from '@/components/icons/IconAdd';
 import Button from '@/components/buttons/Button';
 import GeneralSection from '@/components/containers/GeneralSection';
 import HeaderTabBar from '@/components/nav/HeaderTabBar';
+import HeaderTabBarSkeleton from '@/components/nav/HeaderTabBarSkeleton';
+import RecipeListSkeleton from '@/components/recipe/RecipeListSkeleton';
+import SearchPanelSkeleton from '@/components/search/SearchPanelSkeleton';
 
 export default async function CollectionPage({ searchParams }: { searchParams: Promise<{ category: string, ingredients?: string | string[], query: string }> }) {
 
@@ -54,9 +57,9 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
     return (
         <>
             <HeaderTabBar />
-            <GeneralSection>
+            <GeneralSection> 
                 <RecipeGalleryWrapper>
-                    <div className='flex flex-col items-center gap-2 sm:max-w-150 w-full'>
+                    <div className='flex flex-col items-center gap-2 w-full'>
                         <Button
                             href="/collection/create"
                             customClass="flex md:hidden w-full"
