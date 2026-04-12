@@ -42,3 +42,14 @@ export type SubmitButtonText = {
     default: string;
     pending: string;
 }
+
+export type TextItem = {
+  key: "name" | "plural" | "abbreviation";
+  value: string;
+};
+
+export type ListItem = {
+  id: string;
+  editHref: string;
+  textItems: TextItem[];
+};

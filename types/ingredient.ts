@@ -23,12 +23,6 @@ export type IngredientPayload = {
     plural: string;
 };
 
-export type IngredientListItem = {
-    id: string;
-    editHref: string;
-    textItems: string[];
-};
-
 export type CreatedIngredient = {
     id: string;
     name: string;

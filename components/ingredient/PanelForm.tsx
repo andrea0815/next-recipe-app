@@ -11,7 +11,7 @@ import InputFieldText from "../form/InputFieldText";
 import Button from "../buttons/Button";
 
 
-type IngredientFormProps = {
+type PanelFormProps = {
     initialDraft: IngredientDraft;
     mode: FormMode;
     submitButtonText: {
@@ -26,12 +26,12 @@ const initialState: ActionResult<IngredientFields, IngredientPayload> = {
     message: "",
 };
 
-export default function IngredientForm({
+export default function PanelForm({
     initialDraft,
     mode,
     submitButtonText,
     onCreated,
-}: IngredientFormProps) {
+}: PanelFormProps) {
 
     const action =
         mode === FormMode.CREATE
@@ -53,7 +53,7 @@ export default function IngredientForm({
                 plural: state.data.plural,
             });
         }
-    }, [state, mode, onCreated]);    
+    }, [state, mode, onCreated]);
 
     function updateDraft<K extends keyof IngredientDraft>(
         field: K,
@@ -89,6 +89,7 @@ export default function IngredientForm({
                 customClass="mt-4"
             >
                 {pending ? submitButtonText.pending : submitButtonText.default}
+
             </Button>
         </form>
     );

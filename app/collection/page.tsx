@@ -57,7 +57,7 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
     return (
         <>
             <HeaderTabBar />
-            <GeneralSection> 
+            <GeneralSection>
                 <RecipeGalleryWrapper>
                     <div className='flex flex-col items-center gap-2 w-full'>
                         <Button

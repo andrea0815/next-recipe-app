@@ -4,7 +4,7 @@ import BackButton from '../buttons/BackButton';
 import DeleteButton from '../buttons/DeleteButton';
 
 
-export default function HeaderRecipeDetail({ recipeId, slug, isOwner }: { recipeId: string, slug?: string, isOwner: boolean }) {
+export default function HeaderRecipeDetailSkeleton({ isOwner }: { isOwner: boolean }) {
 
     return (
         <HeaderSectionWrapper>
@@ -13,12 +13,8 @@ export default function HeaderRecipeDetail({ recipeId, slug, isOwner }: { recipe
 
                 {isOwner &&
                     <div className='flex gap-2'>
-                        <Button
-                            href={`${isOwner ? "/collection" : "/explore"}/${slug}/edit`}
-                            priority='secondary'
-                            size='small'
-                        >Edit</Button>
-                        <DeleteButton itemId={recipeId} />
+                        <div className="h-10 w-25 rounded-lg bg-gray-200 animate-pulse"></div>
+                        <div className="h-10 w-25 rounded-lg bg-gray-200 animate-pulse"></div>
                     </div>
                 }
             </div>

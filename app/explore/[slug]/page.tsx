@@ -11,6 +11,8 @@ import SectionWrapper from "@/components/containers/SectionWrapper";
 import IngredientSection from "./IngredientSection";
 import RecipeDetailSection from "@/components/recipe/RecipeDetailSection";
 import { RecipeListType } from "@/types/general";
+import GeneralSection from "@/components/containers/GeneralSection";
+import HeaderRecipeDetail from "@/components/nav/HeaderRecipeDetail";
 
 
 export default async function RecipePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -50,12 +52,16 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
 
     const isOwner = recipe.owner_id === user.id;
 
-    return (
-        <RecipeDetailSection
-            recipe={recipe}
-            isOwnRecipe={isOwner}
-            type={RecipeListType.EXPLORE}
-            groupedIngredients={groupedIngredients}
-        />
+    return (<>
+        <HeaderRecipeDetail recipeId={recipe.id} isOwner={isOwner} />
+        <GeneralSection>
+            <RecipeDetailSection
+                recipe={recipe}
+                isOwnRecipe={isOwner}
+                type={RecipeListType.EXPLORE}
+                groupedIngredients={groupedIngredients}
+            />
+        </GeneralSection>
+    </>
     );
 }

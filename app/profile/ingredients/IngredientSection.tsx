@@ -1,62 +1,83 @@
-"use client"
+"use client";
 
-import { useState, useRef } from 'react';
-
+import { useState, useRef } from "react";
 import { removeIngredient } from "@/actions/ingredients";
 
-import type { AddIngredientPanelRef } from '@/components/ingredient/AddIngredientPanel';
-import type { Ingredient, IngredientDraft, IngredientListItem, CreatedIngredient } from '@/types/ingredient';
-import { ItemType } from "@/types/general"
+import type { AddIngredientPanelRef } from "@/components/ingredient/AddIngredientPanel";
+import type { Ingredient } from "@/types/ingredient";
+import type { ListItem } from "@/types/general";
+import { FormMode, ItemType } from "@/types/general";
 
-import ListSection from '@/components/general/ListSection';
+import ListSection from "@/components/general/ListSection";
 import PageHeadline from "@/components/typography/PageHeadline";
-import AddIngredientPanel from "@/components/ingredient/AddIngredientPanel";
-import Button from "@/components/buttons/Button";
-import IconAdd from '@/components/icons/IconAdd';
-
-type PreparedIngredient = {
-    id: string;
-    editHref: string;
-    textItems: string[];
-};
+import IngredientPanel from "@/components/ingredient/IngredientPanel";
+import ListAddButton from "@/components/general/ListAddButton";
 
 export default function IngredientSection({
-    preparedIngredients,
+  preparedIngredients,
 }: {
-    preparedIngredients: PreparedIngredient[]
+  preparedIngredients: ListItem[];
 }) {
+  const [displayed, setDisplayed] = useState<ListItem[]>(preparedIngredients);
+  const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
+  const [panelFormMode, setpanelFormMode] = useState<FormMode>(FormMode.CREATE);
+  const addIngredientPanelRef = useRef<AddIngredientPanelRef>(null);
 
-    const [displayed, setDisplayed] = useState(preparedIngredients);
-    const [selectedIngredientId, setSelectedIngredientId] = useState("");
-    const addIngredientPanelRef = useRef<AddIngredientPanelRef>(null);
+  function prepareIngredient(item: Ingredient): ListItem {
+    return {
+      id: item.id,
+      editHref: `/profile/ingredients/${item.id}/edit`,
+      textItems: [
+        { key: "name", value: item.name },
+        { key: "plural", value: item.plural || "–" },
+      ],
+    };
+  }
 
-    function prepareIngredient(item: CreatedIngredient): IngredientListItem {
-        return {
+  return (
+    <div className="w-full max-w-200 flex flex-col gap-4">
+      <PageHeadline>Ingredients</PageHeadline>
+
+      <ListAddButton
+        type={ItemType.INGREDIENT}
+        onPress={() => {
+          setpanelFormMode(FormMode.CREATE);
+          setSelectedIngredient(null);
+          addIngredientPanelRef.current?.open();
+        }}
+      />
+
+      <ListSection
+        items={displayed}
+        removeItem={removeIngredient}
+        type={ItemType.INGREDIENT}
+        onEditButton={(item) => {
+          setpanelFormMode(FormMode.EDIT);
+
+          setSelectedIngredient({
             id: item.id,
-            editHref: `/profile/ingredients/${item.id}/edit`,
-            textItems: [item.name, item.plural || "–"],
-        };
-    }
+            name: item.textItems.find((t) => t.key === "name")?.value || "",
+            plural: item.textItems.find((t) => t.key === "plural")?.value || "",
+          });
 
-    return (<div className='w-full max-w-200 flex flex-col gap-4'>
-        <PageHeadline>Ingredients</PageHeadline>
-        <Button
-            type="button"
-            priority='secondary'
-            size='medium'
-            stretch={true}
-            onClick={() => addIngredientPanelRef.current?.open()}
-        >
-            <IconAdd />  Add ingredient
-        </Button>
-        <ListSection items={displayed} removeItem={removeIngredient} type={ItemType.INGREDIENT} />
-        <AddIngredientPanel
-            ref={addIngredientPanelRef}
-            onCreated={(ingredient) => {
-                setDisplayed((prev) => [...prev, prepareIngredient(ingredient)]);
-                setSelectedIngredientId(ingredient.id);
-            }}
-        />
+          addIngredientPanelRef.current?.open();
+        }}
+      />
+
+      <IngredientPanel
+        ref={addIngredientPanelRef}
+        mode={panelFormMode}
+        type={ItemType.INGREDIENT}
+        initialDraft={{
+          id: selectedIngredient?.id || "",
+          name: selectedIngredient?.name || "",
+          plural: selectedIngredient?.plural || "",
+        }}
+        onCreated={(ingredient) => {
+          setDisplayed((prev) => [...prev, prepareIngredient(ingredient)]);
+          setSelectedIngredient(ingredient);
+        }}
+      />
     </div>
-    );
+  );
 }

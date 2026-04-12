@@ -116,6 +116,47 @@ export async function editIngredient(
     redirect("/profile/ingredients");
 }
 
+export async function editIngredientWithoutRedirect(
+    id: string,
+    prevState: ActionResult<IngredientFields, IngredientPayload>,
+    formData: FormData
+): Promise<ActionResult<IngredientFields, IngredientPayload>> {
+    try {
+        const user = await getCurrentDbUser();
+
+        if (!user) {
+            throw new Error("You must be signed in.");
+        }
+
+        const name = String(formData.get("name") ?? "").trim();
+        const plural = String(formData.get("plural") ?? "").trim();
+
+        const fieldErrors: Partial<IngredientFields> = {};
+
+        if (!name) {
+            fieldErrors.name = "Name is required";
+        }
+
+        if (Object.keys(fieldErrors).length > 0) {
+            throw new ValidationError("Please correct the highlighted fields.", fieldErrors);
+        }
+
+        const ingredient = await updateIngredient(id, name, plural, user.id);
+
+        return {
+            success: true,
+            message: "Ingredient created.",
+            data: {
+                id: ingredient.id,
+                name: ingredient.name,
+                plural: ingredient.plural ?? "",
+            },
+        };
+    } catch (error) {
+        return errorToActionResult<IngredientFields, IngredientPayload>(error);
+    }
+}
+
 export async function removeIngredient(id: string) {
     try {
         const user = await getCurrentDbUser();

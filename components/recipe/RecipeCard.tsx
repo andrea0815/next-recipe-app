@@ -12,7 +12,7 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
 
     return (
         <div
-            className="flex flex-col h-full justify-between">
+            className="flex flex-col h-full justify-between group">
             <div>
 
                 <div className="relative aspect-square bg-gray-500 rounded-xl overflow-hidden">
@@ -28,7 +28,7 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
                                 src={recipe.image_uri}
                                 alt={recipe.name}
                                 fill
-                                className="object-cover "
+                                className="object-cover group-hover:scale-105 transition-transform duration-500"
                                 placeholder="blur"
                                 blurDataURL="/images/placeholder.png" // or base64
                             />

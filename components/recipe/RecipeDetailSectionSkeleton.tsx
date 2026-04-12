@@ -1,14 +1,4 @@
-import { getRecipeBySlug } from "@/lib/db/recipes";
-import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
-
-import { notFound } from "next/navigation";
-
-import DeleteButton from "@/components/buttons/DeleteButton";
-import Button from "@/components/buttons/Button";
-import Tag from "@/components/general/Tag";
 import SectionWrapper from "@/components/containers/SectionWrapper";
-import RecipeDetailIngredients from "./RecipeDetailIngredients";
-import { RecipeListType } from "@/types/general";
 
 export default function RecipeDetailSectionSkeleton() {
 

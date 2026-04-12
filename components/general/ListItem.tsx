@@ -1,38 +1,41 @@
 "use client";
 
-import Button from '../buttons/Button';
-import Link from 'next/link';
-import IconEdit from '../icons/IconEdit';
-import IconTrash from '../icons/IconTrash';
-import ConfirmAction from '../errors/ConfirmaAction';
+import Button from "../buttons/Button";
+import IconEdit from "../icons/IconEdit";
+import IconTrash from "../icons/IconTrash";
+import ConfirmAction from "../errors/ConfirmaAction";
+
+import { ListItem as ListItemType, TextItem } from "@/types/general"
 
 type ListItemProps = {
+    item: ListItemType;
     onDeleteAction: () => void;
-    textItems: string[];
-    editHref: string;
-    id: string;
+    onEditButton: (item: ListItemType) => void;
 };
 
 export default function ListItem({
-    textItems,
-    editHref,
+    item,
+    onEditButton,
     onDeleteAction,
 }: ListItemProps) {
     return (
-        <li className={`flex py-1 gap-3 border-b last-of-type:border-b-0 border-gray-400 items-center`}  >
-            <div className="flex-1 flex gap-3">
-                {textItems.map((item, index) => (
-                    <p key={index} className="flex-1">
-                        {item}
-                    </p>
-                ))}
-            </div>
+        <>
+            {item.textItems.map((textItem, index) => (
+                <p
+                    key={index}
+                    className="border-b border-gray-400 self-stretch flex justify-start items-center"
+                >
+                    {textItem.value}
+                </p>
+            ))}
 
-            <div className='flex items-center'>
-
-                <Link href={editHref}>
+            <div className="flex items-center border-b border-gray-400">
+                <Button
+                    onClick={() => onEditButton(item)}
+                    priority="tertiary"
+                >
                     <IconEdit />
-                </Link>
+                </Button>
 
                 <ConfirmAction
                     title="Delete item?"
@@ -40,12 +43,17 @@ export default function ListItem({
                     confirmText="Delete"
                     onConfirm={onDeleteAction}
                     trigger={(openConfirm) => (
-                        <Button onClick={openConfirm} color="red" priority="tertiary" customClass='p-1'>
+                        <Button
+                            onClick={openConfirm}
+                            color="red"
+                            priority="tertiary"
+                            customClass="p-1"
+                        >
                             <IconTrash />
                         </Button>
                     )}
                 />
             </div>
-        </li>
+        </>
     );
 }

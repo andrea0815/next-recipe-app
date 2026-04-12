@@ -74,7 +74,7 @@ export default function RecipeDetailSection({
                 </SectionWrapper>
 
 
-                <div className="flex-2 max-w-200 pb-15">
+                <div className="flex-2 pb-15">
                     <h2 className='text-2xl  font-bold mb-6'>Steps</h2>
 
                     <ul className='flex flex-col gap-6'>
