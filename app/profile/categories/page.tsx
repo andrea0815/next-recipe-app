@@ -1,33 +1,42 @@
 "use server"
 
-import { removeCategory } from "@/actions/categories";
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 import { getCategories } from "@/lib/db/categories";
 
 import type { Category } from '@/types/category';
+import type { ListItem } from '@/types/general';
 
-import { ItemType } from "@/types/general"
-import ListSection from '@/components/general/ListSection';
-import PageHeadline from "@/components/typography/PageHeadline";
-import GeneralSection from "@/components/containers/GeneralSection";
+import CategorySection from "./CategorySection";
 
-
-export default async function CategoriesPage() {
+export default async function CategorysPage() {
     const user = await getCurrentDbUser();
-    const categories: Category[] = await getCategories(undefined, user?.id ?? undefined);
 
-    const preparedCategories = categories.map((item) => ({
-        id: item.id,
-        editHref: `/profile/categories/${item.id}/edit`,
-        textItems: [item.name],
-    }));
+    const categorys: Category[] = await getCategories(undefined, user?.id ?? undefined);
+
+    function prepareCategory(item: Category): ListItem {
+        return {
+            id: item.id,
+            editHref: `/profile/categories/${item.id}/edit`,
+            textItems: [
+                { key: "name", value: item.name },
+            ],
+        };
+    }
+
+    const preparedCategorys: ListItem[] = [...categorys]
+        .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }))
+        .map(prepareCategory);
 
     return (
         <>
-            <PageHeadline>Categories</PageHeadline>
-            <ListSection items={preparedCategories} removeItem={removeCategory} type={ItemType.CATEGORY} />
+            <CategorySection
+                preparedCategories={preparedCategorys}
+            />
         </>
-
     );
+
+
 }
+
+
 

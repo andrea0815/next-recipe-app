@@ -165,7 +165,7 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
                                 </p>
 
                                 <p className={`py-2 border-b border-gray-300 flex-1 transition-opacity ${rowClass}`}>
-                                    <IngredientDisplay amount={entry.totalAmount} ingredient={item.ingredient} />
+                                    <IngredientDisplay amount={entry.totalAmount} ingredient={entry.item.ingredient} />
                                 </p>
                             </React.Fragment>
                         );
@@ -195,7 +195,7 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
                                 onClick={() => toggleGroup(entry)}
                                 className={`py-2 border-b border-gray-300 flex-1 flex justify-between items-center text-left transition-opacity cursor-pointer ${rowClass}`}
                             >
-                                <span>{entry.ingredientName}</span>
+                                <IngredientDisplay amount={entry.totalAmount} ingredient={entry.items[0].ingredient} />
                                 {isGroupOpen(entry) ? <IconArrowUp /> : <IconArrowDown />}
                             </button>
 

@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useActionState, forwardRef, useImperativeHandle, useState } from "react";
-import IngredientForm from "@/components/ingredient/IngredientForm";
+import UnitForm from "@/components/unit/UnitForm";
 import { FormMode, ItemType } from "@/types/general";
-import type { IngredientDraft, IngredientFields, IngredientPayload } from "@/types/ingredient";
+import type { UnitDraft, UnitFields, UnitPayload } from "@/types/unit";
 import type { ActionResult } from "@/types/actions";
 
 import Button from "../buttons/Button";
-import { createIngredientWithoutRedirect, editIngredientWithoutRedirect } from "@/actions/ingredients";
+import { createUnitWithoutRedirect, editUnitWithoutRedirect } from "@/actions/units";
 
 
 export type PanelRef = {
@@ -17,30 +17,31 @@ export type PanelRef = {
 
 type PanelProps = {
     mode: FormMode,
-    initialDraft?: IngredientDraft,
+    initialDraft?: UnitDraft,
     type: ItemType,
-    onCreated: (ingredient: IngredientDraft) => void;
+    onCreated: (unit: UnitDraft) => void;
 };
 
-const IngredientPanel = forwardRef<PanelRef, PanelProps>(
-    function IngredientPanel({ mode, type, initialDraft, onCreated }, ref) {
+const UnitPanel = forwardRef<PanelRef, PanelProps>(
+    function UnitPanel({ mode, type, initialDraft, onCreated }, ref) {
         const [open, setOpen] = useState(false);
 
         const initialDraftItem = initialDraft ?? {
             id: "",
             name: "",
             plural: "",
+            abbreviation: "",
         }
 
-        const initialState: ActionResult<IngredientFields, IngredientPayload> = {
+        const initialState: ActionResult<UnitFields, UnitPayload> = {
             success: false,
             message: "",
         };
 
         const action =
             mode === FormMode.CREATE
-                ? createIngredientWithoutRedirect
-                : editIngredientWithoutRedirect.bind(null, initialDraftItem.id);
+                ? createUnitWithoutRedirect
+                : editUnitWithoutRedirect.bind(null, initialDraftItem.id);
 
         const [state, formAction, pending] = useActionState(
             action,
@@ -68,7 +69,7 @@ const IngredientPanel = forwardRef<PanelRef, PanelProps>(
                     </div>
 
                     <div className="w-full">
-                        <IngredientForm
+                        <UnitForm
                             initialDraft={initialDraftItem}
                             mode={mode}
                             submitButtonText={{
@@ -87,4 +88,4 @@ const IngredientPanel = forwardRef<PanelRef, PanelProps>(
     }
 );
 
-export default IngredientPanel;
+export default UnitPanel;

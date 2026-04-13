@@ -24,3 +24,10 @@ export type UnitFieldErrors = {
     plural?: string;
     abbreviation?: string;
 };
+
+export type UnitPayload = {
+    id: string;
+    name: string;
+    plural: string | null;
+    abbreviation: string | null;
+};

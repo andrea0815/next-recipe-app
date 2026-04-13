@@ -6,8 +6,8 @@ import type { Category } from '@/types/category';
 import type { Unit } from '@/types/unit';
 import type { Ingredient, IngredientDraft } from '@/types/ingredient';
 import type { RecipeDraft } from '@/types/recipe';
-import type { AddIngredientPanelRef } from '@/components/ingredient/AddIngredientPanel';
-import { FormMode } from '@/types/general';
+import type { PanelRef } from '@/components/ingredient/IngredientPanel';
+import { FormMode, ItemType } from '@/types/general';
 
 import CategoryMultiSelect from './CategoryMultiSelect';
 import IngredientEditor from './IngredientEditor';
@@ -18,7 +18,7 @@ import InputFieldText from '../form/InputFieldText';
 import InputMultiSelect from '../form/InputMultiSelect';
 import InputFieldNumber from '../form/InputFieldNumber';
 import Button from '../buttons/Button';
-import AddIngredientPanel from '../ingredient/AddIngredientPanel';
+import IngredientPanel from '../ingredient/IngredientPanel';
 import IconAdd from '../icons/IconAdd';
 import SectionWrapper from '../containers/SectionWrapper';
 import SectionHeadline from '../typography/SectionHeadline';
@@ -52,7 +52,7 @@ export default function RecipeForm({
 
     const [ingredients, setIngredients] = useState(initialIngredients);
     const [selectedIngredientId, setSelectedIngredientId] = useState("");
-    const addIngredientPanelRef = useRef<AddIngredientPanelRef>(null);
+    const IngredientPanelRef = useRef<PanelRef>(null);
 
     const submitButtonText = mode === FormMode.CREATE ?
         {
@@ -154,7 +154,7 @@ export default function RecipeForm({
                                     priority='secondary'
                                     size='small'
                                     stretch={true}
-                                    onClick={() => addIngredientPanelRef.current?.open()}
+                                    onClick={() => IngredientPanelRef.current?.open()}
                                 >
                                     <IconAdd />  Add
                                 </Button>
@@ -194,8 +194,10 @@ export default function RecipeForm({
                 </Button>
             </form >
 
-            <AddIngredientPanel
-                ref={addIngredientPanelRef}
+            <IngredientPanel
+                ref={IngredientPanelRef}
+                mode={FormMode.CREATE}
+                type={ItemType.INGREDIENT}
                 onCreated={(ingredient) => {
                     setIngredients((prev) => [...prev, ingredient]);
                     setSelectedIngredientId(ingredient.id);

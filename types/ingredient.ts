@@ -22,9 +22,3 @@ export type IngredientPayload = {
     name: string;
     plural: string;
 };
-
-export type CreatedIngredient = {
-    id: string;
-    name: string;
-    plural?: string | null;
-};

@@ -1,7 +1,6 @@
 import GeneralSection from "@/components/containers/GeneralSection";
 import RecipeGalleryWrapper from "@/components/containers/RecipeGalleryWrapper";
 import HeaderTabBar from "@/components/nav/HeaderTabBar";
-import HeaderTabBarSkeleton from "@/components/nav/HeaderTabBarSkeleton";
 import RecipeListSkeleton from "@/components/recipe/RecipeListSkeleton";
 import SearchPanelSkeleton from "@/components/search/SearchPanelSkeleton";
 

@@ -12,8 +12,8 @@ export default function RecipeDetailSectionSkeleton() {
             <h2 className="text-xl h-10 w-100 text-center rounded-lg bg-gray-200 animate-pulse"></h2>
 
             <div className='flex gap-2 w-[60vw] m-auto justify-center mt-6 mb-15 flex-wrap'>
-                {Array.from({ length: 5 }).map((category: any) => (
-                    <div className="h-10 w-25 rounded-full bg-gray-200 animate-pulse"></div>
+                {Array.from({ length: 5 }).map((category: any, index) => (
+                    <div key={index} className="h-10 w-25 rounded-full bg-gray-200 animate-pulse"></div>
                 ))}
             </div>
 

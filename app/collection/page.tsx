@@ -8,14 +8,10 @@ import RecipeGalleryWrapper from '@/components/containers/RecipeGalleryWrapper';
 import { RecipeListType } from '@/types/general';
 import RecipeListClient from '@/components/recipe/RecipeListClient';
 import SearchPanelServer from '@/components/search/SearchPanelServer';
-import Link from 'next/link';
 import IconAdd from '@/components/icons/IconAdd';
 import Button from '@/components/buttons/Button';
 import GeneralSection from '@/components/containers/GeneralSection';
 import HeaderTabBar from '@/components/nav/HeaderTabBar';
-import HeaderTabBarSkeleton from '@/components/nav/HeaderTabBarSkeleton';
-import RecipeListSkeleton from '@/components/recipe/RecipeListSkeleton';
-import SearchPanelSkeleton from '@/components/search/SearchPanelSkeleton';
 
 export default async function CollectionPage({ searchParams }: { searchParams: Promise<{ category: string, ingredients?: string | string[], query: string }> }) {
 

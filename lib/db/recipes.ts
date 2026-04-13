@@ -256,6 +256,11 @@ export async function getRecipeBySlug(slug: string, userId?: string) {
                     step_index: "asc",
                 },
             },
+            users: {
+                select: {
+                    username: true,
+                },
+            },
         },
     });
 
@@ -264,6 +269,7 @@ export async function getRecipeBySlug(slug: string, userId?: string) {
     return {
         ...recipe,
         portions: Number(recipe.portions),
+        username: recipe.users.username,
         recipe_ingredients: recipe.recipe_ingredients.map((ingredient) => {
             const { shoppinglists, ...rest } = ingredient;
             return {

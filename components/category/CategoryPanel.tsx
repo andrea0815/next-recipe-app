@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useActionState, forwardRef, useImperativeHandle, useState } from "react";
-import IngredientForm from "@/components/ingredient/IngredientForm";
+import CategoryForm from "@/components/category/CategoryForm";
 import { FormMode, ItemType } from "@/types/general";
-import type { IngredientDraft, IngredientFields, IngredientPayload } from "@/types/ingredient";
+import type { CategoryDraft, CategoryFields, CategoryPayload } from "@/types/category";
 import type { ActionResult } from "@/types/actions";
 
 import Button from "../buttons/Button";
-import { createIngredientWithoutRedirect, editIngredientWithoutRedirect } from "@/actions/ingredients";
+import { createCategoryWithoutRedirect, editCategoryWithoutRedirect } from "@/actions/categories";
 
 
 export type PanelRef = {
@@ -17,30 +17,31 @@ export type PanelRef = {
 
 type PanelProps = {
     mode: FormMode,
-    initialDraft?: IngredientDraft,
+    initialDraft?: CategoryDraft,
     type: ItemType,
-    onCreated: (ingredient: IngredientDraft) => void;
+    onCreated: (category: CategoryDraft) => void;
 };
 
-const IngredientPanel = forwardRef<PanelRef, PanelProps>(
-    function IngredientPanel({ mode, type, initialDraft, onCreated }, ref) {
+const CategoryPanel = forwardRef<PanelRef, PanelProps>(
+    function CategoryPanel({ mode, type, initialDraft, onCreated }, ref) {
         const [open, setOpen] = useState(false);
 
         const initialDraftItem = initialDraft ?? {
             id: "",
             name: "",
             plural: "",
+            abbreviation: "",
         }
 
-        const initialState: ActionResult<IngredientFields, IngredientPayload> = {
+        const initialState: ActionResult<CategoryFields, CategoryPayload> = {
             success: false,
             message: "",
         };
 
         const action =
             mode === FormMode.CREATE
-                ? createIngredientWithoutRedirect
-                : editIngredientWithoutRedirect.bind(null, initialDraftItem.id);
+                ? createCategoryWithoutRedirect
+                : editCategoryWithoutRedirect.bind(null, initialDraftItem.id);
 
         const [state, formAction, pending] = useActionState(
             action,
@@ -68,7 +69,7 @@ const IngredientPanel = forwardRef<PanelRef, PanelProps>(
                     </div>
 
                     <div className="w-full">
-                        <IngredientForm
+                        <CategoryForm
                             initialDraft={initialDraftItem}
                             mode={mode}
                             submitButtonText={{
@@ -87,4 +88,4 @@ const IngredientPanel = forwardRef<PanelRef, PanelProps>(
     }
 );
 
-export default IngredientPanel;
+export default CategoryPanel;

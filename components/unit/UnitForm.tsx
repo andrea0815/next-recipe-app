@@ -1,37 +1,60 @@
 "use client";
 
-import { useActionState, useState } from "react";
-import { editUnit, createUnit } from "@/actions/units";
-import { ActionResult } from "@/types/actions";
+import React, { useEffect, useState } from "react";
+import { useActionState } from "react";
+import { createUnitWithoutRedirect, editUnitWithoutRedirect } from "@/actions/units";
+import { FormMode } from "@/types/general";
 
-import type { UnitDraft, UnitFieldErrors } from "@/types/unit";
-import { FormMode, SubmitButtonText } from "@/types/general";
-import SectionWrapper from "../containers/SectionWrapper";
+import type { UnitDraft, UnitFields, UnitPayload } from "@/types/unit";
+import type { ActionResult } from "@/types/actions";
 import InputFieldText from "../form/InputFieldText";
-import FormSection from "../form/FormSection";
+import Button from "../buttons/Button";
+
+
+type UnitFormProps = {
+    initialDraft: UnitDraft;
+    mode: FormMode;
+    submitButtonText: {
+        default: string;
+        pending: string;
+    };
+    onSuccess?: (unit: UnitDraft) => void;
+};
+
+const initialState: ActionResult<UnitFields, UnitPayload> = {
+    success: false,
+    message: "",
+};
 
 export default function UnitForm({
     initialDraft,
     mode,
     submitButtonText,
-}: {
-    initialDraft: UnitDraft;
-    mode: FormMode;
-    submitButtonText: SubmitButtonText;
-}) {
-    const initialState: ActionResult<UnitFieldErrors> = {
-        success: false,
-        message: "",
-        fieldErrors: {},
-    };
+    onSuccess,
+}: UnitFormProps) {
 
     const action =
         mode === FormMode.CREATE
-            ? createUnit
-            : editUnit.bind(null, initialDraft.id);
+            ? createUnitWithoutRedirect
+            : editUnitWithoutRedirect.bind(null, initialDraft.id);
 
-    const [state, formAction, isPending] = useActionState(action, initialState);
+    const [state, formAction, pending] = useActionState(
+        action,
+        initialState
+    );
+
     const [draft, setDraft] = useState<UnitDraft>(initialDraft);
+
+    useEffect(() => {
+        if (mode === FormMode.CREATE && state.success && "data" in state && state.data) {
+            onSuccess?.({
+                id: state.data.id,
+                name: state.data.name,
+                plural: state.data.plural,
+                abbreviation: state.data.abbreviation,
+            });
+        }
+    }, [state, mode, onSuccess]);    
 
     function updateDraft<K extends keyof UnitDraft>(
         field: K,
@@ -44,17 +67,12 @@ export default function UnitForm({
     }
 
     return (
-        <FormSection
-            submitButtonText={submitButtonText}
-            formAction={formAction}
-            isPending={isPending}
-            headlineText="Create new Unit"
-            >
+        <form action={formAction} className="flex flex-col gap-4">
 
             <InputFieldText<UnitDraft, "name">
                 field="name"
-                labelName="Name*"
-                draftValue={draft.name}
+                labelName="Name"
+                draftValue={draft.name ?? ""}
                 updateDraftValue={updateDraft}
                 error={!state.success ? state.fieldErrors?.name : undefined}
             />
@@ -62,20 +80,24 @@ export default function UnitForm({
             <InputFieldText<UnitDraft, "plural">
                 field="plural"
                 labelName="Plural"
-                draftValue={draft.plural}
+                draftValue={draft.plural ?? ""}
                 updateDraftValue={updateDraft}
-                error={!state.success ? state.fieldErrors?.plural : undefined}
             />
 
             <InputFieldText<UnitDraft, "abbreviation">
                 field="abbreviation"
-                labelName="Shorthand"
-                draftValue={draft.abbreviation}
+                labelName="Abbreviation"
+                draftValue={draft.abbreviation ?? ""}
                 updateDraftValue={updateDraft}
-                error={!state.success ? state.fieldErrors?.abbreviation : undefined}
             />
 
-        </FormSection>
-
+            <Button
+                type="submit"
+                disabled={pending}
+                customClass="mt-4"
+            >
+                {pending ? submitButtonText.pending : submitButtonText.default}
+            </Button>
+        </form>
     );
 }
