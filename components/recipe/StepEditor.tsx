@@ -112,7 +112,7 @@ export default function StepEditor({
                             placeholder="Describe this step"
                             draftValue={step.text}
                             updateDraftValue={(_, value) => updateStep(index, "text", value)}
-                            error={state.errors.text}
+                            error={!state.success ? state.fieldErrors?.texts : undefined}
                         />
 
                         <div className="flex justify-start gap-4">

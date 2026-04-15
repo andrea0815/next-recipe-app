@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useActionState } from "react";
 import { createCategoryWithoutRedirect, editCategoryWithoutRedirect } from "@/actions/categories";
 import { FormMode } from "@/types/general";
+import { showSuccessToast, showErrorToast } from "../general/ToastProvider";
 
 import type { CategoryDraft, CategoryFields, CategoryPayload } from "@/types/category";
 import type { ActionResult } from "@/types/actions";
@@ -46,13 +47,23 @@ export default function CategoryForm({
     const [draft, setDraft] = useState<CategoryDraft>(initialDraft);
 
     useEffect(() => {
-        if (mode === FormMode.CREATE && state.success && "data" in state && state.data) {
-            onSuccess?.({
-                id: state.data.id,
-                name: state.data.name,
-            });
+        if (!state.message) return;
+
+        console.log("toast effect", state);
+
+        if (state.success) {
+            showSuccessToast(state.message);
+
+            if (mode === FormMode.CREATE && state.data) {
+                onSuccess?.({
+                    id: state.data.id,
+                    name: state.data.name,
+                });
+            }
+        } else {
+            showErrorToast(state.message);
         }
-    }, [state, mode, onSuccess]);    
+    }, [state, mode, onSuccess]);
 
     function updateDraft<K extends keyof CategoryDraft>(
         field: K,
@@ -69,7 +80,7 @@ export default function CategoryForm({
 
             <InputFieldText<CategoryDraft, "name">
                 field="name"
-                labelName="Name"
+                labelName="Name*"
                 draftValue={draft.name ?? ""}
                 updateDraftValue={updateDraft}
                 error={!state.success ? state.fieldErrors?.name : undefined}

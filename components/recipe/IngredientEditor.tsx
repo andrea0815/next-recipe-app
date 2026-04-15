@@ -252,6 +252,8 @@ export default function IngredientEditor({
                 onClick={() => removeGroup(index)}
                 disabled={groups.length <= 1}
                 priority="tertiary"
+                color="red"
+                yPadding={false}
               >
                 Remove group
               </Button>

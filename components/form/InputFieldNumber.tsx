@@ -1,6 +1,3 @@
-import { FormState } from '@/actions/recipes';
-import React from 'react';
-import type { RecipeDraft } from "@/types/recipe"
 import InputWrapper from './InputWrapper';
 type InputFieldNumberProps<TDraft, K extends keyof TDraft> = {
     field: K;

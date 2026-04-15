@@ -6,6 +6,10 @@ import UnitDisplay from '@/components/unit/UnitDisplay';
 import { formatAmount } from "@/lib/db/utils/formatDecimals";
 
 import React, { useState } from 'react';
+import IconMinusCircle from '../icons/IconMinusCircle';
+import IconPlusCircle from '../icons/IconPlusCircle';
+import InputFieldNumber from '../form/InputFieldNumber';
+import NumberSelect from '../form/NumberSelect';
 
 export default function RecipeDetailIngredients({
     groupedIngredients,
@@ -33,21 +37,11 @@ export default function RecipeDetailIngredients({
         <>
             <h2 className='text-2xl font-bold'>Portionen</h2>
 
-            <div className='flex gap-2 items-stretch my-4 h-(--btn-h-sm)'>
-                <Button
-                    onClick={subtractPortion}
-                    size='small'
-                    disabled={portionsDisplay <= 1}
-                >
-                    -
-                </Button>
-                <p className='w-10 flex justify-center items-center bg-white p-1 rounded-md'>{portionsDisplay.toString()}</p>
-                <Button
-                    onClick={addPortion}
-                    size='small'
-                >
-                    +
-                </Button>
+            <div className='my-4'>
+                <NumberSelect
+                    portions={portionsDisplay}
+                    onPortionChange={setPortionsDisplay}
+                />
             </div>
 
             <h2 className='text-2xl mt-10 font-bold'>Ingredients</h2>

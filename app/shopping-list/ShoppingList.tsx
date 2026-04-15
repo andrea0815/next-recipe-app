@@ -152,7 +152,7 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
                                         checked={marked}
                                         onChange={(nextChecked) => handleCheckboxChange(entry, nextChecked)}
                                     >
-                                        <IconCheck />
+                                        <IconCheck  />
                                     </Checkbox>
                                 </div>
 

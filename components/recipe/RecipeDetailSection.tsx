@@ -40,11 +40,13 @@ export default function RecipeDetailSection({
 
             <h2 className="text-xl text-center">{recipe.subtitle}</h2>
 
-            <p className="text-md text-center mt-4">A recipe from{" "}
-                <a className="text-primary transition-colors underline underline-offset-2 hover:text-primaryOn" href={`/explore?query=${recipe.username}`}>
-                    {recipe.username}
-                </a>
-            </p>
+            {!isOwnRecipe &&
+                <p className="text-md text-center mt-4">A recipe from{" "}
+                    <a className="text-primary transition-colors underline underline-offset-2 hover:text-primaryOn" href={`/explore?query=${recipe.username}`}>
+                        {recipe.username}
+                    </a>
+                </p>
+            }
 
             <div className='flex gap-2 w-[60vw] m-auto justify-center mt-6 mb-15 flex-wrap'>
                 {recipe.recipe_categories.map((category: any) => (

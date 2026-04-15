@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useActionState, forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import IngredientForm from "@/components/ingredient/IngredientForm";
 import { FormMode, ItemType } from "@/types/general";
-import type { IngredientDraft, IngredientFields, IngredientPayload } from "@/types/ingredient";
-import type { ActionResult } from "@/types/actions";
+import type { IngredientDraft } from "@/types/ingredient";
 
 import Button from "../buttons/Button";
-import { createIngredientWithoutRedirect, editIngredientWithoutRedirect } from "@/actions/ingredients";
 
 
 export type PanelRef = {
@@ -32,21 +30,6 @@ const IngredientPanel = forwardRef<PanelRef, PanelProps>(
             plural: "",
         }
 
-        const initialState: ActionResult<IngredientFields, IngredientPayload> = {
-            success: false,
-            message: "",
-        };
-
-        const action =
-            mode === FormMode.CREATE
-                ? createIngredientWithoutRedirect
-                : editIngredientWithoutRedirect.bind(null, initialDraftItem.id);
-
-        const [state, formAction, pending] = useActionState(
-            action,
-            initialState
-        );
-
         useImperativeHandle(ref, () => ({
             open: () => setOpen(true),
             close: () => setOpen(false),
@@ -56,7 +39,7 @@ const IngredientPanel = forwardRef<PanelRef, PanelProps>(
 
         const itemName = type.charAt(0).toUpperCase() + type.slice(1)
 
-        return (
+        return (<>
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
                 <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
 
@@ -83,6 +66,8 @@ const IngredientPanel = forwardRef<PanelRef, PanelProps>(
                     </div>
                 </div>
             </div>
+        </>
+
         );
     }
 );

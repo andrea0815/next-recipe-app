@@ -63,13 +63,13 @@ export async function createCategoryWithoutRedirect(
 
         if (Object.keys(fieldErrors).length > 0) {
             throw new ValidationError("Please correct the highlighted fields.", fieldErrors);
-        }
+        } 
 
         const category = await addCategory(name, user.id);
 
         return {
             success: true,
-            message: "Category created.",
+            message: "Category created successfully.",
             data: {
                 id: category.id,
                 name: category.name,
@@ -139,7 +139,7 @@ export async function editCategoryWithoutRedirect(
 
         return {
             success: true,
-            message: "Category created.",
+            message: "Category updated successfully.",
             data: {
                 id: category.id,
                 name: category.name,

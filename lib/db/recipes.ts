@@ -1,6 +1,7 @@
 import { Prisma } from "@/app/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { generateUniqueRecipeSlug } from "@/lib/db/utils/generateSlug";
+import { mapPrismaError } from "@/lib/errors/map-prisma-errors"
 
 import type { IngredientLineInput, RecipeStep } from "@/types/recipe";
 
@@ -294,45 +295,50 @@ export async function addRecipe(
     steps: RecipeStep[],
 
 ) {
-    const slug = await generateUniqueRecipeSlug(name, userId);
 
-    return prisma.recipes.create({
-        data: {
-            name,
-            subtitle,
-            is_public,
-            groups_enabled,
-            portions,
-            image_uri,
-            slug,
-            users: {
-                connect: { id: userId },
+    try {
+        const slug = await generateUniqueRecipeSlug(name, userId);
+
+        return prisma.recipes.create({
+            data: {
+                name,
+                subtitle,
+                is_public,
+                groups_enabled,
+                portions,
+                image_uri,
+                slug,
+                users: {
+                    connect: { id: userId },
+                },
+                recipe_categories: {
+                    create: categoryIds.map((categoryId) => ({
+                        categories: { connect: { id: categoryId } },
+                    }))
+                },
+                recipe_ingredients: {
+                    create: ingredient_lines.map((line) => ({
+                        ingredient_id: line.ingredient_id,
+                        unit_id: line.unit_id,
+                        owner_id: line.owner_id,
+                        amount: new Prisma.Decimal(line.amount),
+                        group_name: line.group_name,
+                        position: new Prisma.Decimal(line.position),
+                        on_shopping_list: line.on_shopping_list ?? false,
+                    })),
+                },
+                recipe_steps: {
+                    create: steps.map((step) => ({
+                        step_index: step.step_index,
+                        text: step.text,
+                        hint: step.hint,
+                    })),
+                },
             },
-            recipe_categories: {
-                create: categoryIds.map((categoryId) => ({
-                    categories: { connect: { id: categoryId } },
-                }))
-            },
-            recipe_ingredients: {
-                create: ingredient_lines.map((line) => ({
-                    ingredient_id: line.ingredient_id,
-                    unit_id: line.unit_id,
-                    owner_id: line.owner_id,
-                    amount: new Prisma.Decimal(line.amount),
-                    group_name: line.group_name,
-                    position: new Prisma.Decimal(line.position),
-                    on_shopping_list: line.on_shopping_list ?? false,
-                })),
-            },
-            recipe_steps: {
-                create: steps.map((step) => ({
-                    step_index: step.step_index,
-                    text: step.text,
-                    hint: step.hint,
-                })),
-            },
-        },
-    });
+        });
+    } catch (error) {
+        mapPrismaError(error);
+    }
 }
 
 export async function updateRecipe(

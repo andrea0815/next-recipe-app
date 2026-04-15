@@ -10,6 +10,7 @@ export function errorToActionResult<
 >(
   error: unknown
 ): ActionResult<TFields, TData> {
+  
   if (error instanceof ValidationError) {
     return {
       success: false,

@@ -32,6 +32,10 @@
   --text-light: var(--green-light);
 
   --font-sans: "Recursive";
+
+ 
+  --toastify-container-width: fit-content;
+  --toastify-toast-width: fit-content;
 }
 
 @theme {
@@ -91,5 +95,17 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
     /* Chrome, Safari */
+  }
+
+  /* globals.css */
+  .no-spinner::-webkit-outer-spin-button,
+  .no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .no-spinner {
+    -moz-appearance: textfield;
+    appearance: textfield;
   }
 }

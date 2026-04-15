@@ -6,6 +6,12 @@ import { parseRecipeAmount } from "@/actions/utils/parseRecipeAmount";
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+//errors
+import { ValidationError } from "@/lib/errors/app-errors";
+import { errorToActionResult } from "@/lib/errors/error-to-action-result";
+import { ActionResult } from "@/types/actions";
+import { RecipeFields, RecipePayload } from '@/types/recipe';
+
 export type Errors = {
     name?: string;
     subtitle?: string;
@@ -21,22 +27,14 @@ export type Errors = {
     form?: string;
 }
 
-export type FormState = {
-    errors: Errors;
-}
-
 export async function createRecipe(
-    prevState: FormState,
+    prevState: ActionResult<RecipeFields, RecipePayload>,
     formData: FormData
-): Promise<FormState> {
+): Promise<ActionResult<RecipeFields, RecipePayload>> {
     const user = await getCurrentDbUser();
 
     if (!user) {
-        return {
-            errors: {
-                form: "You must be signed in.",
-            },
-        };
+        throw new Error("You must be signed in.");
     }
 
     const name = (formData.get("name") as string | null)?.trim() ?? "";
@@ -59,26 +57,26 @@ export async function createRecipe(
     const step_texts = (formData.getAll("step_texts") as string[]).map((s) => s.trim());
     const step_hints = (formData.getAll("step_hints") as string[]).map((s) => s.trim());
 
-    const errors: Errors = {};
+    const fieldErrors: Partial<RecipeFields> = {};
 
-    if (!name) errors.name = "Name is required";
-    if (!subtitle) errors.subtitle = "Subtitle is required";
-    if (!image_uri) errors.image_uri = "Image uri is required";
-    if (!portions) errors.portions = "Portions are required";
+    if (!name) fieldErrors.name = "Name is required";
+    if (!subtitle) fieldErrors.subtitle = "Subtitle is required";
+    if (!image_uri) fieldErrors.image_uri = "Image uri is required";
+    if (!portions) fieldErrors.portions = "Portions are required";
 
     if (ingredient_ids.length === 0) {
-        errors.ingredient_ids = "No ingredient selected";
+        fieldErrors.ingredient_ids = "At least one ingredient required";
     }
 
-    if (unit_ids.length === 0) {
-        errors.unit_ids = "No unit selected";
-    }
+    // if (unit_ids.length === 0) {
+    //     fieldErrors.unit_ids = "No unit selected";
+    // }
 
-    if (amounts.length === 0) {
-        errors.amounts = "Amount is required";
-    } else if (amounts.some((amount) => !Number.isFinite(amount))) {
-        errors.amounts = "One or more amounts are invalid";
-    }
+    // if (amounts.length === 0) {
+    //     fieldErrors.amounts = "Amount is required";
+    // } else if (amounts.some((amount) => !Number.isFinite(amount))) {
+    //     fieldErrors.amounts = "One or more amounts are invalid";
+    // }
 
     if (
         ingredient_ids.length !== unit_ids.length ||
@@ -86,19 +84,19 @@ export async function createRecipe(
         ingredient_ids.length !== positions.length ||
         ingredient_ids.length !== group_names.length
     ) {
-        errors.amounts = "Ingredient data is incomplete";
+        fieldErrors.amounts = "Ingredient data is incomplete";
     }
 
     if (groups_enabled) {
         if (all_group_names.length === 0) {
-            errors.group_names = "At least one group is required";
+            fieldErrors.group_names = "At least one group is required";
         } else if (all_group_names.some((g) => g === "")) {
-            errors.group_names = "One of your groups has no name";
+            fieldErrors.group_names = "One of your groups has no name";
         } else {
             const normalized = all_group_names.map((g) => g.toLowerCase());
 
             if (new Set(normalized).size !== normalized.length) {
-                errors.group_names = "Your groups are not named uniquely";
+                fieldErrors.group_names = "Your groups are not named uniquely";
             } else {
                 const submittedGroups = new Set(
                     group_names.map((g) => g.trim().toLowerCase())
@@ -109,14 +107,18 @@ export async function createRecipe(
                 );
 
                 if (hasEmptyGroup) {
-                    errors.group_names = "Every group must contain at least one ingredient";
+                    fieldErrors.group_names = "Every group must contain at least one ingredient";
                 }
             }
         }
     }
 
-    if (Object.keys(errors).length > 0) {
-        return { errors };
+    if (Object.keys(fieldErrors).length > 0) {
+        return {
+            success: false,
+            message: "Please correct the highlighted fields.",
+            fieldErrors,
+        };
     }
 
     const ingredient_lines = ingredient_ids.map((ingredient_id, i) => ({
@@ -136,33 +138,35 @@ export async function createRecipe(
             hint: step_hints[i] || null,
         }));
 
-    await addRecipe(
-        name,
-        subtitle,
-        user.id,
-        portions,
-        image_uri,
-        is_public,
-        groups_enabled,
-        category_ids,
-        ingredient_lines,
-        steps
-    );
+    try {
+        await addRecipe(
+            name,
+            subtitle,
+            user.id,
+            portions,
+            image_uri,
+            is_public,
+            groups_enabled,
+            category_ids,
+            ingredient_lines,
+            steps
+        );
 
-    redirect("/");
+    } catch (error) {
+        return errorToActionResult<RecipeFields, RecipePayload>(error);
+    }
+
+    redirect(`/collection`);
+
 }
 
-export async function editRecipe(id: string, slug: string, prevState: FormState, formData: FormData
-): Promise<FormState> {
+export async function editRecipe(id: string, slug: string, prevState: ActionResult<RecipeFields, RecipePayload>, formData: FormData
+): Promise<ActionResult<RecipeFields, RecipePayload>> {
 
     const user = await getCurrentDbUser();
 
     if (!user) {
-        return {
-            errors: {
-                form: "You must be signed in.",
-            },
-        };
+        throw new Error("You must be signed in.");
     }
 
     const name = (formData.get("name") as string | null)?.trim() ?? "";
@@ -185,25 +189,15 @@ export async function editRecipe(id: string, slug: string, prevState: FormState,
     const step_texts = (formData.getAll("step_texts") as string[]).map((s) => s.trim());
     const step_hints = (formData.getAll("step_hints") as string[]).map((s) => s.trim());
 
-    const errors: Errors = {};
+    const fieldErrors: Partial<RecipeFields> = {};
 
-    if (!name) errors.name = "Name is required";
-    if (!subtitle) errors.subtitle = "Subtitle is required";
-    if (!image_uri) errors.image_uri = "Image uri is required";
-    if (!portions) errors.portions = "Portions are required";
+    if (!name) fieldErrors.name = "Name is required";
+    if (!subtitle) fieldErrors.subtitle = "Subtitle is required";
+    if (!image_uri) fieldErrors.image_uri = "Image uri is required";
+    if (!portions) fieldErrors.portions = "Portions are required";
 
     if (ingredient_ids.length === 0) {
-        errors.ingredient_ids = "No ingredient selected";
-    }
-
-    if (unit_ids.length === 0) {
-        errors.unit_ids = "No unit selected";
-    }
-
-    if (amounts.length === 0) {
-        errors.amounts = "Amount is required";
-    } else if (amounts.some((amount) => !Number.isFinite(amount))) {
-        errors.amounts = "One or more amounts are invalid";
+        fieldErrors.ingredient_ids = "At least one ingredient required";
     }
 
     if (
@@ -212,19 +206,19 @@ export async function editRecipe(id: string, slug: string, prevState: FormState,
         ingredient_ids.length !== positions.length ||
         ingredient_ids.length !== group_names.length
     ) {
-        errors.amounts = "Ingredient data is incomplete";
+        fieldErrors.amounts = "Ingredient data is incomplete";
     }
 
     if (groups_enabled) {
         if (all_group_names.length === 0) {
-            errors.group_names = "At least one group is required";
+            fieldErrors.group_names = "At least one group is required";
         } else if (all_group_names.some((g) => g === "")) {
-            errors.group_names = "One of your groups has no name";
+            fieldErrors.group_names = "One of your groups has no name";
         } else {
             const normalized = all_group_names.map((g) => g.toLowerCase());
 
             if (new Set(normalized).size !== normalized.length) {
-                errors.group_names = "Your groups are not named uniquely";
+                fieldErrors.group_names = "Your groups are not named uniquely";
             } else {
                 const submittedGroups = new Set(
                     group_names.map((g) => g.trim().toLowerCase())
@@ -235,14 +229,18 @@ export async function editRecipe(id: string, slug: string, prevState: FormState,
                 );
 
                 if (hasEmptyGroup) {
-                    errors.group_names = "Every group must contain at least one ingredient";
+                    fieldErrors.group_names = "Every group must contain at least one ingredient";
                 }
             }
         }
     }
 
-    if (Object.keys(errors).length > 0) {
-        return { errors };
+    if (Object.keys(fieldErrors).length > 0) {
+        return {
+            success: false,
+            message: "Please correct the highlighted fields.",
+            fieldErrors,
+        };
     }
 
     const ingredient_lines = ingredient_ids.map((ingredient_id, i) => ({
@@ -262,19 +260,24 @@ export async function editRecipe(id: string, slug: string, prevState: FormState,
             hint: step_hints[i] || null,
         }));
 
-    await updateRecipe(
-        id,
-        name,
-        subtitle,
-        user.id,
-        portions,
-        image_uri,
-        is_public,
-        groups_enabled,
-        category_ids,
-        ingredient_lines,
-        steps
-    );
+    try {
+        await updateRecipe(
+            id,
+            name,
+            subtitle,
+            user.id,
+            portions,
+            image_uri,
+            is_public,
+            groups_enabled,
+            category_ids,
+            ingredient_lines,
+            steps
+        );
+    } catch (error) {
+        return errorToActionResult<RecipeFields, RecipePayload>(error);
+    }
+
     redirect(`/collection/${slug}`);
 }
 

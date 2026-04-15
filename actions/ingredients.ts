@@ -72,7 +72,7 @@ export async function createIngredientWithoutRedirect(
 
         return {
             success: true,
-            message: "Ingredient created.",
+            message: `Ingredient created successfully.`,
             data: {
                 id: ingredient.id,
                 name: ingredient.name,
@@ -145,7 +145,7 @@ export async function editIngredientWithoutRedirect(
 
         return {
             success: true,
-            message: "Ingredient created.",
+            message: `Ingredient updated successfully.`,
             data: {
                 id: ingredient.id,
                 name: ingredient.name,

@@ -83,3 +83,32 @@ export type RecipeDraft = {
     groups: RecipeGroupDraft[];
     steps: RecipeStepDraft[];
 };
+
+export type RecipeFields = {
+    name?: string;
+    subtitle?: string;
+    image_uri?: string;
+    category_ids?: string;
+    ingredient_ids?: string;
+    group_names?: string;
+    portions?: string;
+    unit_ids?: string;
+    amounts?: string;
+    text?: string;
+    hint?: string;
+    form?: string;
+}
+
+export type RecipePayload = {
+    id: string;
+    name: string;
+    slug: string;
+    subtitle: string;
+    is_public: boolean;
+    image_uri: string;
+    owner_id: string;
+    categories: string[];
+    portions: number;
+    groups_enabled: boolean;
+    ingredients: IngredientLineInput[];
+}

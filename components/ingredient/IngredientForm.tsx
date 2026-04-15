@@ -1,15 +1,23 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useActionState } from "react";
-import { createIngredientWithoutRedirect, editIngredientWithoutRedirect } from "@/actions/ingredients";
+import {
+    createIngredientWithoutRedirect,
+    editIngredientWithoutRedirect,
+} from "@/actions/ingredients";
 import { FormMode } from "@/types/general";
+import { showSuccessToast, showErrorToast } from "../general/ToastProvider";
 
-import type { IngredientDraft, IngredientFields, IngredientPayload } from "@/types/ingredient";
+import type {
+    IngredientDraft,
+    IngredientFields,
+    IngredientPayload,
+} from "@/types/ingredient";
 import type { ActionResult } from "@/types/actions";
+
 import InputFieldText from "../form/InputFieldText";
 import Button from "../buttons/Button";
-
 
 type IngredientFormProps = {
     initialDraft: IngredientDraft;
@@ -32,28 +40,33 @@ export default function IngredientForm({
     submitButtonText,
     onSuccess,
 }: IngredientFormProps) {
-
     const action =
         mode === FormMode.CREATE
             ? createIngredientWithoutRedirect
             : editIngredientWithoutRedirect.bind(null, initialDraft.id);
 
-    const [state, formAction, pending] = useActionState(
-        action,
-        initialState
-    );
-
+    const [state, formAction, pending] = useActionState(action, initialState);
     const [draft, setDraft] = useState<IngredientDraft>(initialDraft);
-
+    
     useEffect(() => {
-        if (mode === FormMode.CREATE && state.success && "data" in state && state.data) {
-            onSuccess?.({
-                id: state.data.id,
-                name: state.data.name,
-                plural: state.data.plural,
-            });
+        if (!state.message) return;
+
+        console.log("toast effect", state);
+
+        if (state.success) {
+            showSuccessToast(state.message);
+
+            if (mode === FormMode.CREATE && state.data) {
+                onSuccess?.({
+                    id: state.data.id,
+                    name: state.data.name,
+                    plural: state.data.plural,
+                });
+            }
+        } else {
+            showErrorToast(state.message);
         }
-    }, [state, mode, onSuccess]);    
+    }, [state, mode, onSuccess]);
 
     function updateDraft<K extends keyof IngredientDraft>(
         field: K,
@@ -67,10 +80,9 @@ export default function IngredientForm({
 
     return (
         <form action={formAction} className="flex flex-col gap-4">
-
             <InputFieldText<IngredientDraft, "name">
                 field="name"
-                labelName="Name"
+                labelName="Name*"
                 draftValue={draft.name ?? ""}
                 updateDraftValue={updateDraft}
                 error={!state.success ? state.fieldErrors?.name : undefined}

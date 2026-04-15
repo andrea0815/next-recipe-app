@@ -1,29 +1,27 @@
 "use client";
-import { useActionState, useState, useRef } from 'react';
-import { FormState, createRecipe, editRecipe } from '@/actions/recipes';
+import { useActionState, useState, useRef, useEffect } from 'react';
+import { createRecipe, editRecipe } from '@/actions/recipes';
 
 import type { Category } from '@/types/category';
 import type { Unit } from '@/types/unit';
-import type { Ingredient, IngredientDraft } from '@/types/ingredient';
-import type { RecipeDraft } from '@/types/recipe';
+import type { Ingredient } from '@/types/ingredient';
+import type { RecipeDraft, RecipeFields, RecipePayload } from '@/types/recipe';
 import type { PanelRef } from '@/components/ingredient/IngredientPanel';
+import { ActionResult } from "@/types/actions";
 import { FormMode, ItemType } from '@/types/general';
 
-import CategoryMultiSelect from './CategoryMultiSelect';
 import IngredientEditor from './IngredientEditor';
 import StepEditor from './StepEditor';
 import InputWrapper from '../form/InputWrapper';
 import Switch from '../form/Switch';
 import InputFieldText from '../form/InputFieldText';
 import InputMultiSelect from '../form/InputMultiSelect';
-import InputFieldNumber from '../form/InputFieldNumber';
 import Button from '../buttons/Button';
 import IngredientPanel from '../ingredient/IngredientPanel';
 import IconAdd from '../icons/IconAdd';
 import SectionWrapper from '../containers/SectionWrapper';
 import SectionHeadline from '../typography/SectionHeadline';
-
-
+import NumberSelect from '../form/NumberSelect';
 
 export default function RecipeForm({
     categories,
@@ -38,8 +36,10 @@ export default function RecipeForm({
     initialDraft: RecipeDraft;
     mode: FormMode;
 }) {
-    const initialState: FormState = {
-        errors: {},
+
+    const initialState: ActionResult<RecipeFields, RecipePayload> = {
+        success: false,
+        message: "",
     };
 
     const action =
@@ -48,7 +48,14 @@ export default function RecipeForm({
             : editRecipe.bind(null, initialDraft.id, initialDraft.slug);
 
     const [state, formAction, isPending] = useActionState(action, initialState);
+    const [hasFieldErrors, setHasFieldErros] = useState(Object.keys(state.fieldErrors ?? {}).length > 0);
     const [draft, setDraft] = useState<RecipeDraft>(initialDraft);
+
+    useEffect(() => {
+        console.log(state);
+        setHasFieldErros(Object.keys(state.fieldErrors ?? {}).length > 0)
+    }, [state])
+
 
     const [ingredients, setIngredients] = useState(initialIngredients);
     const [selectedIngredientId, setSelectedIngredientId] = useState("");
@@ -87,18 +94,18 @@ export default function RecipeForm({
 
                     <InputFieldText<RecipeDraft, "name">
                         field="name"
-                        labelName="Name"
+                        labelName="Name*"
                         draftValue={draft.name}
                         updateDraftValue={updateDraft}
-                        error={state.errors.name}
+                        error={!state.success ? state.fieldErrors?.name : undefined}
                     />
 
                     <InputFieldText<RecipeDraft, "subtitle">
                         field="subtitle"
-                        labelName="Subtitle"
+                        labelName="Subtitle*"
                         draftValue={draft.subtitle}
                         updateDraftValue={updateDraft}
-                        error={state.errors.subtitle}
+                        error={!state.success ? state.fieldErrors?.subtitle : undefined}
                     />
 
                     <InputWrapper labelName='Should this recipe be public?'>
@@ -114,7 +121,7 @@ export default function RecipeForm({
                         labelName="Image"
                         draftValue={draft.image_uri}
                         updateDraftValue={updateDraft}
-                        error={state.errors.image_uri}
+                        error={!state.success ? state.fieldErrors?.image_uri : undefined}
                     />
 
                     <InputMultiSelect<Category, "id", "name">
@@ -131,15 +138,21 @@ export default function RecipeForm({
 
                     <SectionHeadline>Ingredients</SectionHeadline>
 
-                    <InputFieldNumber<RecipeDraft, "portions">
-                        labelName="Portions"
-                        field="portions"
-                        draftValue={draft.portions}
-                        updateDraftValue={updateDraft}
-                        min={1}
-                        step={1}
-                        error={state.errors.portions}
-                    />
+                    <div className='mb-4'>
+
+                        <NumberSelect
+                            portions={draft.portions}
+                            name='portions'
+                            onPortionChange={(valueOrUpdater) => {
+                                const nextValue =
+                                    typeof valueOrUpdater === "function"
+                                        ? valueOrUpdater(draft.portions)
+                                        : valueOrUpdater;
+
+                                updateDraft("portions", nextValue);
+                            }}
+                        />
+                    </div>
 
                     <IngredientEditor
                         state={state}
@@ -177,6 +190,19 @@ export default function RecipeForm({
                     />
                 </SectionWrapper>
 
+                {state.fieldErrors && Object.keys(state.fieldErrors).length > 0 && (
+                    <div className="w-full rounded-xl text-sm text-red border-2 border-red py-2 px-4">
+                        <p className="font-medium">Please fix following fields:</p>
+                        <ul className="">
+                            {Object.entries(state.fieldErrors).map(([field, message]) => (
+                                <li key={field}>
+                                    – {message}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+
 
                 <Button
                     type="submit"
@@ -184,10 +210,7 @@ export default function RecipeForm({
                     customClass=''
                     stretch={true}
                     disabled={
-                        isPending ||
-                        Object.keys(state.errors).length > 0 ||
-                        draft.name.trim() === "" ||
-                        draft.subtitle.trim() === ""
+                        isPending
                     }
                 >
                     {isPending ? submitButtonText.pending : submitButtonText.static}

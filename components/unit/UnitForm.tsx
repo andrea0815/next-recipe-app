@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useActionState } from "react";
 import { createUnitWithoutRedirect, editUnitWithoutRedirect } from "@/actions/units";
+import { showSuccessToast, showErrorToast } from "../general/ToastProvider";
 import { FormMode } from "@/types/general";
 
 import type { UnitDraft, UnitFields, UnitPayload } from "@/types/unit";
@@ -46,15 +47,25 @@ export default function UnitForm({
     const [draft, setDraft] = useState<UnitDraft>(initialDraft);
 
     useEffect(() => {
-        if (mode === FormMode.CREATE && state.success && "data" in state && state.data) {
-            onSuccess?.({
-                id: state.data.id,
-                name: state.data.name,
-                plural: state.data.plural,
-                abbreviation: state.data.abbreviation,
-            });
+        if (!state.message) return;
+
+        console.log("toast effect", state);
+
+        if (state.success) {
+            showSuccessToast(state.message);
+
+            if (mode === FormMode.CREATE && state.data) {
+                onSuccess?.({
+                    id: state.data.id,
+                    name: state.data.name,
+                    plural: state.data.plural,
+                    abbreviation: state.data.abbreviation,
+                });
+            }
+        } else {
+            showErrorToast(state.message);
         }
-    }, [state, mode, onSuccess]);    
+    }, [state, mode, onSuccess]);
 
     function updateDraft<K extends keyof UnitDraft>(
         field: K,
@@ -71,7 +82,7 @@ export default function UnitForm({
 
             <InputFieldText<UnitDraft, "name">
                 field="name"
-                labelName="Name"
+                labelName="Name*"
                 draftValue={draft.name ?? ""}
                 updateDraftValue={updateDraft}
                 error={!state.success ? state.fieldErrors?.name : undefined}

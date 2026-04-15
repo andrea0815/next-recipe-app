@@ -73,7 +73,7 @@ export async function createUnitWithoutRedirect(
 
         return {
             success: true,
-            message: "Unit created.",
+            message: "Unit created successfully.",
             data: {
                 id: unit.id,
                 name: unit.name,
@@ -150,7 +150,7 @@ export async function editUnitWithoutRedirect(
 
         return {
             success: true,
-            message: "Unit created.",
+            message: "Unit updated successfully.",
             data: {
                 id: unit.id,
                 name: unit.name,

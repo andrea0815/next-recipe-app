@@ -5,6 +5,7 @@ import "./globals.css";
 
 import Header from "@/components/nav/Header";
 import Footer from "@/components/footer/Footer";
+import ToastProvider from "@/components/general/ToastProvider";
 
 const recursive = Recursive({
   variable: "--font-recursive",
@@ -32,6 +33,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <ToastProvider />
         </body>
       </html>
     </ClerkProvider>
