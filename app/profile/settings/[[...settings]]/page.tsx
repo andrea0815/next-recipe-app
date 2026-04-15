@@ -13,12 +13,16 @@ export default async function ProfileAccountPage() {
 
     const user = await getCurrentDbUser();
 
+    if (!user) return null;
+
     return (
         <>
             <PageHeadline>Settings</PageHeadline>
             <div className='flex flex-col justify-center items-center gap-4 mt-6'>
 
-                <ProfileSettings />
+                <ProfileSettings
+                    recipePublicByDefault={user.recipe_public_by_default ?? false}
+                />
 
                 <div className='py-6'>
                     <UserProfile path='/profile/settings' />

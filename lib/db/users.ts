@@ -1,19 +1,5 @@
 import { prisma } from "@/lib/prisma";
-
-export type CreateUserInput = {
-  clerk_user_id: string;
-  email: string;
-  name: string;
-  username?: string | null;
-};
-
-export type UpdateUserInput = {
-  email?: string;
-  name?: string;
-  username?: string | null;
-  recipe_public_by_default?: string | null;
-  clerk_user_id?: string;
-};
+import type { CreateUserInput, UpdateUserInput } from "@/types/user"
 
 export async function getUserById(id: string) {
   return prisma.users.findUnique({

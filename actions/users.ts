@@ -1,29 +1,21 @@
-// "use server";
+"use server";
 
-// import { updateUserById } from "@/lib/db/users";
-// import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
-// import { revalidatePath } from "next/cache";
-// import { redirect } from "next/navigation";
+import { updateUserById } from "@/lib/db/users";
+import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
+import { revalidatePath } from "next/cache";
 
-// import { ValidationError } from "@/lib/errors/app-errors";
-// import { errorToActionResult } from "@/lib/errors/error-to-action-result";
-// import { ActionResult } from "@/types/actions";
+export async function editUserPreference(
+    recipe_public_by_default: boolean
+): Promise<void> {
+    const user = await getCurrentDbUser();
 
-// export async function editUser(
-//     prevState: ActionResult<UserFieldErrors>,
-//     formData: FormData
-// ): Promise<ActionResult<UserFieldErrors>> {
-//     try {
-//         const user = await getCurrentDbUser();
+    if (!user) {
+        throw new Error("You must be signed in.");
+    }
 
+    await updateUserById(user.id, {
+        recipe_public_by_default,
+    });
 
-
-//         const fieldErrors: Partial<UserFieldErrors> = {};
-
-//         await updateUserById(user.id);
-//     } catch (error) {
-//         return errorToActionResult<UserFieldErrors>(error);
-//     }
-
-//     redirect("/profile/users");
-// }
+    revalidatePath("/profile/users");
+}

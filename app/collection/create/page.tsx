@@ -29,7 +29,7 @@ export default async function AddRecipePage() {
     subtitle: "",
     slug: "",
     image_uri: "/images/placeholder.png",
-    is_public: false,
+    is_public: user.recipe_public_by_default ?? true,
     portions: 2,
     groups_enabled: false,
     category_ids: [],
