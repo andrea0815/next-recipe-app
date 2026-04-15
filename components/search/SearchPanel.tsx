@@ -8,6 +8,7 @@ import type { SearchParams } from '@/types/search';
 
 import SearchBar from './SearchBar';
 import SearchPanelContent from './SearchPanelContent';
+import Tag from '../general/Tag';
 
 export default function SearchPanel({
     ingredients,
@@ -26,7 +27,7 @@ export default function SearchPanel({
     const initialSearchParams = {
         query: "",
         category: category ?? "",
-        ingredient_names: ingredientNames,
+        ingredient_names: ingredientNames ?? [],
     }
 
     const [open, setOpen] = useState(false)
@@ -37,7 +38,7 @@ export default function SearchPanel({
         setSearchParams({
             query: query ?? "",
             category: category ?? "",
-            ingredient_names: ingredientNames,
+            ingredient_names: ingredientNames ?? [],
         });
         setOpen(false);
     }, [category, query, ingredientNames.join(",")]);
@@ -57,15 +58,15 @@ export default function SearchPanel({
         const params = new URLSearchParams();
 
         if (searchParams.query?.trim()) {
-            params.set("query", "");
+            params.delete("query");
         }
 
         if (searchParams.category?.trim()) {
-            params.set("category", "");
+            params.delete("category");
         }
 
         if (searchParams.ingredient_names.length > 0) {
-            params.set("ingredients", "");
+            params.delete("ingredients");
         }
 
         setOpen(false);
@@ -111,22 +112,46 @@ export default function SearchPanel({
 
         const queryString = params.toString();
         router.push(queryString ? `${pathname}?${queryString}` : pathname);
+
+
     }
 
+    console.log(searchParams.ingredient_names);
+
+
     return (
-        <div className='relative h-20 w-full sm:my-5 flex justify-center items-start'>
-            <div className='absolute left-1/2 top-0 -translate-x-1/2 z-5 flex flex-col justify-start items-center rounded-xl w-full sm:max-w-200'>
-                <SearchBar onFilterClick={() => setOpen((prev) => !prev)} isOpen={open} searchParams={searchParams} onSearchClick={handleQuerySearchButton} onQueryChange={(query) => updateSearchParams("query", query)} />
-                <SearchPanelContent
-                    isOpen={open}
-                    ingredients={ingredients}
-                    selectedIngredients={searchParams.ingredient_names}
-                    onSearchButton={() => handleSearchButton()}
-                    onClearButton={() => handleClearButton()}
-                    onIngredientsChange={(names) => updateSearchParams("ingredient_names", names)}
-                />
-                <div className='absolute inset-0 -z-10 backdrop-blur-sm bg-section-50 rounded-xl'></div>
+        <div className='relative min-h-20 w-full sm:my-5 flex flex-col justify-center items-start'>
+            <div className='relative w-full left-1/2 top-0 -translate-x-1/2 z-5 flex flex-col items-center'>
+                <div className='relative max-w-150 flex flex-col justify-start items-center rounded-xl w-full sm:max-w-200 overflow-hidden'>
+                    <SearchBar onFilterClick={() => setOpen((prev) => !prev)} isOpen={open} searchParams={searchParams} onSearchClick={handleQuerySearchButton} onQueryChange={(query) => updateSearchParams("query", query)} />
+                    <SearchPanelContent
+                        isOpen={open}
+                        ingredients={ingredients}
+                        selectedIngredients={searchParams.ingredient_names}
+                        onSearchButton={() => handleSearchButton()}
+                        onClearButton={() => handleClearButton()}
+                        onIngredientsChange={(names) => updateSearchParams("ingredient_names", names)}
+                    />
+                    <div className='absolute inset-0 -z-10 backdrop-blur-sm bg-section-50 rounded-xl'></div>
+                </div>
+
+                {(searchParams.ingredient_names.length >= 1 && searchParams.ingredient_names[0] !== "") &&
+                    <div className='mt-3 flex flex-col gap-1'>
+                        {/* <p className='text-sm text-primary'>Selected Ingredients</p> */}
+                        <ul className=' flex gap-2'>
+                            {searchParams.ingredient_names.map((item, index) => (
+                                <Tag key={index}
+                                    size='small'
+                                    color='sage'
+                                >{item}</Tag>
+                            ))}
+
+                        </ul>
+                    </div>
+                }
+
             </div>
+
         </div>
     );
 }

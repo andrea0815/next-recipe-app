@@ -77,7 +77,7 @@ export default function Tag({
     const className = [
         selectedPriority,
         selectedSize,
-        `transition-all text-center flex justify-center items-center gap-2 ${stretch ? "w-full" : ""} ${customClass}`,
+        `transition-all text-center whitespace-nowrap flex justify-center items-center gap-2 ${stretch ? "w-full" : ""} ${customClass}`,
     ].join(" ");
 
     return (
