@@ -103,7 +103,7 @@ export default function InputMultiSelect<
           {selected.map((item, index) => (
             <Tag
               key={`${String(item[valueKey])}-${index}`}
-              color="white"
+              color="sage"
               size="medium"
               onClick={() => remove(item[valueKey])}
             >

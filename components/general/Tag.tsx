@@ -3,7 +3,7 @@ import React from 'react';
 
 type TagProps = {
     children: any,
-    color?: "primary" | "red" | "gray" | "white",
+    color?: "primary" | "red" | "gray" | "white" | "sage",
     title?: string,
     stretch?: boolean,
     onClick?: () => void,
@@ -50,6 +50,11 @@ export default function Tag({
             solid: `bg-gray-500 text-white border-gray-500 border-2 ${isClickable ? "hover:bg-gray-800" : ""}`,
             outline: `text-gray-500 bg-transparent border-2 border-gray-500 ${isClickable ? "hover:bg-gray-500 hover:text-white" : ""}`,
             ghost: `text-gray-500 fill-gray-500 stroke-gray-500 bg-transparent ${isClickable ? "hover:text-gray-800" : ""}`,
+        },
+        sage: {
+            solid: `bg-green-300 text-text border-green-300 border-2 ${isClickable ? "hover:bg-green-400" : ""}`,
+            outline: `text-green-300 bg-transparent border-2 border-green-300 ${isClickable ? "hover:bg-green-300 hover:text-white" : ""}`,
+            ghost: `text-green-300 fill-green-300 stroke-green-300 bg-transparent ${isClickable ? "hover:text-green-800" : ""}`,
         },
     } as const;
 
