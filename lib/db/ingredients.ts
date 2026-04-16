@@ -41,6 +41,26 @@ export async function getIngredientsByUserId(query?: string, userId?: string) {
     });
 }
 
+export async function getIngredientIdsFromNames(
+    names: string[],
+    userId?: string
+): Promise<string[]> {
+    try {
+        if (names.length === 0) return [];
+
+        const ingredientRecords = await prisma.ingredients.findMany({
+            where: {
+                name: { in: names },
+                ...(userId ? { user_id: userId } : {}),
+            },
+            select: { id: true },
+        });
+
+        return ingredientRecords.map((ingredient) => ingredient.id);
+    } catch (error) {
+        mapPrismaError(error);
+    }
+}
 
 export async function getIngredient(id: string) {
     try {

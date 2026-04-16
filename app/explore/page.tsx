@@ -1,7 +1,7 @@
 import React from 'react';
 import { getOtherRecipes } from "@/lib/db/recipes";
 import { getCategoryIdFromName } from "@/lib/db/categories";
-import { getIngredientIdFromName } from "@/lib/db/ingredients";
+import { getIngredientIdsFromNames } from "@/lib/db/ingredients";
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 
 import RecipeGalleryWrapper from '@/components/containers/RecipeGalleryWrapper';
@@ -29,13 +29,7 @@ export default async function ExplorePage({ searchParams }: { searchParams: Prom
             ? [ingredients]
             : [];
 
-    const ingredientIds = (
-        await Promise.all(
-            ingredientNames.map((ingredientName) =>
-                getIngredientIdFromName(ingredientName, user?.id)
-            )
-        )
-    ).filter((id): id is string => Boolean(id));
+    const ingredientIds = await getIngredientIdsFromNames(ingredientNames, user?.id);
 
     const listKey =
         `${categoryIds.join(",") || "all"}-${ingredientIds.join(",") || "no-ingredients"}-${query || ""}`;
