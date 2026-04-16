@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 //errors
 import { errorToActionResult } from "@/lib/errors/error-to-action-result";
 import { ActionResult } from "@/types/actions";
-import { RecipeFields, RecipePayload } from '@/types/recipe';
+import { RecipeFields } from '@/types/recipe';
 
 export type Errors = {
     name?: string;
@@ -25,9 +25,9 @@ export type Errors = {
 }
 
 export async function createRecipe(
-    prevState: ActionResult<RecipeFields, RecipePayload>,
+    prevState: ActionResult<RecipeFields, undefined>,
     formData: FormData
-): Promise<ActionResult<RecipeFields, RecipePayload>> {
+): Promise<ActionResult<RecipeFields, undefined>> {
     const user = await getCurrentDbUser();
 
     if (!user) {
@@ -150,14 +150,14 @@ export async function createRecipe(
         );
 
     } catch (error) {
-        return errorToActionResult<RecipeFields, RecipePayload>(error);
+        return errorToActionResult<RecipeFields, undefined>(error);
     }
 
     redirect("/collection?toast=recipe-created");
 }
 
-export async function editRecipe(id: string, slug: string, prevState: ActionResult<RecipeFields, RecipePayload>, formData: FormData
-): Promise<ActionResult<RecipeFields, RecipePayload>> {
+export async function editRecipe(id: string, slug: string, prevState: ActionResult<RecipeFields, undefined>, formData: FormData
+): Promise<ActionResult<RecipeFields, undefined>> {
 
     const user = await getCurrentDbUser();
 
@@ -271,7 +271,7 @@ export async function editRecipe(id: string, slug: string, prevState: ActionResu
             steps
         );
     } catch (error) {
-        return errorToActionResult<RecipeFields, RecipePayload>(error);
+        return errorToActionResult<RecipeFields, undefined>(error);
     }
 
     redirect(`/collection/${slug}?toast=recipe-updated`);
