@@ -70,7 +70,9 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
         is_public: recipe.is_public,
         portions: recipe.portions,
         groups_enabled: recipe.groups_enabled,
-        category_ids: recipe.recipe_categories.map((category) => category.category_id),
+        category_ids: recipe.recipe_categories.map(
+            (category: { category_id: string }) => category.category_id
+        ),
         groups: groups,
         steps: recipe.recipe_steps.map((step) => ({
             text: step.text,
