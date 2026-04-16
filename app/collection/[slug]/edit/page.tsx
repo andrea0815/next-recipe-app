@@ -74,12 +74,18 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
             (category: { category_id: string }) => category.category_id
         ),
         groups: groups,
-        steps: recipe.recipe_steps.map((step) => ({
-            text: step.text,
-            hint: step.hint ?? "",
-            step_index: step.step_index,
-            hint_is_showing: !!step.hint,
-        })),
+        steps: recipe.recipe_steps.map(
+            (step: {
+                text: string;
+                hint: string | null;
+                step_index: number;
+            }) => ({
+                text: step.text,
+                hint: step.hint ?? "",
+                step_index: step.step_index,
+                hint_is_showing: !!step.hint,
+            })
+        ),
     };
 
     const isOwner = recipe.owner_id === user.id;
