@@ -3,17 +3,15 @@
 import { ReactNode, useMemo } from "react";
 import type { Unit } from "@/types/unit";
 import type { Ingredient } from "@/types/ingredient";
-import type { RecipeGroupDraft, RecipeLineDraft, IngredientLineInput } from "@/types/recipe";
+import type { RecipeGroupDraft, RecipeLineDraft } from "@/types/recipe";
 
 import UnitDisplay from "@/components/unit/UnitDisplay";
 import InrgredientDisplay from "@/components/ingredient/InrgredientDisplay";
 import InputFieldText from "@/components/form/InputFieldText";
-import InputWrapper from "../form/InputWrapper";
 import Switch from "../form/Switch";
 import Button from "../buttons/Button";
 import InputFieldNumber from "../form/InputFieldNumber";
 import InputSelectSearchable from "../form/InputSelectSearchable";
-import Icon from "../icons/Icon";
 import IconAdd from "../icons/IconAdd";
 import IconClose from "../icons/IconClose";
 import ConfirmAction from "../errors/ConfirmaAction";
@@ -28,7 +26,7 @@ export default function IngredientEditor({
   onGroupsChange,
   onGroupsEnabledChange,
 }: {
-  state: any; // your FormState (keep as any for now)
+  state: any;
   ingredients: Ingredient[];
   units: Unit[];
   groups: RecipeGroupDraft[],

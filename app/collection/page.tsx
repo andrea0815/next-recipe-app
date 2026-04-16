@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { getUserRecipes } from "@/lib/db/recipes";
 import { getCategoryIdFromName } from "@/lib/db/categories";
 import { getIngredientIdFromName } from "@/lib/db/ingredients";
@@ -13,6 +13,7 @@ import Button from '@/components/buttons/Button';
 import GeneralSection from '@/components/containers/GeneralSection';
 import HeaderTabBar from '@/components/nav/HeaderTabBar';
 import RecipeToastHandler from '@/components/recipe/RecipeToastHandler';
+import { Recipe } from '@/types/recipe';
 
 export default async function CollectionPage({ searchParams }: { searchParams: Promise<{ category: string, ingredients?: string | string[], query: string }> }) {
 
@@ -83,7 +84,9 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
                     />
                 </RecipeGalleryWrapper>
             </GeneralSection>
-            <RecipeToastHandler />
+            <Suspense fallback={null}>
+                <RecipeToastHandler />
+            </Suspense>
         </>
     );
 }

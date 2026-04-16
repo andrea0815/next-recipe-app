@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import SearchPanel from './SearchPanel';
 import { getIngredientsByUserId } from '@/lib/db/ingredients';
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
@@ -11,7 +11,9 @@ export default async function SearchPanelServer() {
 
     return (
         <>
-            <SearchPanel ingredients={ingredients}/>
+            <Suspense fallback={<div>Loading...</div>}>
+                <SearchPanel ingredients={ingredients} />
+            </Suspense>
         </>
     );
 }

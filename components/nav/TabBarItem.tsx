@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 type TabBarItemProps = {
     href: string;
@@ -30,14 +31,14 @@ export default function TabBarItem({ children, href, text }: TabBarItemProps) {
     }
 
     return (
-        <Link
-            href={href}
-            className="px-1 py-2 text-sm whitespace-nowrap"
-        >
-            {children}
-            <p className={`py-2 px-3 ${isActive ? "text-text bg-green-300 rounded-full" : "text-green-400"} transition-colors hover:text-text hover:bg-green-300 rounded-full`}>
-                {text}
-            </p>
-        </Link>
+            <Link
+                href={href}
+                className="px-1 py-2 text-sm whitespace-nowrap"
+            >
+                {children}
+                <p className={`py-2 px-3 ${isActive ? "text-text bg-green-300 rounded-full" : "text-green-400"} transition-colors hover:text-text hover:bg-green-300 rounded-full`}>
+                    {text}
+                </p>
+            </Link>
     );
 }

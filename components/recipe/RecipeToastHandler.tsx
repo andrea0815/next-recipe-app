@@ -9,7 +9,7 @@ export default function RecipeToastHandler() {
     const shownRef = useRef(false);
 
     useEffect(() => {
-        const toast = searchParams.get("toast");
+        const toast = searchParams.get("toast") ?? null;
         if (!toast || shownRef.current) return;
 
         if (

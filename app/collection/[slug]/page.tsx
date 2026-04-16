@@ -11,6 +11,7 @@ import GeneralSection from "@/components/containers/GeneralSection";
 import HeaderRecipeDetail from "@/components/nav/HeaderRecipeDetail";
 import RecipeToastHandler from "@/components/recipe/RecipeToastHandler";
 import NoPermissionClient from "@/components/errors/NotPermissionClient";
+import { Suspense } from "react";
 
 
 export default async function RecipePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -66,7 +67,9 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
                     groupedIngredients={groupedIngredients}
                 />
             </GeneralSection>
-            <RecipeToastHandler />
+            <Suspense fallback={null}>
+                <RecipeToastHandler />
+            </Suspense>
         </>
     );
 }

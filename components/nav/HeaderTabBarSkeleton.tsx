@@ -1,11 +1,3 @@
-import React from 'react';
-import { getCategoryIdFromName, getCategoriesByUserId } from "@/lib/db/categories";
-import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
-
-import type { Category } from '@/types/category';
-
-import TabBar from '@/components/nav/TabBar';
-import TabBarItem from '@/components/nav/TabBarItem';
 import HeaderSectionWrapper from '../containers/HeaderSectionWrapper';
 
 export default async function HeaderTabBarSkeleton() {
