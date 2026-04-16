@@ -6,11 +6,14 @@ export async function GET(req: NextRequest) {
     const user = await getCurrentDbUser();
 
     if (!user) {
-        return {
-            errors: {
-                form: "You must be signed in.",
+        return NextResponse.json(
+            {
+                errors: {
+                    form: "You must be signed in.",
+                },
             },
-        };
+            { status: 401 }
+        );
     }
 
     const searchParams = req.nextUrl.searchParams;
