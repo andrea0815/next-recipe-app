@@ -42,7 +42,7 @@ export type RecipeBase = {
     slug: string;
     subtitle: string;
     is_public: boolean;
-    image_uri: string;
+    image_uri: string | null;
     owner_id: string;
     portions: number;
     groups_enabled: boolean;
@@ -59,7 +59,7 @@ export type RecipeListItem = Pick<
     "id" | "name" | "slug" | "subtitle" | "is_public" | "image_uri" | "owner_id"
 > & {
     categories: Category[];
-    username?: string | null;
+    username: string | null;
 };
 
 export type RecipeLineDraft = {

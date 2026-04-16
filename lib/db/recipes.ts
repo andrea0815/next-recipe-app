@@ -1,10 +1,35 @@
-import { Prisma } from "@/app/generated/prisma/client";
+import { PrismaClient, Prisma } from "@/app/generated/prisma";
 import { prisma } from "@/lib/prisma";
 import { generateUniqueRecipeSlug } from "@/lib/db/utils/generateSlug";
 import { mapPrismaError } from "@/lib/errors/map-prisma-errors"
 
 import type { IngredientLineInput, Recipe, RecipeListItem, RecipeStep } from "@/types/recipe";
 import { PaginatedResult } from "@/types/general";
+
+type RecipeWithCategories = Prisma.recipesGetPayload<{
+    include: {
+        recipe_categories: {
+            include: {
+                categories: true;
+            };
+        };
+    };
+}>;
+
+type RecipeWithCategoriesOther = Prisma.recipesGetPayload<{
+    include: {
+        recipe_categories: {
+            include: {
+                categories: true;
+            };
+        };
+        users: {
+            select: {
+                username: true;
+            };
+        };
+    };
+}>;
 
 export async function getUserRecipes({
     query,
@@ -21,7 +46,7 @@ export async function getUserRecipes({
     cursor?: string;
     take?: number;
 } = {}): Promise<PaginatedResult<RecipeListItem>> {
-    const recipes = await prisma.recipes.findMany({
+    const recipes: RecipeWithCategories[] = await prisma.recipes.findMany({
         where: {
             ...(userId && { owner_id: userId }),
             ...(query && {
@@ -91,6 +116,7 @@ export async function getUserRecipes({
             is_public: recipe.is_public,
             image_uri: recipe.image_uri,
             owner_id: recipe.owner_id,
+            username: null,
             categories: recipe.recipe_categories.map((rc) => ({
                 id: rc.categories.id,
                 name: rc.categories.name,
@@ -117,7 +143,7 @@ export async function getOtherRecipes({
     cursor?: string;
     take?: number;
 } = {}): Promise<PaginatedResult<RecipeListItem>> {
-    const recipes = await prisma.recipes.findMany({
+    const recipes: RecipeWithCategoriesOther[] = await prisma.recipes.findMany({
         where: {
             ...(userId && {
                 owner_id: {
