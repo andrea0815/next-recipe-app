@@ -6,9 +6,6 @@ import UnitDisplay from '@/components/unit/UnitDisplay';
 import { formatAmount } from "@/lib/db/utils/formatDecimals";
 
 import React, { useState } from 'react';
-import IconMinusCircle from '../icons/IconMinusCircle';
-import IconPlusCircle from '../icons/IconPlusCircle';
-import InputFieldNumber from '../form/InputFieldNumber';
 import NumberSelect from '../form/NumberSelect';
 
 export default function RecipeDetailIngredients({
@@ -21,17 +18,9 @@ export default function RecipeDetailIngredients({
     portions: number,
     recipeId: string,
     groupsEnabled: boolean
-}) {
+}) {    
 
     const [portionsDisplay, setPortionsDisplay] = useState(portions);
-
-    const addPortion = () => {
-        setPortionsDisplay(prev => Math.min(999, prev + 1));
-    }
-
-    const subtractPortion = () => {
-        setPortionsDisplay(prev => Math.max(1, prev - 1));
-    }
 
     return (
         <>
@@ -61,14 +50,14 @@ export default function RecipeDetailIngredients({
                         )}
 
                         {/* Rows */}
-                        {ingredients.map((recipeIngredient) => {
+                        {ingredients.map((recipeIngredient, index) => {
                             const calculatedAmount =
                                 portions > 0
                                     ? Number(recipeIngredient.amount) * (portionsDisplay / portions)
                                     : 0;
 
                             return (
-                                <React.Fragment key={recipeIngredient.id}>
+                                <React.Fragment key={index}>
                                     <ShoppingListCheckbox
                                         recipeIngredientId={recipeIngredient.id}
                                         recipeId={recipeId}
@@ -83,14 +72,14 @@ export default function RecipeDetailIngredients({
                                     <p className="py-1 border-b border-gray-400">
                                         <UnitDisplay
                                             amount={calculatedAmount}
-                                            unit={recipeIngredient.units}
+                                            unit={recipeIngredient.unit}
                                         />
                                     </p>
 
                                     <p className="py-1 border-b border-gray-400 min-w-0">
                                         <IngredientDisplay
                                             amount={calculatedAmount}
-                                            ingredient={recipeIngredient.ingredients}
+                                            ingredient={recipeIngredient.ingredient}
                                         />
                                     </p>
                                 </React.Fragment>

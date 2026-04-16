@@ -3,7 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { generateUniqueRecipeSlug } from "@/lib/db/utils/generateSlug";
 import { mapPrismaError } from "@/lib/errors/map-prisma-errors"
 
-import type { IngredientLineInput, RecipeStep } from "@/types/recipe";
+import type { IngredientLineInput, Recipe, RecipeListItem, RecipeStep } from "@/types/recipe";
+import { PaginatedResult } from "@/types/general";
 
 export async function getUserRecipes({
     query,
@@ -19,7 +20,7 @@ export async function getUserRecipes({
     ingredientIds?: string[];
     cursor?: string;
     take?: number;
-} = {}) {
+} = {}): Promise<PaginatedResult<RecipeListItem>> {
     const recipes = await prisma.recipes.findMany({
         where: {
             ...(userId && { owner_id: userId }),
@@ -82,7 +83,7 @@ export async function getUserRecipes({
     const nextCursor = hasMore ? items[items.length - 1].id : null;
 
     return {
-        recipes: items.map((recipe) => ({
+        items: items.map((recipe) => ({
             id: recipe.id,
             name: recipe.name,
             slug: recipe.slug,
@@ -115,7 +116,7 @@ export async function getOtherRecipes({
     ingredientIds?: string[];
     cursor?: string;
     take?: number;
-} = {}) {
+} = {}): Promise<PaginatedResult<RecipeListItem>> {
     const recipes = await prisma.recipes.findMany({
         where: {
             ...(userId && {
@@ -188,7 +189,7 @@ export async function getOtherRecipes({
     const nextCursor = hasMore ? items[items.length - 1].id : null;
 
     return {
-        recipes: items.map((recipe) => ({
+        items: items.map((recipe) => ({
             id: recipe.id,
             name: recipe.name,
             slug: recipe.slug,
@@ -208,20 +209,7 @@ export async function getOtherRecipes({
     };
 }
 
-export async function getRecipeById(id: string) {
-    const recipe = await prisma.recipes.findUnique({
-        where: { id },
-    });
-
-    if (!recipe) return null;
-
-    return {
-        ...recipe,
-        portions: Number(recipe.portions),
-    };
-}
-
-export async function getRecipeBySlug(slug: string, userId?: string) {
+export async function getRecipeBySlug(slug: string, userId?: string): Promise<Recipe | null> {
     const recipe = await prisma.recipes.findFirst({
         where: {
             slug,
@@ -267,18 +255,37 @@ export async function getRecipeBySlug(slug: string, userId?: string) {
 
     if (!recipe) return null;
 
+    if (!recipe) return null;
+
     return {
-        ...recipe,
+        id: recipe.id,
+        name: recipe.name,
+        slug: recipe.slug,
+        subtitle: recipe.subtitle,
+        is_public: recipe.is_public,
+        image_uri: recipe.image_uri,
+        owner_id: recipe.owner_id,
         portions: Number(recipe.portions),
-        username: recipe.users.username,
-        recipe_ingredients: recipe.recipe_ingredients.map((ingredient) => {
-            const { shoppinglists, ...rest } = ingredient;
-            return {
-                ...rest,
-                amount: Number(ingredient.amount),
-                on_shopping_list: userId ? shoppinglists.length > 0 : false,
-            };
-        })
+        groups_enabled: Boolean(recipe.groups_enabled),
+        categories: recipe.recipe_categories.map((rc) => rc.categories),
+        ingredients: recipe.recipe_ingredients.map((ingredient) => ({
+            id: ingredient.id,
+            ingredient_id: ingredient.ingredient_id,
+            unit_id: ingredient.unit_id,
+            amount: Number(ingredient.amount),
+            group_name: ingredient.group_name ?? "",
+            owner_id: ingredient.owner_id ?? "",
+            position: Number(ingredient.position ?? 0),
+            on_shopping_list: userId ? ingredient.shoppinglists.length > 0 : false,
+            ingredient: ingredient.ingredients,
+            unit: ingredient.units,
+        })),
+        steps: recipe.recipe_steps.map((step) => ({
+            recipe_id: step.recipe_id,
+            step_index: step.step_index,
+            text: step.text,
+            hint: step.hint,
+        })),
     };
 }
 

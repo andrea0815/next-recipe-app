@@ -39,13 +39,13 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
 
     const groupsMap = new Map<string, RecipeLineDraft[]>();
 
-    for (const ingredientLine of recipe.recipe_ingredients) {
+    for (const ingredientLine of recipe.ingredients) {
         const groupName = ingredientLine.group_name ?? "";
 
         const line: RecipeLineDraft = {
             amount: Number(ingredientLine.amount),
-            unit_id: ingredientLine.units.id,
-            ingredient_id: ingredientLine.ingredients.id,
+            unit_id: ingredientLine.unit_id,
+            ingredient_id: ingredientLine.ingredient_id,
         };
 
         const existing = groupsMap.get(groupName) ?? [];
@@ -70,11 +70,9 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
         is_public: recipe.is_public,
         portions: recipe.portions,
         groups_enabled: recipe.groups_enabled,
-        category_ids: recipe.recipe_categories.map(
-            (category: { category_id: string }) => category.category_id
-        ),
+        category_ids: recipe.categories.map((category) => category.id),
         groups: groups,
-        steps: recipe.recipe_steps.map(
+        steps: recipe.steps.map(
             (step: {
                 text: string;
                 hint: string | null;

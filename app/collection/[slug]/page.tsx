@@ -12,7 +12,7 @@ import HeaderRecipeDetail from "@/components/nav/HeaderRecipeDetail";
 import RecipeToastHandler from "@/components/recipe/RecipeToastHandler";
 import NoPermissionClient from "@/components/errors/NotPermissionClient";
 import { Suspense } from "react";
-
+import { IngredientLineInput, Recipe } from "@/types/recipe";
 
 export default async function RecipePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
@@ -28,17 +28,11 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
         notFound();
     }
 
-    const safeIngredients = recipe.recipe_ingredients.map((recipeIngredient) => ({
-        ...recipeIngredient,
-        amount: Number(recipeIngredient.amount),
-        position: Number(recipeIngredient.position),
-    }));
-
-    const groupedIngredients = [...safeIngredients]
-        .sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
-        .reduce((acc, recipeIngredient) => {
+    const groupedIngredients = [...recipe.ingredients]
+        .sort((a, b) => a.position - b.position)
+        .reduce<Record<string, IngredientLineInput[]>>((acc, recipeIngredient) => {
             const groupName = recipe.groups_enabled
-                ? recipeIngredient.group_name?.trim() || "General"
+                ? recipeIngredient.group_name.trim() || "General"
                 : "Zutaten";
 
             if (!acc[groupName]) {
@@ -47,14 +41,18 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
 
             acc[groupName].push(recipeIngredient);
             return acc;
-        }, {} as Record<string, typeof safeIngredients>);
+        }, {});
 
     const isOwner = recipe.owner_id === user.id;
 
-    if (!isOwner) return (<>
-        <HeaderRecipeDetail recipeId={recipe.id} slug={recipe.slug} isOwner={isOwner} />
-        <NoPermissionClient />
-    </>)
+    if (!isOwner) {
+        return (
+            <>
+                <HeaderRecipeDetail recipeId={recipe.id} slug={recipe.slug} isOwner={isOwner} />
+                <NoPermissionClient />
+            </>
+        );
+    }
 
     return (
         <>

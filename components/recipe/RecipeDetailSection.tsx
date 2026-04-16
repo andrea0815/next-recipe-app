@@ -49,23 +49,23 @@ export default function RecipeDetailSection({
             }
 
             <div className='flex gap-2 w-[60vw] m-auto justify-center mt-6 mb-15 flex-wrap'>
-                {recipe.recipe_categories.map((category: any) => (
+                {recipe.categories.map((category: any) => (
                     isOwnRecipe && type === RecipeListType.COLLECTION ? (
                         <Tag
-                            key={category.categories.id}
+                            key={category.id}
                             size="medium"
                             priority="secondary"
-                            href={isOwnRecipe ? `/collection?category=${category.categories.name}` : null}
+                            href={isOwnRecipe ? `/collection?category=${category.name}` : null}
                         >
-                            {category.categories.name}
+                            {category.name}
                         </Tag>
                     ) : (
                         <Tag
-                            key={category.categories.id}
+                            key={category.id}
                             size="medium"
                             priority="secondary"
                         >
-                            {category.categories.name}
+                            {category.name}
                         </Tag>
                     )
                 ))}
@@ -85,9 +85,9 @@ export default function RecipeDetailSection({
                     <h2 className='text-2xl  font-bold mb-6'>Instructions</h2>
 
                     <ul className='flex flex-col gap-6'>
-                        {recipe.recipe_steps.length > 0 ?
-                            recipe.recipe_steps.map((recipeStep: any, index: number) => (
-                                <li key={recipeStep.id} className="flex gap-4">
+                        {recipe.steps.length > 0 ?
+                            recipe.steps.map((recipeStep: any, index: number) => (
+                                <li key={index} className="flex gap-4">
                                     <p className="bg-gray-200 self-start w-7 h-7 rounded-full text-text flex justify-center items-center -translate-y-1">{index + 1}</p>
                                     <div className="flex-1">
                                         <p>{recipeStep.text}</p>

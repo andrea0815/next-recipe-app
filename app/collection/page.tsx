@@ -13,7 +13,6 @@ import Button from '@/components/buttons/Button';
 import GeneralSection from '@/components/containers/GeneralSection';
 import HeaderTabBar from '@/components/nav/HeaderTabBar';
 import RecipeToastHandler from '@/components/recipe/RecipeToastHandler';
-import { Recipe } from '@/types/recipe';
 
 export default async function CollectionPage({ searchParams }: { searchParams: Promise<{ category: string, ingredients?: string | string[], query: string }> }) {
 
@@ -75,7 +74,7 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
                     </div>
                     <RecipeListClient
                         key={listKey}
-                        initialRecipes={initialData.recipes}
+                        initialRecipes={initialData.items}
                         initialNextCursor={initialData.nextCursor}
                         initialHasMore={initialData.hasMore}
                         categoryIds={categoryIds}

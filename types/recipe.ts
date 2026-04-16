@@ -1,39 +1,24 @@
 import type { Category } from "@/types/category";
+import { Ingredient } from "./ingredient";
+import { Unit } from "./unit";
 
-export type Recipe = {
-    id: string;
-    name: string;
-    slug: string;
-    subtitle: string;
-    is_public: boolean;
-    image_uri: string;
-    owner_id: string;
-    categories: string[];
-    portions: number;
-    groups_enabled: number;
-    ingredients: IngredientLineInput[];
-}
-
-export type RecipeListItem = {
-    id: string;
-    name: string;
-    slug: string;
-    subtitle: string;
-    is_public: boolean;
-    image_uri: string;
-    owner_id: string;
-    categories: Category[];
-    username?: string | null;
-}
-
-export type IngredientLineInput = {
+export type IngredientLineBase = {
     ingredient_id: string;
     unit_id: string;
     amount: number;
+    position: number;
+};
+
+export type IngredientLineInput = IngredientLineBase & {
     group_name: string;
     owner_id: string;
-    position: number;
     on_shopping_list?: boolean | null;
+};
+
+export type RecipeIngredient = IngredientLineInput & {
+    id: string;
+    ingredient: Ingredient;
+    unit: Unit | null;
 };
 
 export type ShoppingListIngredientLine = {
@@ -41,15 +26,41 @@ export type ShoppingListIngredientLine = {
     on_shopping_list?: boolean | null;
 };
 
-export type RecipeStep = {
-    recipe_id?: string;
+export type RecipeStepBase = {
     step_index: number;
     text: string;
     hint: string | null;
 };
 
-// ––––––––––––––––
-// For the RecipeForm
+export type RecipeStep = RecipeStepBase & {
+    recipe_id?: string;
+};
+
+export type RecipeBase = {
+    id: string;
+    name: string;
+    slug: string;
+    subtitle: string;
+    is_public: boolean;
+    image_uri: string;
+    owner_id: string;
+    portions: number;
+    groups_enabled: boolean;
+};
+
+export type Recipe = RecipeBase & {
+    categories: Category[];
+    ingredients: IngredientLineInput[];
+    steps: RecipeStep[];
+};
+
+export type RecipeListItem = Pick<
+    RecipeBase,
+    "id" | "name" | "slug" | "subtitle" | "is_public" | "image_uri" | "owner_id"
+> & {
+    categories: Category[];
+    username?: string | null;
+};
 
 export type RecipeLineDraft = {
     amount: number;
@@ -63,22 +74,15 @@ export type RecipeGroupDraft = {
     lines: RecipeLineDraft[];
 };
 
-export type RecipeStepDraft = {
-    step_index: number;
-    text: string;
+export type RecipeStepDraft = Omit<RecipeStepBase, "hint"> & {
     hint: string;
     hint_is_showing: boolean;
 };
 
-export type RecipeDraft = {
-    id: string;
-    name: string;
-    subtitle: string;
-    slug: string;
-    image_uri: string;
-    is_public: boolean;
-    portions: number;
-    groups_enabled: boolean;
+export type RecipeDraft = Pick<
+    RecipeBase,
+    "id" | "name" | "subtitle" | "slug" | "image_uri" | "is_public" | "portions" | "groups_enabled"
+> & {
     category_ids: string[];
     groups: RecipeGroupDraft[];
     steps: RecipeStepDraft[];
@@ -97,18 +101,4 @@ export type RecipeFields = {
     text?: string;
     hint?: string;
     form?: string;
-}
-
-export type RecipePayload = {
-    id: string;
-    name: string;
-    slug: string;
-    subtitle: string;
-    is_public: boolean;
-    image_uri: string;
-    owner_id: string;
-    categories: string[];
-    portions: number;
-    groups_enabled: boolean;
-    ingredients: IngredientLineInput[];
-}
+};

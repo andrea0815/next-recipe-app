@@ -11,8 +11,6 @@ import SearchPanelServer from '@/components/search/SearchPanelServer';
 import GeneralSection from '@/components/containers/GeneralSection';
 import HeaderTabBar from '@/components/nav/HeaderTabBar';
 
-
-
 export default async function ExplorePage({ searchParams }: { searchParams: Promise<{ category: string, ingredients?: string | string[], query: string }> }) {
 
     const user = await getCurrentDbUser();
@@ -57,7 +55,7 @@ export default async function ExplorePage({ searchParams }: { searchParams: Prom
                 <SearchPanelServer />
                 <RecipeListClient
                     key={listKey}
-                    initialRecipes={initialData.recipes}
+                    initialRecipes={initialData.items}
                     initialNextCursor={initialData.nextCursor}
                     initialHasMore={initialData.hasMore}
                     categoryIds={categoryIds}

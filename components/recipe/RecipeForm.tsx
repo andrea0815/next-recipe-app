@@ -5,7 +5,7 @@ import { createRecipe, editRecipe } from '@/actions/recipes';
 import type { Category } from '@/types/category';
 import type { Unit } from '@/types/unit';
 import type { Ingredient } from '@/types/ingredient';
-import type { RecipeDraft, RecipeFields, RecipePayload } from '@/types/recipe';
+import type { RecipeDraft, RecipeFields } from '@/types/recipe';
 import type { PanelRef } from '@/components/ingredient/IngredientPanel';
 import { ActionResult } from "@/types/actions";
 import { FormMode, ItemType } from '@/types/general';
@@ -37,7 +37,7 @@ export default function RecipeForm({
     mode: FormMode;
 }) {
 
-    const initialState: ActionResult<RecipeFields, RecipePayload> = {
+    const initialState: ActionResult<RecipeFields, undefined> = {
         success: false,
         message: "",
     };

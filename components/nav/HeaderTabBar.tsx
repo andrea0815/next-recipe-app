@@ -20,8 +20,8 @@ export default async function HeaderTabBar() {
                     <TabBarItem key={0} href={`/collection`} text='All' />
                 </Suspense>
                 {categories.map((category) => (
-                    <Suspense fallback={<TabBarItemSkeleton />}>
-                        <TabBarItem key={category.id} href={`/collection?category=${category.name}`} text={category.name} />
+                    <Suspense key={category.id} fallback={<TabBarItemSkeleton />}>
+                        <TabBarItem href={`/collection?category=${category.name}`} text={category.name} />
                     </Suspense>
                 ))}
             </TabBar>

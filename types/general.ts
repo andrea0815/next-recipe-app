@@ -44,12 +44,18 @@ export type SubmitButtonText = {
 }
 
 export type TextItem = {
-  key: "name" | "plural" | "abbreviation";
-  value: string;
+    key: "name" | "plural" | "abbreviation";
+    value: string;
 };
 
 export type ListItem = {
-  id: string;
-  editHref: string;
-  textItems: TextItem[];
+    id: string;
+    editHref: string;
+    textItems: TextItem[];
+};
+
+export type PaginatedResult<T> = {
+    items: T[];
+    nextCursor: string | null;
+    hasMore: boolean;
 };
