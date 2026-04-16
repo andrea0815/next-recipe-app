@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { removeCategory } from "@/actions/categories";
 
 import CategoryPanel, { PanelRef } from "@/components/category/CategoryPanel";
-import type { CategoryDraft} from "@/types/category";
+import type { CategoryDraft } from "@/types/category";
 import type { ListItem } from "@/types/general";
 import { FormMode, ItemType } from "@/types/general";
 
@@ -33,7 +33,7 @@ export default function CategorySection({
     }
 
     return (
-        <div className="w-full max-w-200 flex flex-col gap-4">
+        <div className="w-full max-w-200 flex flex-col items-center">
             <PageHeadline>Categories</PageHeadline>
 
             <ListAddButton

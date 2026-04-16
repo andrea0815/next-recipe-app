@@ -2,12 +2,9 @@
 
 import { addRecipe, deleteRecipe, updateRecipe } from '@/lib/db/recipes';
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
-import { parseRecipeAmount } from "@/actions/utils/parseRecipeAmount";
-import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 //errors
-import { ValidationError } from "@/lib/errors/app-errors";
 import { errorToActionResult } from "@/lib/errors/error-to-action-result";
 import { ActionResult } from "@/types/actions";
 import { RecipeFields, RecipePayload } from '@/types/recipe';
@@ -156,8 +153,7 @@ export async function createRecipe(
         return errorToActionResult<RecipeFields, RecipePayload>(error);
     }
 
-    redirect(`/collection`);
-
+    redirect("/collection?toast=recipe-created");
 }
 
 export async function editRecipe(id: string, slug: string, prevState: ActionResult<RecipeFields, RecipePayload>, formData: FormData
@@ -278,7 +274,7 @@ export async function editRecipe(id: string, slug: string, prevState: ActionResu
         return errorToActionResult<RecipeFields, RecipePayload>(error);
     }
 
-    redirect(`/collection/${slug}`);
+    redirect(`/collection/${slug}?toast=recipe-updated`);
 }
 
 export async function removeRecipe(id: string) {
@@ -287,5 +283,5 @@ export async function removeRecipe(id: string) {
 
     await deleteRecipe(id, user.id);
 
-    redirect("/collection");
+    redirect("/collection?toast=recipe-deleted");
 }

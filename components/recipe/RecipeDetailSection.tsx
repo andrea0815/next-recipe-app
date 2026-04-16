@@ -81,25 +81,29 @@ export default function RecipeDetailSection({
                     />
                 </SectionWrapper>
 
-
                 <div className="flex-2 pb-15">
-                    <h2 className='text-2xl  font-bold mb-6'>Steps</h2>
+                    <h2 className='text-2xl  font-bold mb-6'>Instructions</h2>
 
                     <ul className='flex flex-col gap-6'>
-                        {recipe.recipe_steps.map((recipeStep: any, index: number) => (
-                            <li key={recipeStep.id} className="flex gap-4">
-                                <p className="bg-gray-200 self-start w-7 h-7 rounded-full text-text flex justify-center items-center -translate-y-1">{index + 1}</p>
-                                <div className="flex-1">
-                                    <p>{recipeStep.text}</p>
-                                    {recipeStep.hint && (
-                                        <div className="w-full p-4 mt-4 bg-gray-300 rounded-2xl">
-                                            <span className="font-bold uppercase text-sm">Hint:</span>
-                                            <p>{recipeStep.hint}</p>
-                                        </div>
-                                    )}
-                                </div>
-                            </li>
-                        ))}
+                        {recipe.recipe_steps.length > 0 ?
+                            recipe.recipe_steps.map((recipeStep: any, index: number) => (
+                                <li key={recipeStep.id} className="flex gap-4">
+                                    <p className="bg-gray-200 self-start w-7 h-7 rounded-full text-text flex justify-center items-center -translate-y-1">{index + 1}</p>
+                                    <div className="flex-1">
+                                        <p>{recipeStep.text}</p>
+                                        {recipeStep.hint && (
+                                            <div className="w-full p-4 mt-4 bg-gray-300 rounded-2xl">
+                                                <span className="font-bold uppercase text-sm">Hint:</span>
+                                                <p>{recipeStep.hint}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </li>
+                            ))
+                            : (
+                                <p>No instructions provided.</p>
+                            )
+                        }
                     </ul>
                 </div>
             </div>

@@ -87,11 +87,10 @@ export default function RecipeForm({
         <>
             <form
                 action={formAction}
-                className='w-full max-w-200 flex flex-col gap-4 justify-center items-center'
+                className='w-full max-w-200 flex flex-col gap-6 justify-center items-center'
             >
                 <SectionWrapper customClass='w-full max-w-200 flex flex-col gap-4'>
                     <SectionHeadline>General</SectionHeadline>
-
                     <InputFieldText<RecipeDraft, "name">
                         field="name"
                         labelName="Name*"
@@ -108,13 +107,15 @@ export default function RecipeForm({
                         error={!state.success ? state.fieldErrors?.subtitle : undefined}
                     />
 
-                    <InputWrapper labelName='Should this recipe be public?'>
+                    <div className="flex justify-between items-center">
+                        <p>Should this recipe be public?</p>
+
                         <Switch
                             checked={draft.is_public}
                             name="is_public"
                             onChange={(checked) => updateDraft("is_public", checked)}
                         />
-                    </InputWrapper>
+                    </div>
 
                     <InputFieldText<RecipeDraft, "image_uri">
                         field="image_uri"
@@ -181,7 +182,7 @@ export default function RecipeForm({
                 <SectionWrapper customClass='w-full max-w-200 flex flex-col gap-4'>
 
 
-                    <SectionHeadline>Steps</SectionHeadline>
+                    <SectionHeadline>Instructions</SectionHeadline>
 
                     <StepEditor
                         state={state}

@@ -13,6 +13,10 @@ import Switch from "../form/Switch";
 import Button from "../buttons/Button";
 import InputFieldNumber from "../form/InputFieldNumber";
 import InputSelectSearchable from "../form/InputSelectSearchable";
+import Icon from "../icons/Icon";
+import IconAdd from "../icons/IconAdd";
+import IconClose from "../icons/IconClose";
+import ConfirmAction from "../errors/ConfirmaAction";
 
 export default function IngredientEditor({
   state,
@@ -125,14 +129,15 @@ export default function IngredientEditor({
   return (
     <div className="space-y-3 flex flex-col justify-center">
 
-      <InputWrapper labelName="Groups enabled">
+      <div className="flex justify-between items-center mb-6">
+        <p>Groups enabled</p>
+
         <Switch
           checked={groupsEnabled}
           name="groups_enabled"
           onChange={(checked) => onGroupsEnabledChange(checked)}
         />
-
-      </InputWrapper>
+      </div>
 
       {(groupsEnabled ? groups : [groups[0]]).map((group, index) => (
         <div key={index} className="border border-gray-500 p-4 rounded-2xl flex flex-col">
@@ -198,7 +203,7 @@ export default function IngredientEditor({
                 priority="secondary"
                 size="small"
                 customClass="w-full sm:w-[inherit] mt-2 sm:mt-0"
-              >Add</Button>
+              ><IconAdd /></Button>
             </div>
 
 
@@ -248,15 +253,23 @@ export default function IngredientEditor({
 
           {groupsEnabled && (
             <>
-              <Button
-                onClick={() => removeGroup(index)}
-                disabled={groups.length <= 1}
-                priority="tertiary"
-                color="red"
-                yPadding={false}
-              >
-                Remove group
-              </Button>
+              <ConfirmAction
+                title="Delete group?"
+                description="Deleting the group will delete all ingredients inside it."
+                confirmText="Delete"
+                onConfirm={() => removeGroup(index)}
+                trigger={(openConfirm) => (
+                  <Button
+                    onClick={openConfirm}
+                    disabled={groups.length <= 1}
+                    priority="tertiary"
+                    color="red"
+                    yPadding={false}
+                  >
+                    <IconClose /> Remove group
+                  </Button>
+                )}
+              />
             </>
           )}
 
@@ -269,7 +282,8 @@ export default function IngredientEditor({
           priority="secondary"
           customClass="self-end"
           size="small"
-        >Add Group</Button>
+        >
+          <IconAdd /> Add Group</Button>
       }
 
       {(state?.errors?.amounts ||

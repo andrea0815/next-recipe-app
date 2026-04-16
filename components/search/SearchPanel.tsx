@@ -112,18 +112,29 @@ export default function SearchPanel({
 
         const queryString = params.toString();
         router.push(queryString ? `${pathname}?${queryString}` : pathname);
-
-
     }
 
-    console.log(searchParams.ingredient_names);
+    function handleSearchWithQuery(query: string) {
+        const params = new URLSearchParams();
 
+        if (query.trim()) {
+            params.set("query", query);
+        }
+
+        router.push(`${pathname}?${params.toString()}`);
+    }
+
+    function handleClearQuery() {
+        const next = "";
+        updateSearchParams("query", next)
+        handleSearchWithQuery(next);
+    }
 
     return (
         <div className='relative min-h-20 w-full sm:my-5 flex flex-col justify-center items-start'>
             <div className='relative w-full left-1/2 top-0 -translate-x-1/2 z-5 flex flex-col items-center'>
-                <div className='relative max-w-150 flex flex-col justify-start items-center rounded-xl w-full sm:max-w-200 overflow-hidden'>
-                    <SearchBar onFilterClick={() => setOpen((prev) => !prev)} isOpen={open} searchParams={searchParams} onSearchClick={handleQuerySearchButton} onQueryChange={(query) => updateSearchParams("query", query)} />
+                <div className='relative max-w-150 flex flex-col justify-start items-center rounded-xl w-full sm:max-w-200'>
+                    <SearchBar onFilterClick={() => setOpen((prev) => !prev)} isOpen={open} searchParams={searchParams} onSearchClick={handleQuerySearchButton} onQueryChange={(query) => updateSearchParams("query", query)} handleClearQuery={handleClearQuery} />
                     <SearchPanelContent
                         isOpen={open}
                         ingredients={ingredients}

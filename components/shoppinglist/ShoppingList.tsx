@@ -17,8 +17,6 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
     const sortedItems: ShoppingListEntry[] = getSortedItems(items);
     const [toBeRemovedKeys, setToBeRemovedKeys] = useState<Set<string>>(new Set());
 
-
-
     const getEntryKey = (entry: ShoppingListEntry) => {
         if (entry.type === "single") {
             return `single-${entry.item.id}`;

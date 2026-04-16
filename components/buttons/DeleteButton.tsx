@@ -15,7 +15,7 @@ export default function DeleteButton({ itemId }: { itemId: string }) {
 
     return (
         <ConfirmAction
-            title="Delete item?"
+            title="Delete this recipe?"
             description="This action cannot be undone."
             confirmText="Delete"
             onConfirm={removeById.bind(null, itemId)}

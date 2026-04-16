@@ -5,19 +5,29 @@ import IconEdit from "../icons/IconEdit";
 import IconTrash from "../icons/IconTrash";
 import ConfirmAction from "../errors/ConfirmaAction";
 
-import { ListItem as ListItemType, TextItem } from "@/types/general"
+import { ItemType, ListItem as ListItemType, TextItem } from "@/types/general"
+import IconProfile from "../icons/IconProfile";
 
 type ListItemProps = {
+    type: ItemType;
     item: ListItemType;
+    isPendingOnDelete: boolean;
     onDeleteAction: () => void;
     onEditButton: (item: ListItemType) => void;
 };
 
 export default function ListItem({
     item,
+    type,
+    isPendingOnDelete,
     onEditButton,
     onDeleteAction,
 }: ListItemProps) {
+
+    const deleteMessage = type === ItemType.CATEGORY ?
+        "Deleting a category will delete and remove all its existing occurrences." :
+        "This action cannot be undone.";
+
     return (
         <>
             {item.textItems.map((textItem, index) => (
@@ -38,8 +48,8 @@ export default function ListItem({
                 </Button>
 
                 <ConfirmAction
-                    title="Delete item?"
-                    description="This action cannot be undone."
+                    title="Delete this item?"
+                    description={deleteMessage}
                     confirmText="Delete"
                     onConfirm={onDeleteAction}
                     trigger={(openConfirm) => (
@@ -49,7 +59,7 @@ export default function ListItem({
                             priority="tertiary"
                             customClass="p-1"
                         >
-                            <IconTrash />
+                            {isPendingOnDelete ? <div className="animation-spin" ><IconProfile /></div> : <IconTrash />}
                         </Button>
                     )}
                 />

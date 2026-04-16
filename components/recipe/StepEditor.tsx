@@ -11,6 +11,8 @@ import Button from "../buttons/Button";
 import IconClose from "../icons/IconClose";
 import IconArrowUp from "../icons/IconArrowUp";
 import IconArrowDown from "../icons/IconArrowDown";
+import IconAdd from "../icons/IconAdd";
+import ConfirmAction from "../errors/ConfirmaAction";
 
 export default function StepEditor({
     state,
@@ -96,13 +98,25 @@ export default function StepEditor({
                                 <IconArrowDown />
                             </Button>
                         </div>
-                        <button
-                            type="button"
-                            onClick={() => removeStep(index)}
-                            className="text-gray-500"
-                        >
-                            <IconClose />
-                        </button>
+
+                        <ConfirmAction
+                            title="Delete step?"
+                            description="Deleting this step will delete both text and tip"
+                            confirmText="Delete"
+                            onConfirm={() => removeStep(index)}
+                            trigger={(openConfirm) => (
+                                <Button
+                                    onClick={openConfirm}
+                                    priority="tertiary"
+                                    xPadding={false}
+                                    yPadding={false}
+                                    color="gray"
+                                >
+                                    <IconClose />
+                                </Button>
+                            )}
+                        />
+
                     </div>
                     <div className="bg-gray-300 p-4 rounded-2xl flex flex-col gap-2 flex-1">
                         <InputFieldTextfield<RecipeStepDraft, "text">
@@ -133,13 +147,10 @@ export default function StepEditor({
                                     labelName=""
                                     draftValue={step.hint}
                                     updateDraftValue={(_, value) => updateStep(index, "hint", value)}
-                                    placeholder="Optional hint"
-                                    error={state.errors.hint}
+                                    placeholder="Optional tip"
                                     customClass="flex-1"
                                 />
                             }
-
-
                         </div>
                     </div>
 
@@ -160,7 +171,7 @@ export default function StepEditor({
                 customClass="self-end"
                 size="small"
             >
-                Add Step
+                <IconAdd /> Add Step
             </Button>
 
 

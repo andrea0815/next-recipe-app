@@ -1,12 +1,14 @@
 "use client";
 
-import React, { startTransition, useOptimistic, useState } from "react";
-import ErrorDialog from "../errors/ErrorDialog";
+import React, { useEffect, useTransition, useState } from "react";
+import { showErrorToast, showSuccessToast } from "./ToastProvider";
+
 import type { ActionResult } from "@/types/actions";
-import type { ItemType, ListItem as ListItemType, TextItem } from "@/types/general"
+import type { ItemType, ListItem as ListItemType } from "@/types/general"
+
 import SectionWrapper from "../containers/SectionWrapper";
 import ListItem from "../general/ListItem";
-import { Ingredient } from "@/types/ingredient";
+import { useRouter } from "next/navigation";
 
 type ListSectionProps = {
     type: ItemType;
@@ -16,33 +18,40 @@ type ListSectionProps = {
 };
 
 export default function ListSection({ type, items, removeItem, onEditButton }: ListSectionProps) {
-    const [errorMessage, setErrorMessage] = useState("");
 
-    const [optimisticItems, setOptimisticItems] = useOptimistic(
-        items,
-        (currentItems, itemId: string) => {
-            return currentItems.filter((item) => item.id !== itemId);
-        }
-    );
+    const router = useRouter();
+    const [isPending, startTransition] = useTransition();
 
+    const [localItems, setLocalItems] = useState(items);
     const [query, setQuery] = useState("");
 
-    const filteredItems: ListItemType[] = optimisticItems.filter((item) =>
+    useEffect(() => {
+        setLocalItems(items);
+    }, [items]);
+
+    const filteredItems = localItems.filter((item) =>
         item.textItems.some((text) =>
             text.value.toLowerCase().includes(query.toLowerCase())
         )
     );
 
     const removeItemById = async (itemId: string) => {
+        const previousItems = localItems;
+
+        setLocalItems((prev) => prev.filter((item) => item.id !== itemId));
+
         const result = await removeItem(itemId);
 
         if (!result.success) {
-            setErrorMessage(result.message ?? "Something went wrong.");
+            setLocalItems(previousItems);
+            showErrorToast(result.message ?? "Something went wrong.");
             return;
         }
 
+        showSuccessToast(result.message ?? "Item deleted successfully.");
+
         startTransition(() => {
-            setOptimisticItems(itemId);
+            router.refresh();
         });
     };
 
@@ -56,14 +65,6 @@ export default function ListSection({ type, items, removeItem, onEditButton }: L
 
     return (
         <>
-            <ErrorDialog
-                open={!!errorMessage}
-                message={errorMessage}
-                onClose={() => setErrorMessage("")}
-            />
-
-
-
             <SectionWrapper customClass="max-w-200 w-full flex-1 flex flex-col justify-start items-center overflow-scroll">
                 <ul className={`w-full gap-x-4 ${gridClass}`}>
                     <p className="mb-6 font-bold">Name</p>
@@ -87,8 +88,10 @@ export default function ListSection({ type, items, removeItem, onEditButton }: L
                         <React.Fragment key={item.id}>
                             <ListItem
                                 item={item}
+                                type={type}
                                 onEditButton={onEditButton}
                                 onDeleteAction={removeItemById.bind(null, item.id)}
+                                isPendingOnDelete={isPending}
                             />
                         </React.Fragment>
                     ))}

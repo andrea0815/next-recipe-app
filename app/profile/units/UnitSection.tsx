@@ -36,7 +36,7 @@ export default function UnitSection({
     }
 
     return (
-        <div className="w-full max-w-200 flex flex-col gap-4">
+        <div className="w-full max-w-200 flex flex-col items-center">
             <PageHeadline>Units</PageHeadline>
 
             <ListAddButton

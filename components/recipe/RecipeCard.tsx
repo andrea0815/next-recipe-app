@@ -16,32 +16,35 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
             <div>
 
                 <div className="relative aspect-square bg-gray-500 rounded-xl overflow-hidden">
-
                     {recipe.image_uri && (
-                        <Link href={
-                            type === RecipeListType.COLLECTION ?
-                                `/collection/${recipe.slug}` :
-                                `/explore/${recipe.slug}`
-                        }>
-
+                        <Link
+                            href={
+                                type === RecipeListType.COLLECTION
+                                    ? `/collection/${recipe.slug}`
+                                    : `/explore/${recipe.slug}`
+                            }
+                            className="block relative w-full h-full"
+                        >
                             <Image
                                 src={recipe.image_uri}
                                 alt={recipe.name}
                                 fill
+                                sizes="50vw"
                                 className="object-cover group-hover:scale-105 transition-transform duration-500"
                                 placeholder="blur"
-                                blurDataURL="/images/placeholder.png" // or base64
+                                blurDataURL="/images/placeholder.png"
                             />
                         </Link>
                     )}
-                    {
-                        recipe.is_public &&
-                        type === RecipeListType.COLLECTION &&
+
+                    {recipe.is_public && type === RecipeListType.COLLECTION && (
                         <Tag
                             title={recipe.is_public ? "Public Recipe" : "Private Recipe"}
                             customClass="absolute top-2 right-2 text-xs"
-                        >public</Tag>
-                    }
+                        >
+                            public
+                        </Tag>
+                    )}
                 </div>
 
                 {recipe.categories && (
@@ -71,7 +74,7 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
             </div>
 
             {type === RecipeListType.EXPLORE && (
-                <p className="leading-tight text-sm text-primary mt-2 underline " >{recipe.username}</p>
+                <a className="leading-tight text-sm text-primary mt-2 underline" href={`/explore?query=${recipe.username}`}>{recipe.username}</a>
             )}
 
         </div >

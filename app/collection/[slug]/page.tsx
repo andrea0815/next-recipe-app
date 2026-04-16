@@ -9,6 +9,8 @@ import RecipeDetailSection from "@/components/recipe/RecipeDetailSection";
 import { RecipeListType } from "@/types/general";
 import GeneralSection from "@/components/containers/GeneralSection";
 import HeaderRecipeDetail from "@/components/nav/HeaderRecipeDetail";
+import RecipeToastHandler from "@/components/recipe/RecipeToastHandler";
+import NoPermissionClient from "@/components/errors/NotPermissionClient";
 
 
 export default async function RecipePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -48,6 +50,11 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
 
     const isOwner = recipe.owner_id === user.id;
 
+    if (!isOwner) return (<>
+        <HeaderRecipeDetail recipeId={recipe.id} slug={recipe.slug} isOwner={isOwner} />
+        <NoPermissionClient />
+    </>)
+
     return (
         <>
             <HeaderRecipeDetail recipeId={recipe.id} slug={recipe.slug} isOwner={isOwner} />
@@ -59,6 +66,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
                     groupedIngredients={groupedIngredients}
                 />
             </GeneralSection>
+            <RecipeToastHandler />
         </>
     );
 }

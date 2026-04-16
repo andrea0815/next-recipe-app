@@ -35,9 +35,8 @@ export default function IngredientSection({
     }
 
     return (
-        <div className="w-full max-w-200 flex flex-col gap-4">
+        <div className="w-full max-w-200 flex flex-col items-center">
             <PageHeadline>Ingredients</PageHeadline>
-
             <ListAddButton
                 type={ItemType.INGREDIENT}
                 onPress={() => {

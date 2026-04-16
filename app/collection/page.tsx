@@ -12,6 +12,7 @@ import IconAdd from '@/components/icons/IconAdd';
 import Button from '@/components/buttons/Button';
 import GeneralSection from '@/components/containers/GeneralSection';
 import HeaderTabBar from '@/components/nav/HeaderTabBar';
+import RecipeToastHandler from '@/components/recipe/RecipeToastHandler';
 
 export default async function CollectionPage({ searchParams }: { searchParams: Promise<{ category: string, ingredients?: string | string[], query: string }> }) {
 
@@ -82,7 +83,7 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
                     />
                 </RecipeGalleryWrapper>
             </GeneralSection>
-
+            <RecipeToastHandler />
         </>
     );
 }

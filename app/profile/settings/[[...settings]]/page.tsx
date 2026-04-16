@@ -17,6 +17,7 @@ export default async function ProfileAccountPage() {
 
     return (
         <>
+        
             <PageHeadline>Settings</PageHeadline>
             <div className='flex flex-col justify-center items-center gap-4 mt-6'>
 

@@ -2,16 +2,6 @@ import { Recipe } from "@/types/recipe";
 import { Unit } from "@/types/unit";
 import { Ingredient } from "./ingredient";
 
-export type ShoppingItem = {
-    id: string,
-    portions: number,
-    amount: number,
-    owner_id: string,
-    unit: any,
-    ingredient: any,
-    recipe: any
-}
-
 export type ShoppingItemDraft = {
     id?: string,
     portions: number,
@@ -31,13 +21,24 @@ export type ShoppingItemFields = {
 // For Shopping List Display
 
 
+export type ShoppingItem = {
+    id: string;
+    portions: number;
+    amount: number;
+    owner_id: string;
+    unit: any;
+    ingredient: any;
+    recipe: any;
+};
+
 export type SingleListEntry = {
     type: "single";
     totalAmount: number;
+    sharedUnit: string;
     item: ShoppingItem;
 };
 
-type GroupListEntry = {
+export type GroupListEntry = {
     type: "group";
     ingredientId: string;
     ingredientName: string;

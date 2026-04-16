@@ -53,9 +53,11 @@ export default async function AddRecipePage() {
   return (<>
     <>
       <HeaderBack />
-      <FormSection headline="Create Recipe">
-        <RecipeForm categories={categories} initialIngredients={ingredients} units={units} initialDraft={emptyDraft} mode={FormMode.CREATE} />
-      </FormSection>
+      <GeneralSection>
+        <FormSection headline="Create Recipe">
+          <RecipeForm categories={categories} initialIngredients={ingredients} units={units} initialDraft={emptyDraft} mode={FormMode.CREATE} />
+        </FormSection>
+      </GeneralSection>
     </>
   </>
   );

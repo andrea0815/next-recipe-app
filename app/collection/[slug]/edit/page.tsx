@@ -16,6 +16,9 @@ import { FormMode } from '@/types/general';
 import RecipeForm from '@/components/recipe/RecipeForm';
 import FormSection from "@/components/containers/FormSection";
 import HeaderBack from "@/components/nav/HeaderBack";
+import GeneralSection from "@/components/containers/GeneralSection";
+import HeaderRecipeDetail from "@/components/nav/HeaderRecipeDetail";
+import NoPermissionClient from "@/components/errors/NotPermissionClient";
 
 export default async function EditRecipePage({ params }: { params: Promise<{ slug: string }> }) {
 
@@ -77,12 +80,21 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
         })),
     };
 
+    const isOwner = recipe.owner_id === user.id;
+
+    if (!isOwner) return (<>
+        <HeaderRecipeDetail recipeId={recipe.id} slug={recipe.slug} isOwner={isOwner} />
+        <NoPermissionClient />
+    </>)
+
     return (
         <>
             <HeaderBack />
-            <FormSection headline="Edit Recipe">
-                <RecipeForm categories={categories} initialIngredients={ingredients} units={units} initialDraft={propagatedDraft} mode={FormMode.EDIT} />
-            </FormSection>
+            <GeneralSection>
+                <FormSection headline="Edit Recipe">
+                    <RecipeForm categories={categories} initialIngredients={ingredients} units={units} initialDraft={propagatedDraft} mode={FormMode.EDIT} />
+                </FormSection>
+            </GeneralSection>
         </>
     );
 }
