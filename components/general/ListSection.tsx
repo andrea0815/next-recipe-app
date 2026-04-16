@@ -55,7 +55,7 @@ export default function ListSection({ type, items, removeItem, onEditButton }: L
         });
     };
 
-    const columnCount = items[0].textItems.length + 1;
+    const columnCount = (items[0]?.textItems.length ?? 0) + 1;
     const gridClasses = [
         "grid grid-cols-[1fr_max-content]",
         "grid grid-cols-[1fr_1fr_max-content]",

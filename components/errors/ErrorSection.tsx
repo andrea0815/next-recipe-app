@@ -25,7 +25,6 @@ export default function ErrorSection({
             >
                 Try again
             </Button>
-
         </div>
     );
 }

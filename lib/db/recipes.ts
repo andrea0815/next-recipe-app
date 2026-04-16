@@ -292,6 +292,7 @@ export async function getRecipeBySlug(slug: string, userId?: string): Promise<Re
         image_uri: recipe.image_uri,
         owner_id: recipe.owner_id,
         portions: Number(recipe.portions),
+        username: recipe.users.username,
         groups_enabled: Boolean(recipe.groups_enabled),
         categories: recipe.recipe_categories.map((rc) => rc.categories),
         ingredients: recipe.recipe_ingredients.map((ingredient) => ({

@@ -116,6 +116,8 @@ export function getSortedItems(items: ShoppingItem[]): ShoppingListEntry[] {
 
   for (const [, groupItems] of grouped) {
     const first = groupItems[0];
+    if (!first) continue;
+    
     const firstDef = getUnitDefinition(first.unit);
 
     if (groupItems.length === 1) {

@@ -65,16 +65,6 @@ export async function createRecipe(
         fieldErrors.ingredient_ids = "At least one ingredient required";
     }
 
-    // if (unit_ids.length === 0) {
-    //     fieldErrors.unit_ids = "No unit selected";
-    // }
-
-    // if (amounts.length === 0) {
-    //     fieldErrors.amounts = "Amount is required";
-    // } else if (amounts.some((amount) => !Number.isFinite(amount))) {
-    //     fieldErrors.amounts = "One or more amounts are invalid";
-    // }
-
     if (
         ingredient_ids.length !== unit_ids.length ||
         ingredient_ids.length !== amounts.length ||
@@ -120,11 +110,11 @@ export async function createRecipe(
 
     const ingredient_lines = ingredient_ids.map((ingredient_id, i) => ({
         ingredient_id,
-        unit_id: unit_ids[i],
+        unit_id: unit_ids[i]!,
         owner_id: user.id,
-        amount: amounts[i],
-        group_name: group_names[i],
-        position: positions[i],
+        amount: amounts[i]!,
+        group_name: group_names[i]!,
+        position: positions[i]!,
     }));
 
     const steps = step_texts
@@ -241,11 +231,11 @@ export async function editRecipe(id: string, slug: string, prevState: ActionResu
 
     const ingredient_lines = ingredient_ids.map((ingredient_id, i) => ({
         ingredient_id,
-        unit_id: unit_ids[i],
+        unit_id: unit_ids[i]!,
         owner_id: user.id,
-        amount: amounts[i],
-        group_name: group_names[i],
-        position: positions[i],
+        amount: amounts[i]!,
+        group_name: group_names[i]!,
+        position: positions[i]!,
     }));
 
     const steps = step_texts

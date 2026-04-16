@@ -10,7 +10,7 @@ export async function seedDefaultsForUser(userId: string) {
     prisma.ingredients.createMany({
       data: defaultIngredients.map((item) => ({
         name: item.name,
-        plural: item.plural,
+        plural: item.plural ?? null,
         owner_id: userId,
       })),
     }),
@@ -23,8 +23,8 @@ export async function seedDefaultsForUser(userId: string) {
     prisma.units.createMany({
       data: defaultUnits.map((item) => ({
         name: item.name,
-        plural: item.plural,
-        abbreviation: item.abbreviation,
+        plural: item.plural ?? null,
+        abbreviation: item.abbreviation ?? null,
         owner_id: userId,
       })),
     }),

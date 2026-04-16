@@ -27,7 +27,8 @@ export default function InputFieldText<
     return (
         <InputWrapper
             labelName={labelName}
-            error={error}
+            {...(customClass !== undefined ? { customClass } : {})}
+            {...(error !== undefined ? { error } : {})}
         >
             <input
                 type="text"

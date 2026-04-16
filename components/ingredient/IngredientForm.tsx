@@ -47,7 +47,7 @@ export default function IngredientForm({
 
     const [state, formAction, pending] = useActionState(action, initialState);
     const [draft, setDraft] = useState<IngredientDraft>(initialDraft);
-    
+
     useEffect(() => {
         if (!state.message) return;
 
@@ -80,12 +80,15 @@ export default function IngredientForm({
 
     return (
         <form action={formAction} className="flex flex-col gap-4">
+
             <InputFieldText<IngredientDraft, "name">
                 field="name"
                 labelName="Name*"
                 draftValue={draft.name ?? ""}
                 updateDraftValue={updateDraft}
-                error={!state.success ? state.fieldErrors?.name : undefined}
+                {...(!state.success && state.fieldErrors?.name
+                    ? { error: state.fieldErrors.name }
+                    : {})}
             />
 
             <InputFieldText<IngredientDraft, "plural">

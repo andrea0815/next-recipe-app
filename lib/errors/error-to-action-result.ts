@@ -6,16 +6,17 @@ import {
 
 export function errorToActionResult<
   TFields extends Record<string, string>,
-  TData = undefined
+  TData = never
 >(
   error: unknown
 ): ActionResult<TFields, TData> {
-  
   if (error instanceof ValidationError) {
     return {
       success: false,
       message: error.message,
-      fieldErrors: error.fieldErrors as Partial<TFields> | undefined,
+      ...(error.fieldErrors
+        ? { fieldErrors: error.fieldErrors as Partial<TFields> }
+        : {}),
     };
   }
 

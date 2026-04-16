@@ -53,7 +53,7 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
 
     return (
         <>
-            <HeaderTabBar />
+            <HeaderTabBar type={RecipeListType.COLLECTION} />
             <GeneralSection>
                 <RecipeGalleryWrapper>
                     <div className='flex flex-col items-center gap-2 w-full'>

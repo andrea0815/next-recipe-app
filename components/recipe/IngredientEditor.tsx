@@ -15,6 +15,7 @@ import InputSelectSearchable from "../form/InputSelectSearchable";
 import IconAdd from "../icons/IconAdd";
 import IconClose from "../icons/IconClose";
 import ConfirmAction from "../errors/ConfirmaAction";
+import IngredientDisplay from "@/components/ingredient/InrgredientDisplay";
 
 export default function IngredientEditor({
   state,
@@ -123,6 +124,7 @@ export default function IngredientEditor({
     );
   }
 
+  const visibleGroups = groupsEnabled ? groups : groups[0] ? [groups[0]] : [];
 
   return (
     <div className="space-y-3 flex flex-col justify-center">
@@ -137,7 +139,7 @@ export default function IngredientEditor({
         />
       </div>
 
-      {(groupsEnabled ? groups : [groups[0]]).map((group, index) => (
+      {visibleGroups.map((group, index) => (
         <div key={index} className="border border-gray-500 p-4 rounded-2xl flex flex-col">
 
           {groupsEnabled &&
@@ -218,8 +220,19 @@ export default function IngredientEditor({
                   >
                     <div className="text-text">
                       <span className="font-semibold">{line.amount}</span>{" "}
-                      <UnitDisplay amount={Number(line.amount)} unit={unit} />{" "}
-                      <InrgredientDisplay amount={Number(line.amount)} ingredient={ing} />
+                      {unit ? (
+                        <>
+                          <UnitDisplay amount={Number(line.amount)} unit={unit} />{" "}
+                        </>
+                      ) : (
+                        <span>No unit </span>
+                      )}
+
+                      {ing ? (
+                        <IngredientDisplay amount={Number(line.amount)} ingredient={ing} />
+                      ) : (
+                        <span>No ingredient</span>
+                      )}
                     </div>
 
                     <button

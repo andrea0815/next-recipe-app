@@ -23,11 +23,11 @@ export async function GET(req: NextRequest) {
     const categoryIds = searchParams.getAll("categoryIds");
 
     const data = await getOtherRecipes({
-        query,
         userId: user.id,
-        cursor,
         categoryIds,
         take: 12,
+        ...(query !== undefined ? { query } : {}),
+        ...(cursor !== undefined ? { cursor } : {}),
     });
 
     return NextResponse.json(data);

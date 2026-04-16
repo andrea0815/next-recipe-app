@@ -96,7 +96,9 @@ export default function RecipeForm({
                         labelName="Name*"
                         draftValue={draft.name}
                         updateDraftValue={updateDraft}
-                        error={!state.success ? state.fieldErrors?.name : undefined}
+                        {...(!state.success && state.fieldErrors?.name
+                            ? { error: state.fieldErrors.name }
+                            : {})}
                     />
 
                     <InputFieldText<RecipeDraft, "subtitle">
@@ -104,7 +106,9 @@ export default function RecipeForm({
                         labelName="Subtitle*"
                         draftValue={draft.subtitle}
                         updateDraftValue={updateDraft}
-                        error={!state.success ? state.fieldErrors?.subtitle : undefined}
+                        {...(!state.success && state.fieldErrors?.subtitle
+                            ? { error: state.fieldErrors.subtitle }
+                            : {})}
                     />
 
                     <div className="flex justify-between items-center">
@@ -122,8 +126,9 @@ export default function RecipeForm({
                         labelName="Image"
                         draftValue={draft.image_uri}
                         updateDraftValue={updateDraft}
-                        error={!state.success ? state.fieldErrors?.image_uri : undefined}
-                    />
+                        {...(!state.success && state.fieldErrors?.image_uri
+                            ? { error: state.fieldErrors.image_uri }
+                            : {})} />
 
                     <InputMultiSelect<Category, "id", "name">
                         labelName="Categories"

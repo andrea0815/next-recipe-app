@@ -23,7 +23,11 @@ export default function InputFieldNumber<TDraft, K extends keyof TDraft>({
     customClass = ""
 }: InputFieldNumberProps<TDraft, K>) {
     return (
-        <InputWrapper labelName={labelName} error={error} customClass={customClass}>
+        <InputWrapper
+            labelName={labelName}
+            customClass={customClass}
+            {...(error !== undefined ? { error } : {})}
+        >
             <input
                 type="number"
                 name={String(name ?? field)}

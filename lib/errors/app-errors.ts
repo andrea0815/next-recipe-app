@@ -16,7 +16,10 @@ export class ValidationError extends AppError {
   constructor(message = "Validation failed", fieldErrors?: Record<string, string>) {
     super(message, "VALIDATION_ERROR", 400);
     this.name = "ValidationError";
-    this.fieldErrors = fieldErrors;
+
+    if (fieldErrors) {
+      this.fieldErrors = fieldErrors;
+    }
   }
 }
 

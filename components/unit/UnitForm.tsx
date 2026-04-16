@@ -85,7 +85,9 @@ export default function UnitForm({
                 labelName="Name*"
                 draftValue={draft.name ?? ""}
                 updateDraftValue={updateDraft}
-                error={!state.success ? state.fieldErrors?.name : undefined}
+                {...(!state.success && state.fieldErrors?.name
+                    ? { error: state.fieldErrors.name }
+                    : {})}
             />
 
             <InputFieldText<UnitDraft, "plural">

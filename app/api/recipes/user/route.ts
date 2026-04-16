@@ -6,15 +6,15 @@ export async function GET(req: NextRequest) {
   const user = await getCurrentDbUser();
 
   if (!user) {
-        return NextResponse.json(
-            {
-                errors: {
-                    form: "You must be signed in.",
-                },
-            },
-            { status: 401 }
-        );
-    }
+    return NextResponse.json(
+      {
+        errors: {
+          form: "You must be signed in.",
+        },
+      },
+      { status: 401 }
+    );
+  }
 
   const searchParams = req.nextUrl.searchParams;
 
@@ -23,11 +23,11 @@ export async function GET(req: NextRequest) {
   const categoryIds = searchParams.getAll("categoryIds");
 
   const data = await getUserRecipes({
-    query,
     userId: user.id,
-    cursor,
     categoryIds,
     take: 12,
+    ...(query !== undefined ? { query } : {}),
+    ...(cursor !== undefined ? { cursor } : {}),
   });
 
   return NextResponse.json(data);

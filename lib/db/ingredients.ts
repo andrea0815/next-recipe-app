@@ -64,7 +64,7 @@ export async function getIngredientIdFromName(name: string, userId?: string) {
             where: {
                 AND: {
                     name: name,
-                    owner_id: userId,
+                    ...(userId ? { owner_id: userId } : {}),
                 }
             },
         });
@@ -80,23 +80,23 @@ export async function getIngredientIdFromName(name: string, userId?: string) {
 }
 
 export async function addIngredient(
-  name: string,
-  plural: string,
-  userId: string
+    name: string,
+    plural: string,
+    userId: string
 ) {
-  try {
-    return await prisma.ingredients.create({
-      data: {
-        name,
-        plural,
-        users: {
-          connect: { id: userId },
-        },
-      },
-    });
-  } catch (error) {
-    mapPrismaError(error);
-  }
+    try {
+        return await prisma.ingredients.create({
+            data: {
+                name,
+                plural,
+                users: {
+                    connect: { id: userId },
+                },
+            },
+        });
+    } catch (error) {
+        mapPrismaError(error);
+    }
 }
 
 export async function updateIngredient(

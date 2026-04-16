@@ -150,7 +150,7 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
                                         checked={marked}
                                         onChange={(nextChecked) => handleCheckboxChange(entry, nextChecked)}
                                     >
-                                        <IconCheck  />
+                                        <IconCheck />
                                     </Checkbox>
                                 </div>
 
@@ -188,14 +188,19 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
                                 {entry.sharedUnit}
                             </p>
 
-                            <button
-                                type="button"
-                                onClick={() => toggleGroup(entry)}
-                                className={`py-2 border-b border-gray-300 flex-1 flex justify-between items-center text-left transition-opacity cursor-pointer ${rowClass}`}
-                            >
-                                <IngredientDisplay amount={entry.totalAmount} ingredient={entry.items[0].ingredient} />
-                                {isGroupOpen(entry) ? <IconArrowUp /> : <IconArrowDown />}
-                            </button>
+                            {entry.items[0] && (
+                                <button
+                                    type="button"
+                                    onClick={() => toggleGroup(entry)}
+                                    className={`py-2 border-b border-gray-300 flex-1 flex justify-between items-center text-left transition-opacity cursor-pointer ${rowClass}`}
+                                >
+                                    <IngredientDisplay
+                                        amount={entry.totalAmount}
+                                        ingredient={entry.items[0].ingredient}
+                                    />
+                                    {isGroupOpen(entry) ? <IconArrowUp /> : <IconArrowDown />}
+                                </button>
+                            )}
 
                             {isGroupOpen(entry) &&
                                 entry.items.map((item) => (

@@ -27,8 +27,8 @@ export default function InputFieldText<
     return (
         <InputWrapper
             labelName={labelName}
-            error={error}
-            customClass={customClass}
+            {...(customClass !== undefined ? { customClass } : {})}
+            {...(error !== undefined ? { error } : {})}
         >
             <textarea
                 className="block w-full h-25 p-2 bg-white text-text rounded-lg border border-gray-500 resize-none overflow-hidden"

@@ -20,8 +20,8 @@ export default function RecipeDetailSection({
     isOwnRecipe: boolean,
     groupedIngredients: Record<string, any[]>,
     type: RecipeListType
-}) {
-
+}) {    
+    
     return (
         <div>
             <div className="w-full h-[50dvh] relative rounded-lg mb-6 overflow-hidden flex justify-center items-center">

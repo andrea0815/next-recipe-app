@@ -12,7 +12,7 @@ import HeaderRecipeDetail from "@/components/nav/HeaderRecipeDetail";
 import RecipeToastHandler from "@/components/recipe/RecipeToastHandler";
 import NoPermissionClient from "@/components/errors/NotPermissionClient";
 import { Suspense } from "react";
-import { IngredientLineInput, Recipe } from "@/types/recipe";
+import { IngredientLineInput } from "@/types/recipe";
 
 export default async function RecipePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;

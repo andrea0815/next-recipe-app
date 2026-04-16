@@ -1,5 +1,4 @@
 import InputWrapper from "./InputWrapper";
-import Chip from "@/components/general/Chip";
 import { useMemo, useState } from "react";
 import InputSelectSearchable from "./InputSelectSearchable";
 import Tag from "../general/Tag";
@@ -81,11 +80,14 @@ export default function InputMultiSelect<
   }
 
   return (
-    <InputWrapper labelName={labelName} error={error} customClass={customClass}>
+    <InputWrapper 
+      {...(labelName !== undefined ? { labelName } : {})}
+      {...(customClass !== undefined ? { customClass } : {})}
+      {...(error !== undefined ? { error } : {})}
+    >
       <InputSelectSearchable<{ value: string }, "value", TItem, TValueKey, TLabelKey>
         items={available}
         field="value"
-        labelName={undefined}
         draftValue={draftValue}
         updateDraftValue={(_, value) => {
           setDraftValue(value);

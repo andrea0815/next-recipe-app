@@ -51,8 +51,21 @@ export default function StepEditor({
     }
 
     const swapElements = <T,>(array: T[], index1: number, index2: number): T[] => {
+        if (
+            index1 < 0 ||
+            index2 < 0 ||
+            index1 >= array.length ||
+            index2 >= array.length
+        ) {
+            return array;
+        }
         const newArray = [...array];
-        [newArray[index1], newArray[index2]] = [newArray[index2], newArray[index1]];
+        const first = newArray[index1]!;
+        const second = newArray[index2]!;
+
+        newArray[index1] = second;
+        newArray[index2] = first;
+
         return newArray;
     };
 

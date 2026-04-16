@@ -46,6 +46,7 @@ export type RecipeBase = {
     owner_id: string;
     portions: number;
     groups_enabled: boolean;
+    username: string | null;
 };
 
 export type Recipe = RecipeBase & {

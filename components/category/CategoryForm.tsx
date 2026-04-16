@@ -11,7 +11,6 @@ import type { ActionResult } from "@/types/actions";
 import InputFieldText from "../form/InputFieldText";
 import Button from "../buttons/Button";
 
-
 type CategoryFormProps = {
     initialDraft: CategoryDraft;
     mode: FormMode;
@@ -83,7 +82,9 @@ export default function CategoryForm({
                 labelName="Name*"
                 draftValue={draft.name ?? ""}
                 updateDraftValue={updateDraft}
-                error={!state.success ? state.fieldErrors?.name : undefined}
+                {...(!state.success && state.fieldErrors?.name
+                    ? { error: state.fieldErrors.name }
+                    : {})}
             />
 
             <Button

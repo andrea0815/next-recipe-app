@@ -3,7 +3,6 @@
 import { useMemo, useState } from "react";
 import type { Category } from "@/types/category";
 import InputWrapper from "../form/InputWrapper";
-import Chip from "../general/Chip";
 import Tag from "../general/Tag";
 
 export default function CategoryMultiSelect({

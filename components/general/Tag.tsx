@@ -29,7 +29,7 @@ export default function Tag({
     : TagProps) {
 
     const isClickable = href !== "" || !!onClick;
-    
+
     const colorToneClasses = {
         primary: {
             solid: `bg-primary text-white border-primary border-2 ${isClickable ? "hover:bg-primaryOn" : ""}`,
@@ -102,8 +102,9 @@ export default function Tag({
                 <Link
                     href={href ? href : ""}
                     title={title}
-                    onClick={onClick}
-                    className={className + "cursor-pointer"}>
+                    {...(onClick ? { onClick } : {})}
+                    className={className + " cursor-pointer"}
+                >
                     {children}
                 </Link>
             ))

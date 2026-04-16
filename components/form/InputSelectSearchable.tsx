@@ -100,9 +100,9 @@ export default function InputSelectSearchable<
 
   return (
     <InputWrapper
-      labelName={labelName}
-      customClass={customClass}
-      error={error}
+      {...(labelName !== undefined ? { labelName } : {})}
+      {...(customClass !== undefined ? { customClass } : {})}
+      {...(error !== undefined ? { error } : {})}
     >
       <div ref={wrapperRef} className={`relative w-full ${customClass}`}>
         <input
@@ -150,9 +150,8 @@ export default function InputSelectSearchable<
                       <button
                         type="button"
                         onClick={() => handleSelect(itemValue)}
-                        className={`w-full px-3 py-2 text-left hover:bg-gray-300 ${
-                          isSelected ? "bg-gray-100 font-medium" : ""
-                        }`}
+                        className={`w-full px-3 py-2 text-left hover:bg-gray-300 ${isSelected ? "bg-gray-100 font-medium" : ""
+                          }`}
                       >
                         {itemLabel}
                       </button>

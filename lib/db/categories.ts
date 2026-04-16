@@ -62,7 +62,7 @@ export async function getCategoryIdFromName(name: string, userId?: string) {
             where: {
                 AND: {
                     name: name,
-                    owner_id: userId,
+                    ...(userId ? { owner_id: userId } : {}),
                 }
             },
         });
@@ -70,7 +70,7 @@ export async function getCategoryIdFromName(name: string, userId?: string) {
         if (!category) {
             throw new NotFoundError("Category not found");
         }
-        
+
         return category.id;
     } catch (error) {
         mapPrismaError(error);
