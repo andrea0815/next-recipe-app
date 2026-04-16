@@ -4,10 +4,11 @@ import HeaderTabBar from "@/components/nav/HeaderTabBar";
 import HeaderTabBarSkeleton from "@/components/nav/HeaderTabBarSkeleton";
 import RecipeListSkeleton from "@/components/recipe/RecipeListSkeleton";
 import SearchPanelSkeleton from "@/components/search/SearchPanelSkeleton";
+import { RecipeListType } from "@/types/general";
 
 export default function Loading() {
     return (<>
-        <HeaderTabBar />
+        <HeaderTabBar type={RecipeListType.EXPLORE} />
         <GeneralSection>
             <RecipeGalleryWrapper>
                 <div className='flex flex-col items-center gap-2 w-full'>
