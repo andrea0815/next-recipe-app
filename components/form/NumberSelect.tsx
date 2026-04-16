@@ -36,7 +36,7 @@ export default function NumberSelect({
                 type="number"
                 value={portions}
                 onChange={(e) =>  onPortionChange(Number(e.target.value))}
-                className={`w-[3rem] text-center h-(--btn-h-sm) p-2 bg-white text-text rounded-lg border border-gray-500 no-spinner`}
+                className={`w-12 text-center h-(--btn-h-sm) p-2 bg-white text-text rounded-lg border border-gray-500 no-spinner`}
                 min={1}
                 step={1}
                 name={name}

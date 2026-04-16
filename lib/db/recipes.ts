@@ -83,7 +83,7 @@ export async function getUserRecipes({
     const nextCursor = hasMore ? items[items.length - 1].id : null;
 
     return {
-        items: items.map((recipe) => ({
+        items: items.map((recipe): RecipeListItem => ({
             id: recipe.id,
             name: recipe.name,
             slug: recipe.slug,
@@ -189,7 +189,7 @@ export async function getOtherRecipes({
     const nextCursor = hasMore ? items[items.length - 1].id : null;
 
     return {
-        items: items.map((recipe) => ({
+        items: items.map((recipe): RecipeListItem => ({
             id: recipe.id,
             name: recipe.name,
             slug: recipe.slug,
