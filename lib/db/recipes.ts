@@ -105,7 +105,7 @@ export async function getUserRecipes({
 
     const hasMore = recipes.length > take;
     const items = hasMore ? recipes.slice(0, take) : recipes;
-    const nextCursor = hasMore ? items[items.length - 1].id : null;
+    const nextCursor = hasMore ? items[items.length - 1]?.id ?? null : null;
 
     return {
         items: items.map((recipe): RecipeListItem => ({
@@ -212,7 +212,7 @@ export async function getOtherRecipes({
 
     const hasMore = recipes.length > take;
     const items = hasMore ? recipes.slice(0, take) : recipes;
-    const nextCursor = hasMore ? items[items.length - 1].id : null;
+    const nextCursor = hasMore ? items[items.length - 1]?.id ?? null : null;
 
     return {
         items: items.map((recipe): RecipeListItem => ({
