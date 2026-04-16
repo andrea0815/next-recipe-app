@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { RecipeListType } from "@/types/general";
+import { PaginatedResult, RecipeListType } from "@/types/general";
 import RecipeList from "@/components/recipe/RecipeList";
 
 import type { RecipeListItem } from "@/types/recipe";
@@ -62,9 +62,9 @@ export default function RecipeListClient({
                 throw new Error("Failed to load more recipes.");
             }
 
-            const data = await response.json();
+            const data: PaginatedResult<RecipeListItem> = await response.json();
 
-            setRecipes((prev) => [...prev, ...data.recipes]);
+            setRecipes((prev) => [...prev, ...data.items]);
             setNextCursor(data.nextCursor);
             setHasMore(data.hasMore);
         } catch (error) {

@@ -21,7 +21,6 @@ export async function GET(req: NextRequest) {
   const query = searchParams.get("query") ?? undefined;
   const cursor = searchParams.get("cursor") ?? undefined;
   const categoryIds = searchParams.getAll("categoryIds");
-  const ingredientIds = searchParams.getAll("ingredientIds");
 
   const data = await getUserRecipes({
     query,
