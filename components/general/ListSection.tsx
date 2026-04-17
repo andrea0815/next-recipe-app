@@ -65,37 +65,40 @@ export default function ListSection({ type, items, removeItem, onEditButton }: L
 
     return (
         <>
-            <SectionWrapper customClass="max-w-200 w-full flex-1 flex flex-col justify-start items-center overflow-scroll">
-                <ul className={`w-full gap-x-4 ${gridClass}`}>
-                    <p className="mb-6 font-bold">Name</p>
-                    {columnCount >= 3 &&
-                        <p className="mb-6 font-bold">Plural</p>}
-                    {columnCount === 4 &&
-                        <p className="mb-6 font-bold">Abbreviation</p>}
-                    <div></div>
+            <SectionWrapper customClass="max-w-200 w-full flex-1 ">
+                <div className="overflow-scroll pr-4 flex flex-col justify-start items-center ">
+                    <ul className={`w-full gap-x-4 ${gridClass}`}>
+                        <p className="mb-4 font-bold">Name</p>
+                        {columnCount >= 3 &&
+                            <p className="mb-4 font-bold">Plural</p>}
+                        {columnCount === 4 &&
+                            <p className="mb-4 font-bold">Abbreviation</p>}
+                        <div></div>
 
-                    <input
-                        type="text"
-                        className={`block h-(--btn-h-md) w-full p-2 bg-white/75 text-text rounded-lg border border-gray-500 col-span-full mb-4`}
-                        name="searchParam"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        placeholder={"Search …"}
-                    />
+                        <input
+                            type="text"
+                            className={`block h-(--btn-h-md) w-full p-2 bg-white/75 text-text rounded-lg border border-gray-500 col-span-full mb-4`}
+                            name="searchParam"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            placeholder={"Search …"}
+                        />
 
 
-                    {filteredItems.map((item) => (
-                        <React.Fragment key={item.id}>
-                            <ListItem
-                                item={item}
-                                type={type}
-                                onEditButton={onEditButton}
-                                onDeleteAction={removeItemById.bind(null, item.id)}
-                                isPendingOnDelete={isPending}
-                            />
-                        </React.Fragment>
-                    ))}
-                </ul>
+                        {filteredItems.map((item) => (
+                            <React.Fragment key={item.id}>
+                                <ListItem
+                                    item={item}
+                                    type={type}
+                                    onEditButton={onEditButton}
+                                    onDeleteAction={removeItemById.bind(null, item.id)}
+                                    isPendingOnDelete={isPending}
+                                />
+                            </React.Fragment>
+                        ))}
+                    </ul>
+                </div>
+
             </SectionWrapper>
         </>
     );

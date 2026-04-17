@@ -101,7 +101,9 @@ export default function Button({
         ) : (
             <Link
                 href={href ? href : ""}
-                className={className}>
+                className={className}
+                scroll={false}
+            >
                 {children}
             </Link>
         )

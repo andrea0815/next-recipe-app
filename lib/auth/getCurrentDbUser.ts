@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import {
   getUserByClerkId,
@@ -6,24 +7,17 @@ import {
   updateUserByEmail,
 } from "@/lib/db/users";
 
-export async function getCurrentDbUser() {
+export const getCurrentDbUser = cache(async () => {
+  console.log('hey db');
+  
   const { userId: clerkId } = await auth();
+  if (!clerkId) return null;
 
-  if (!clerkId) {
-    throw new Error("Not authenticated");
-  }
+  const existing = await getUserByClerkId(clerkId);
+  if (existing) return existing;
 
-  // 1. Try find by clerk id
-  let dbUser = await getUserByClerkId(clerkId);
-
-  if (dbUser) return dbUser;
-
-  // 2. Fetch Clerk user only if missing in DB
   const clerkUser = await currentUser();
-
-  if (!clerkUser) {
-    throw new Error("Clerk user not found");
-  }
+  if (!clerkUser) return null;
 
   const primaryEmail =
     clerkUser.emailAddresses.find(
@@ -38,26 +32,20 @@ export async function getCurrentDbUser() {
     primaryEmail ||
     "Unknown user";
 
-  // 3. Try match by email and link clerk id
   if (primaryEmail) {
     const existingByEmail = await getUserByEmail(primaryEmail);
 
     if (existingByEmail) {
-      dbUser = await updateUserByEmail(primaryEmail, {
+      return await updateUserByEmail(primaryEmail, {
         clerk_user_id: clerkId,
         name,
       });
-
-      return dbUser;
     }
   }
 
-  // 4. Create new user
-  dbUser = await createUser({
+  return await createUser({
     clerk_user_id: clerkId,
     email: primaryEmail ?? `${clerkId}@missing.local`,
     name,
   });
-
-  return dbUser;
-}
+});

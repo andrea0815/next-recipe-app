@@ -158,7 +158,7 @@ export default function IngredientEditor({
             </div>
           }
 
-          <div className="mb-4 flex flex-col gap-2">
+          <div className="">
             {/* Draft input row */}
             <div className="flex sm:flex-row flex-col gap-2 items-end justify-between bg-gray-300 px-2 py-3 rounded-lg">
 
@@ -208,7 +208,7 @@ export default function IngredientEditor({
 
 
             {/* Added lines list */}
-            <div className="">
+            <div className="mt-3">
               {group.lines.map((line, lineIndex) => {
                 const unit = unitById.get(line.unit_id);
                 const ing = ingredientById.get(line.ingredient_id);
@@ -276,6 +276,7 @@ export default function IngredientEditor({
                     priority="tertiary"
                     color="red"
                     yPadding={false}
+                    customClass="mt-3"
                   >
                     <IconClose /> Remove group
                   </Button>

@@ -15,7 +15,7 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
             className="flex flex-col h-full justify-between group">
             <div>
 
-                <div className="relative aspect-square bg-gray-500 rounded-xl overflow-hidden">
+                <div className="relative aspect-square bg-gray-500 sm:rounded-xl rounded-lg overflow-hidden">
                     {recipe.image_uri && (
                         <Link
                             href={
@@ -23,6 +23,7 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
                                     ? `/collection/${recipe.slug}`
                                     : `/explore/${recipe.slug}`
                             }
+                            scroll={false}
                             className="block relative w-full h-full"
                         >
                             <Image
@@ -66,15 +67,15 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
                 )
                 }
 
-                <h2 className="text-xl font-semibold mt-3 leading-[1.4rem]">
+                <h2 className="sm:text-xl text-md font-semibold mt-3 leading-[1.4rem]">
                     {recipe.name}
                 </h2>
 
-                <p className="leading-tight text-sm text-text-light mt-2">{recipe.subtitle}</p>
+                <p className="leading-tight sm:text-sm text-xs text-text-light sm:mt-2 mt-1">{recipe.subtitle}</p>
             </div>
 
             {type === RecipeListType.EXPLORE && (
-                <a className="leading-tight text-sm text-primary mt-2 underline" href={`/explore?query=${recipe.username}`}>{recipe.username}</a>
+                <a className="leading-tight sm:text-sm text-xs text-primary sm:mt-2 underline" href={`/explore?query=${recipe.username}`}>{recipe.username}</a>
             )}
 
         </div >

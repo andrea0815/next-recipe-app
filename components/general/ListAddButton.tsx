@@ -18,7 +18,7 @@ export default function ListAddButton({
             <Button
                 type="button"
                 onClick={() => onPress()}
-                customClass="flex md:hidden w-full"
+                customClass="flex md:hidden w-full mb-4"
                 size="huge"
             >
                 <IconAdd /> Add {meta.name.charAt(0).toUpperCase() + meta.name.slice(1)}

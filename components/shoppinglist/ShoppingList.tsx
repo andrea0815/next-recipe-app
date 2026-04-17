@@ -102,16 +102,16 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
         });
     };
 
-    if (items.length === 0) {
-        return (
-            <p className="text-center flex-1 text-gray-500 flex justify-center items-center">
-                Your shopping list is empty.
-            </p>
-        );
-    }
+    // if (items.length === 0) {
+    //     return (
+    //         <p className="text-center flex-1 text-gray-500 flex justify-center items-center">
+    //             Your shopping list is empty.
+    //         </p>
+    //     );
+    // }
 
     return (
-        <form action={removeCheckedShoppingItems} className="w-full flex flex-col gap-4">
+        <form action={removeCheckedShoppingItems} className="w-full flex flex-col gap-4 flex-1">
             {selectedItemIds.map((id) => (
                 <input key={id} type="hidden" name="shoppingItemIds" value={id} />
             ))}
@@ -135,16 +135,50 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
                 </Button>
             </div>
 
-            <ul className="grid w-full grid-cols-[max-content_max-content_max-content_1fr] gap-x-4">
-                {sortedItems.map((entry) => {
-                    const marked = isMarked(entry);
-                    const rowClass = marked ? "opacity-40" : "opacity-100";
+            {items.length === 0 ?
 
-                    if (entry.type === "single") {
-                        const item = entry.item;
+                <p className="text-center flex-1 text-gray-500 flex justify-center items-center">
+                    Your shopping list is empty.
+                </p>
+
+                :
+
+                <ul className="grid w-full grid-cols-[max-content_max-content_max-content_1fr] gap-x-4">
+                    {sortedItems.map((entry) => {
+                        const marked = isMarked(entry);
+                        const rowClass = marked ? "opacity-40" : "opacity-100";
+
+                        if (entry.type === "single") {
+                            const item = entry.item;
+
+                            return (
+                                <React.Fragment key={`single-${item.id}`}>
+                                    <div className="w-10 flex justify-center py-2 items-center">
+                                        <Checkbox
+                                            checked={marked}
+                                            onChange={(nextChecked) => handleCheckboxChange(entry, nextChecked)}
+                                        >
+                                            <IconCheck />
+                                        </Checkbox>
+                                    </div>
+
+                                    <p className={`py-2 border-b border-gray-300 transition-opacity ${rowClass}`}>
+                                        {Number(entry.totalAmount)}
+                                    </p>
+
+                                    <p className={`py-2 border-b border-gray-300 transition-opacity ${rowClass}`}>
+                                        <UnitDisplay amount={Number(entry.totalAmount)} unit={item.unit} />
+                                    </p>
+
+                                    <p className={`py-2 border-b border-gray-300 flex-1 transition-opacity ${rowClass}`}>
+                                        <IngredientDisplay amount={entry.totalAmount} ingredient={entry.item.ingredient} />
+                                    </p>
+                                </React.Fragment>
+                            );
+                        }
 
                         return (
-                            <React.Fragment key={`single-${item.id}`}>
+                            <React.Fragment key={`group-${entry.ingredientId}-${entry.sharedUnit || "no-unit"}`}>
                                 <div className="w-10 flex justify-center py-2 items-center">
                                     <Checkbox
                                         checked={marked}
@@ -154,73 +188,50 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
                                     </Checkbox>
                                 </div>
 
-                                <p className={`py-2 border-b border-gray-300 transition-opacity ${rowClass}`}>
-                                    {Number(entry.totalAmount)}
+                                <p className={`py-2 border-b border-gray-300 font-medium transition-opacity ${rowClass}`}>
+                                    {entry.totalAmount}
                                 </p>
 
                                 <p className={`py-2 border-b border-gray-300 transition-opacity ${rowClass}`}>
-                                    <UnitDisplay amount={Number(entry.totalAmount)} unit={item.unit} />
+                                    {entry.sharedUnit}
                                 </p>
 
-                                <p className={`py-2 border-b border-gray-300 flex-1 transition-opacity ${rowClass}`}>
-                                    <IngredientDisplay amount={entry.totalAmount} ingredient={entry.item.ingredient} />
-                                </p>
+                                {entry.items[0] && (
+                                    <button
+                                        type="button"
+                                        onClick={() => toggleGroup(entry)}
+                                        className={`py-2 border-b border-gray-300 flex-1 flex justify-between items-center text-left transition-opacity cursor-pointer ${rowClass}`}
+                                    >
+                                        <IngredientDisplay
+                                            amount={entry.totalAmount}
+                                            ingredient={entry.items[0].ingredient}
+                                        />
+                                        {isGroupOpen(entry) ? <IconArrowUp /> : <IconArrowDown />}
+                                    </button>
+                                )}
+
+                                {isGroupOpen(entry) &&
+                                    entry.items.map((item) => (
+                                        <React.Fragment key={item.id}>
+                                            <div className="w-10" />
+                                            <p className={`py-2 border-b border-gray-300 text-sm text-gray-500 transition-opacity ${rowClass}`}>
+                                                {Number(item.amount)}
+                                            </p>
+                                            <p className={`py-2 border-b border-gray-300 text-sm text-gray-500 transition-opacity ${rowClass}`}>
+                                                <UnitDisplay amount={Number(item.amount)} unit={item.unit} />
+                                            </p>
+                                            <p className={`py-2 border-b border-gray-300 text-sm text-gray-500 flex-1 transition-opacity ${rowClass}`}>
+                                                <IngredientDisplay amount={item.amount} ingredient={item.ingredient} />
+                                            </p>
+                                        </React.Fragment>
+                                    ))}
                             </React.Fragment>
                         );
-                    }
+                    })}
+                </ul>
+            }
 
-                    return (
-                        <React.Fragment key={`group-${entry.ingredientId}-${entry.sharedUnit || "no-unit"}`}>
-                            <div className="w-10 flex justify-center py-2 items-center">
-                                <Checkbox
-                                    checked={marked}
-                                    onChange={(nextChecked) => handleCheckboxChange(entry, nextChecked)}
-                                >
-                                    <IconCheck />
-                                </Checkbox>
-                            </div>
 
-                            <p className={`py-2 border-b border-gray-300 font-medium transition-opacity ${rowClass}`}>
-                                {entry.totalAmount}
-                            </p>
-
-                            <p className={`py-2 border-b border-gray-300 transition-opacity ${rowClass}`}>
-                                {entry.sharedUnit}
-                            </p>
-
-                            {entry.items[0] && (
-                                <button
-                                    type="button"
-                                    onClick={() => toggleGroup(entry)}
-                                    className={`py-2 border-b border-gray-300 flex-1 flex justify-between items-center text-left transition-opacity cursor-pointer ${rowClass}`}
-                                >
-                                    <IngredientDisplay
-                                        amount={entry.totalAmount}
-                                        ingredient={entry.items[0].ingredient}
-                                    />
-                                    {isGroupOpen(entry) ? <IconArrowUp /> : <IconArrowDown />}
-                                </button>
-                            )}
-
-                            {isGroupOpen(entry) &&
-                                entry.items.map((item) => (
-                                    <React.Fragment key={item.id}>
-                                        <div className="w-10" />
-                                        <p className={`py-2 border-b border-gray-300 text-sm text-gray-500 transition-opacity ${rowClass}`}>
-                                            {Number(item.amount)}
-                                        </p>
-                                        <p className={`py-2 border-b border-gray-300 text-sm text-gray-500 transition-opacity ${rowClass}`}>
-                                            <UnitDisplay amount={Number(item.amount)} unit={item.unit} />
-                                        </p>
-                                        <p className={`py-2 border-b border-gray-300 text-sm text-gray-500 flex-1 transition-opacity ${rowClass}`}>
-                                            <IngredientDisplay amount={item.amount} ingredient={item.ingredient} />
-                                        </p>
-                                    </React.Fragment>
-                                ))}
-                        </React.Fragment>
-                    );
-                })}
-            </ul>
         </form>
     );
 }

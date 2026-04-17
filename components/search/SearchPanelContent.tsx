@@ -34,7 +34,7 @@ export default function SearchPanelContent({
             className={`${isOpen ? "max-h-[50dvh] h–[inherit]" : "max-h-0 overflow-hidden"
                 } w-full transition-all duration-300 flex`}
         >
-            <div className="flex-1 p-3 w-full flex flex-col gap-4 items-between">
+            <div className="flex-1 sm:p-3 p-2 w-full flex flex-col gap-4 items-between">
                 <h3 className='text-xl font-semibold text-left mt-4'>Filter by Ingredients</h3>
                 <div className='flex-1 mb-10'>
                     {/* <InputMultiSelect<Ingredient, "name", "name">

@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function PageHeadline({ children }: { children: string }) {
     return (
-        <h1 className='text-3xl mt-6 mb-10'>
+        <h1 className='sm:text-3xl text-2xl sm:mt-6 mt-0 sm:mb-10 mb-4'>
             {children}
         </h1>
     );

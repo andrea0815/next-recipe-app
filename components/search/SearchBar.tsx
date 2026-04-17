@@ -21,7 +21,7 @@ export default function SearchBar({
 }) {
 
     return (
-        <div className="flex gap-2 w-full p-3">
+        <div className="flex gap-2 w-full sm:py-3 sm:px-4 p-2">
 
             <div className="relative w-full">
                 <input

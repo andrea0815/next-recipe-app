@@ -18,22 +18,22 @@ export default function NavbarItem({
   const isActive = pathname === link || pathname.startsWith(`${link}/`);
 
   return (
-    <Link href={link}>
+    <Link href={link}
+      scroll={false}
+    >
       <div
-        className={`flex items-center rounded-full px-3 py-2 transition-all duration-300 ${
-          isActive ? "bg-white" : "hover:bg-white/70"
-        }`}
+        className={`flex items-center rounded-full px-3 py-2 transition-all duration-300 ${isActive ? "bg-white" : "hover:bg-white/70"
+          }`}
       >
         <div className="shrink-0">
           {icon}
         </div>
 
         <span
-          className={`overflow-hidden whitespace-nowrap transition-all duration-700 ${
-            isActive
+          className={`overflow-hidden whitespace-nowrap transition-all duration-700 ${isActive
               ? "max-w-40 opacity-100 translate-x-0 pl-2"
               : "max-w-0 opacity-0 ml-0 -translate-x-2 pl-0"
-          }`}
+            }`}
         >
           {text}
         </span>
