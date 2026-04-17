@@ -45,9 +45,10 @@ export default function SearchBar({
             </div>
 
             {!isOpen && <Button
-                priority="secondary"
+                priority="tertiary"
                 onClick={onSearchClick}
                 disabled={searchParams.query === ""}
+                isIcon={true}
             >
                 <IconSearch />
             </Button>}
@@ -55,6 +56,7 @@ export default function SearchBar({
             <Button
                 priority={searchParams.ingredient_names.length === 0 ? "secondary" : "primary"}
                 onClick={onFilterClick}
+                isIcon={true}
             >
                 <IconFilter />
             </Button>

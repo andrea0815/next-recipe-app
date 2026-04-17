@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 import type { Ingredient } from '@/types/ingredient';
@@ -32,7 +32,24 @@ export default function SearchPanel({
 
     const [open, setOpen] = useState(false)
     const [searchParams, setSearchParams] = useState<SearchParams>(initialSearchParams)
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                containerRef.current &&
+                !containerRef.current.contains(event.target as Node)
+            ) {
+                setOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     useEffect(() => {
         setSearchParams({
@@ -134,7 +151,7 @@ export default function SearchPanel({
         <div className='w-full sm:my-5 flex flex-col justify-center items-center'>
             <div className='w-full flex max-w-150 flex-col items-center justify-center'>
                 <div className='h-18.5 w-full justify-center'>
-                    <div className='sticky top-0  z-5 flex flex-col justify-start items-center rounded-xl w-full'>
+                    <div ref={containerRef} className='sticky top-0  z-5 flex flex-col justify-start items-center rounded-xl w-full'>
                         <SearchBar onFilterClick={() => setOpen((prev) => !prev)} isOpen={open} searchParams={searchParams} onSearchClick={handleQuerySearchButton} onQueryChange={(query) => updateSearchParams("query", query)} handleClearQuery={handleClearQuery} />
                         <SearchPanelContent
                             isOpen={open}
@@ -148,13 +165,13 @@ export default function SearchPanel({
                     </div>
                 </div>
 
-                {(searchParams.ingredient_names.length >= 1 && searchParams.ingredient_names[0] !== "") &&
+                {(ingredientNames.length >= 1) &&
                     <div className='mt-3 flex flex-col gap-1'>
                         {/* <p className='text-sm text-primary'>Selected Ingredients</p> */}
                         <ul className=' flex gap-2'>
-                            {searchParams.ingredient_names.map((item, index) => (
+                            {ingredientNames.map((item, index) => (
                                 <Tag key={index}
-                                    size='small'
+                                    size='medium'
                                     color='sage'
                                 >{item}</Tag>
                             ))}

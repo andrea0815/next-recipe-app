@@ -59,8 +59,8 @@ export default function Tag({
     } as const;
 
     const sizeClasses = {
-        big: `text-lg rounded-full px-6 py-3`,
-        medium: `rounded-full px-3 py-1`,
+        big: `text-md rounded-full px-6 py-3`,
+        medium: `text-sm rounded-full px-3 py-1`,
         small: `text-sm rounded-full px-2`,
     } as const;
 

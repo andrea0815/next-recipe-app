@@ -8,6 +8,7 @@ type ButtonProps = {
     stretch?: boolean,
     xPadding?: boolean,
     yPadding?: boolean,
+    isIcon?: boolean,
     underline?: boolean,
     disabled?: boolean,
     onClick?: React.MouseEventHandler<HTMLButtonElement>,
@@ -28,6 +29,7 @@ export default function Button({
     underline = true,
     xPadding = true,
     yPadding = true,
+    isIcon = false,
     disabled = false,
     size = "medium",
     priority = "primary",
@@ -60,10 +62,10 @@ export default function Button({
     } as const;
 
     const sizeClasses = {
-        huge: `text-md rounded-xl ${xPadding ? "px-6" : ""} ${yPadding ? "h-[74px]" : ""}`,
-        big: `text-md rounded-xl ${xPadding ? "px-6" : ""} ${yPadding ? "h-[var(--btn-h-lg)]" : ""}`,
-        medium: `rounded-lg ${xPadding ? "px-4" : ""} ${yPadding ? "h-[var(--btn-h-md)]" : ""}`,
-        small: `text-sm rounded-md ${yPadding ? "h-[var(--btn-h-sm)]" : ""} ${priority === "tertiary" ? "" : "px-3 py-2"}`,
+        huge: `text-md rounded-xl ${xPadding ? "px-6" : ""} ${isIcon ? "w-[74px]" : ""} ${yPadding ? "h-[74px]" : ""}`,
+        big: `text-md rounded-xl ${xPadding ? "px-6" : ""} ${isIcon ? "w-(--btn-h-md)" : ""} ${yPadding ? "h-(--btn-h-lg)" : ""}`,
+        medium: `rounded-lg ${xPadding ? "px-4" : ""} ${isIcon ? "w-(--btn-h-md)" : ""} ${yPadding ? "h-(--btn-h-md)" : ""}`,
+        small: `text-sm rounded-md ${yPadding ? "h-(--btn-h-sm)" : ""} ${isIcon ? "w-(--btn-h-md)" : ""} ${priority === "tertiary" ? "" : "px-3 py-2"}`,
     } as const;
 
     const priorityKeyMap = {
@@ -85,7 +87,7 @@ export default function Button({
         selectedPriority,
         selectedSize,
         underlineClasses,
-        `transition-all text-center flex justify-center items-center gap-2 ${stretch ? "w-full" : ""} ${disabled ? "opacity-30" : "cursor-pointer"} ${customClass}`,
+        `transition-all text-center flex shrink-0 justify-center items-center gap-2 ${stretch ? "w-full" : ""} ${disabled ? "opacity-30" : "cursor-pointer"} ${customClass}`,
     ].join(" ");
 
     return (

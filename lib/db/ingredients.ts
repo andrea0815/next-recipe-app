@@ -51,7 +51,7 @@ export async function getIngredientIdsFromNames(
         const ingredientRecords = await prisma.ingredients.findMany({
             where: {
                 name: { in: names },
-                ...(userId ? { user_id: userId } : {}),
+                ...(userId ? { owner_id: userId } : {}),
             },
             select: { id: true },
         });

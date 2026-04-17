@@ -6,6 +6,7 @@ import type { RecipeListItem } from '@/types/recipe';
 import { RecipeListType } from '@/types/general';
 
 import Tag from '../general/Tag';
+import PrivacyIcon from '../general/PrivacyIcon';
 
 
 export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, type: RecipeListType }) {
@@ -39,12 +40,7 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
                     )}
 
                     {recipe.is_public && type === RecipeListType.COLLECTION && (
-                        <Tag
-                            title={recipe.is_public ? "Public Recipe" : "Private Recipe"}
-                            customClass="absolute top-2 right-2 text-xs"
-                        >
-                            public
-                        </Tag>
+                        <PrivacyIcon isPublic={recipe.is_public} />
                     )}
                 </div>
 
