@@ -143,7 +143,7 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
 
                 :
 
-                <ul className="grid w-full grid-cols-[max-content_max-content_max-content_1fr] gap-x-4">
+                <ul className="grid w-full grid-cols-[max-content_max-content_max-content_1fr] sm:gap-x-4 gap-x-2">
                     {sortedItems.map((entry) => {
                         const marked = isMarked(entry);
                         const rowClass = marked ? "opacity-40" : "opacity-100";

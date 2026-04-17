@@ -22,13 +22,13 @@ export default async function ProfileAccountPage() {
         <>
 
             <PageHeadline>Settings</PageHeadline>
-            <div className='flex flex-col justify-center items-center gap-4 mt-6'>
+            <div className=' max-w-200 flex flex-col justify-center items-center gap-4 mt-6'>
 
                 <ProfileSettings
                     recipePublicByDefault={user.recipe_public_by_default ?? false}
                 />
 
-                <div className='py-6'>
+                <div className='py-6 w-full'>
                     <UserProfile path='/profile/settings' />
                 </div>
                 <SignOutButton>

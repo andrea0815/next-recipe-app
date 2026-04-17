@@ -71,7 +71,7 @@ export default function RecipeDetailSection({
                 ))}
             </div>
 
-            <div className="flex lg:flex-row-reverse flex-col gap-10">
+            <div className="flex md:flex-row-reverse flex-col gap-10">
                 <SectionWrapper customClass="lg:self-start flex-1">
                     <RecipeDetailIngredients
                         groupedIngredients={groupedIngredients}
