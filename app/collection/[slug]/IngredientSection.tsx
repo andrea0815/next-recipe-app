@@ -1,11 +1,9 @@
 "use client";
 import Button from '@/components/buttons/Button';
-import Checkbox from '@/components/form/Checkbox';
 import IngredientDisplay from '@/components/ingredient/InrgredientDisplay';
 import ShoppingListCheckbox from '@/components/shoppinglist/ShoppingListCheckbox';
 import UnitDisplay from '@/components/unit/UnitDisplay';
 import { formatAmount } from "@/lib/db/utils/formatDecimals";
-import { IngredientLineInput } from '@/types/recipe';
 
 import React, { useState } from 'react';
 

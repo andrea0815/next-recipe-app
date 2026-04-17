@@ -46,6 +46,7 @@ export type SubmitButtonText = {
 export type TextItem = {
     key: "name" | "plural" | "abbreviation";
     value: string;
+    isOwner?: boolean;
 };
 
 export type ListItem = {

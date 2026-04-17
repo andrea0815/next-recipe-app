@@ -46,8 +46,6 @@ export default async function ExplorePage({ searchParams }: { searchParams: Prom
         take: 12,
     });
 
-    console.log(initialData);
-
     return (<>
         <HeaderTabBar type={RecipeListType.EXPLORE} />
         <GeneralSection>

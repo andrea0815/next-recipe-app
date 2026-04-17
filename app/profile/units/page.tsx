@@ -22,7 +22,7 @@ export default async function UnitsPage() {
       id: item.id,
       editHref: `/profile/units/${item.id}/edit`,
       textItems: [
-        { key: "name", value: item.name },
+        { key: "name", value: item.name, isOwner: !!item.owner_id },
         { key: "plural", value: item.plural || "–" },
         { key: "abbreviation", value: item.abbreviation || "–" },
       ],

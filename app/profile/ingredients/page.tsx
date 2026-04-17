@@ -11,14 +11,18 @@ import IngredientSection from "./IngredientSection";
 export default async function IngredientsPage() {
   const user = await getCurrentDbUser();
 
-  const ingredients: Ingredient[] = await getIngredients(undefined, user?.id ?? undefined);
+  if (!user) {
+    throw new Error("You must be signed in.");
+  }
+
+  const ingredients: Ingredient[] = await getIngredients(undefined, user?.id);
 
   function prepareIngredient(item: Ingredient): ListItem {
     return {
       id: item.id,
       editHref: `/profile/ingredients/${item.id}/edit`,
       textItems: [
-        { key: "name", value: item.name },
+        { key: "name", value: item.name, isOwner: !!item.owner_id },
         { key: "plural", value: item.plural || "–" },
       ],
     };

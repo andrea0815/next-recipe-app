@@ -11,6 +11,10 @@ import CategorySection from "./CategorySection";
 export default async function CategorysPage() {
     const user = await getCurrentDbUser();
 
+    if (!user) {
+        throw new Error("You must be signed in.");
+    }
+
     const categorys: Category[] = await getCategories(undefined, user?.id ?? undefined);
 
     function prepareCategory(item: Category): ListItem {
@@ -18,7 +22,7 @@ export default async function CategorysPage() {
             id: item.id,
             editHref: `/profile/categories/${item.id}/edit`,
             textItems: [
-                { key: "name", value: item.name },
+                { key: "name", value: item.name, isOwner: !!item.owner_id },
             ],
         };
     }

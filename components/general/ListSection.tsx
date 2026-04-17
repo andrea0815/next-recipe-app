@@ -19,6 +19,8 @@ type ListSectionProps = {
 
 export default function ListSection({ type, items, removeItem, onEditButton }: ListSectionProps) {
 
+    console.log(items);
+
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
 

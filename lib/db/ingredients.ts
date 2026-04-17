@@ -10,7 +10,7 @@ export async function getIngredients(query?: string, userId?: string) {
                     ? {
                         OR: [
                             { owner_id: userId },
-                            // { owner_id: null }
+                            { owner_id: null },
                         ],
                     }
                     : {},
@@ -27,15 +27,19 @@ export async function getIngredients(query?: string, userId?: string) {
 }
 
 export async function getIngredientsByUserId(query?: string, userId?: string) {
-
     return prisma.ingredients.findMany({
         where: {
-            ...(userId && { owner_id: userId }), // filter by userId if provided
-
-            ...(query && { // filter by query if provided
+            ...(userId && {
                 OR: [
-                    { name: { contains: query, mode: "insensitive" } },
+                    { owner_id: userId },
+                    { owner_id: null },
                 ],
+            }),
+            ...(query && {
+                name: {
+                    contains: query,
+                    mode: "insensitive",
+                },
             }),
         },
     });

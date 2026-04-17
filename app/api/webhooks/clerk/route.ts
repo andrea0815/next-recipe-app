@@ -5,7 +5,7 @@ import {
   deleteUserByClerkId,
   getUserByClerkId,
 } from "@/lib/db/users";
-import { seedDefaultsForUser } from "@/lib/data/seedDefaultsForUser";
+// import { seedDefaultsForUser } from "@/lib/data/seedDefaultsForUser";
 
 export async function POST(req: NextRequest) {
   try {
@@ -42,9 +42,9 @@ export async function POST(req: NextRequest) {
         name,
       });
 
-      if (!existingUser && evt.type === "user.created") {
-        await seedDefaultsForUser(user.id);
-      }
+      // if (!existingUser && evt.type === "user.created") {
+      //   await seedDefaultsForUser(user.id);
+      // }
 
       return new Response("ok", { status: 200 });
     }
