@@ -8,6 +8,7 @@ import {
 import Link from 'next/link';
 import React from 'react';
 import ProfileSettings from './ProfileSettings';
+import Footer from '@/components/footer/Footer';
 
 export default async function ProfileAccountPage() {
 
@@ -38,6 +39,8 @@ export default async function ProfileAccountPage() {
                     >Sign out</Button>
                 </SignOutButton>
             </div>
+
+            <Footer />
         </>
     );
 }

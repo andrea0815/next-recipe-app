@@ -131,19 +131,21 @@ export default function SearchPanel({
     }
 
     return (
-        <div className='relative min-h-20 w-full sm:my-5 flex flex-col justify-center items-start'>
-            <div className='relative w-full left-1/2 top-0 -translate-x-1/2 z-5 flex flex-col items-center'>
-                <div className='relative max-w-150 flex flex-col justify-start items-center rounded-xl w-full'>
-                    <SearchBar onFilterClick={() => setOpen((prev) => !prev)} isOpen={open} searchParams={searchParams} onSearchClick={handleQuerySearchButton} onQueryChange={(query) => updateSearchParams("query", query)} handleClearQuery={handleClearQuery} />
-                    <SearchPanelContent
-                        isOpen={open}
-                        ingredients={ingredients}
-                        selectedIngredients={searchParams.ingredient_names}
-                        onSearchButton={() => handleSearchButton()}
-                        onClearButton={() => handleClearButton()}
-                        onIngredientsChange={(names) => updateSearchParams("ingredient_names", names)}
-                    />
-                    <div className='absolute inset-0 -z-10 backdrop-blur-sm bg-section-50 rounded-xl'></div>
+        <div className='w-full sm:my-5 flex flex-col justify-center items-start'>
+            <div className='w-full flex flex-col items-center'>
+                <div className='h-18.5 w-full justify-center'>
+                    <div className='relative max-w-150 left-1/2 top-0 -translate-x-1/2 z-5 flex flex-col justify-start items-center rounded-xl w-full'>
+                        <SearchBar onFilterClick={() => setOpen((prev) => !prev)} isOpen={open} searchParams={searchParams} onSearchClick={handleQuerySearchButton} onQueryChange={(query) => updateSearchParams("query", query)} handleClearQuery={handleClearQuery} />
+                        <SearchPanelContent
+                            isOpen={open}
+                            ingredients={ingredients}
+                            selectedIngredients={searchParams.ingredient_names}
+                            onSearchButton={() => handleSearchButton()}
+                            onClearButton={() => handleClearButton()}
+                            onIngredientsChange={(names) => updateSearchParams("ingredient_names", names)}
+                        />
+                        <div className='absolute inset-0 -z-10 backdrop-blur-sm bg-section-50 rounded-xl'></div>
+                    </div>
                 </div>
 
                 {(searchParams.ingredient_names.length >= 1 && searchParams.ingredient_names[0] !== "") &&

@@ -34,7 +34,6 @@ export default function RootLayout({
           <main className="flex flex-col justify-start items-center flex-1 no-scrollbar">
             {children}
           </main>
-          <Footer />
           <ToastProvider />
         </body>
       </html>
