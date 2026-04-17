@@ -15,6 +15,10 @@ export default async function ExplorePage({ searchParams }: { searchParams: Prom
 
     const user = await getCurrentDbUser();
 
+    if (!user) {
+        throw new Error("You must be signed in.");
+    }
+
     const { category, ingredients, query } = await searchParams;
 
     let categoryId: string | undefined;
@@ -48,7 +52,7 @@ export default async function ExplorePage({ searchParams }: { searchParams: Prom
         <HeaderTabBar type={RecipeListType.EXPLORE} />
         <GeneralSection>
             <RecipeGalleryWrapper>
-                <SearchPanelServer />
+                <SearchPanelServer userId={user.id} />
                 <RecipeListClient
                     key={listKey}
                     initialRecipes={initialData.items}

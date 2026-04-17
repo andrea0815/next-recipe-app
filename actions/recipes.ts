@@ -271,6 +271,10 @@ export async function removeRecipe(id: string) {
 
     const user = await getCurrentDbUser();
 
+    if (!user) {
+        throw new Error("You must be signed in.");
+    }
+
     await deleteRecipe(id, user.id);
 
     redirect("/collection?toast=recipe-deleted");

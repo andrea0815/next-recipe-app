@@ -13,11 +13,13 @@ export default async function ProfileAccountPage() {
 
     const user = await getCurrentDbUser();
 
-    if (!user) return null;
+    if (!user) {
+        throw new Error("You must be signed in.");
+    }
 
     return (
         <>
-        
+
             <PageHeadline>Settings</PageHeadline>
             <div className='flex flex-col justify-center items-center gap-4 mt-6'>
 

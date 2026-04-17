@@ -12,6 +12,11 @@ import { RecipeListType } from '@/types/general';
 
 export default async function HeaderTabBar({ type }: { type: RecipeListType }) {
     const user = await getCurrentDbUser();
+
+    if (!user) {
+        throw new Error("You must be signed in.");
+    }
+
     const categories: Category[] = await getCategoriesByUserId(undefined, user?.id ?? undefined);
 
     const baseRoot = type === RecipeListType.COLLECTION ? "/collection" : "/explore"

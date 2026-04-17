@@ -11,6 +11,10 @@ import UnitSection from "./UnitSection";
 export default async function UnitsPage() {
   const user = await getCurrentDbUser();
 
+  if (!user) {
+    throw new Error("You must be signed in.");
+  }
+
   const units: Unit[] = await getUnits(undefined, user?.id ?? undefined);
 
   function prepareUnit(item: Unit): ListItem {

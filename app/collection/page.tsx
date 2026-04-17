@@ -18,6 +18,10 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
 
     const user = await getCurrentDbUser();
 
+    if (!user) {
+        throw new Error("You must be signed in.");
+    }
+
     const { category, ingredients, query } = await searchParams;
 
     let categoryId: string | undefined;
@@ -64,7 +68,7 @@ export default async function CollectionPage({ searchParams }: { searchParams: P
                         >
                             <IconAdd /> Create new Recipe
                         </Button>
-                        <SearchPanelServer />
+                        <SearchPanelServer userId={user.id} />
                     </div>
                     <RecipeListClient
                         key={listKey}

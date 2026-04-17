@@ -8,7 +8,6 @@ import {
 } from "@/lib/db/users";
 
 export const getCurrentDbUser = cache(async () => {
-  
   const { userId: clerkId } = await auth();
   if (!clerkId) return null;
 

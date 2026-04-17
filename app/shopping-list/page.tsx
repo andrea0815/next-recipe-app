@@ -14,6 +14,10 @@ export default async function ShoppingListPage() {
 
   const user = await getCurrentDbUser();
 
+  if (!user) {
+    throw new Error("You must be signed in.");
+  }
+
   const ShoppingItems = await getShoppingItemsByUser(user?.id ?? undefined);
 
   return (

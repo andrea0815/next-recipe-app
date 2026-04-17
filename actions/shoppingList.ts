@@ -61,6 +61,10 @@ export async function removeShoppingItem(id: string) {
     try {
         const user = await getCurrentDbUser();
 
+        if (!user) {
+            throw new Error("You must be signed in.");
+        }
+
         await deleteShoppingItem(id, user.id);
 
         revalidatePath("/profile/shopping-list");

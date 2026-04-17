@@ -19,6 +19,10 @@ export async function createCategory(
     try {
         const user = await getCurrentDbUser();
 
+        if (!user) {
+            throw new Error("You must be signed in.");
+        }
+
         const name = String(formData.get("name") ?? "").trim();
 
         const fieldErrors: Partial<CategoryFields> = {};
@@ -63,7 +67,7 @@ export async function createCategoryWithoutRedirect(
 
         if (Object.keys(fieldErrors).length > 0) {
             throw new ValidationError("Please correct the highlighted fields.", fieldErrors);
-        } 
+        }
 
         const category = await addCategory(name, user.id);
 
@@ -87,6 +91,10 @@ export async function editCategory(
 ): Promise<ActionResult<CategoryFields>> {
     try {
         const user = await getCurrentDbUser();
+
+        if (!user) {
+            throw new Error("You must be signed in.");
+        }
 
         const name = String(formData.get("name") ?? "").trim();
 
@@ -154,6 +162,10 @@ export async function editCategoryWithoutRedirect(
 export async function removeCategory(id: string) {
     try {
         const user = await getCurrentDbUser();
+
+        if (!user) {
+            throw new Error("You must be signed in.");
+        }
 
         await deleteCategory(id, user.id);
 

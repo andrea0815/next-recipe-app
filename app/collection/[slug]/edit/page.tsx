@@ -26,8 +26,9 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
     const user = await getCurrentDbUser();
 
     if (!user) {
-        notFound();
+        throw new Error("You must be signed in.");
     }
+    
     const categories: Category[] = await getCategories(undefined, user?.id ?? undefined);
     const ingredients: Ingredient[] = await getIngredients(undefined, user?.id ?? undefined);
     const units: Unit[] = await getUnits(undefined, user?.id ?? undefined);

@@ -19,7 +19,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
     const user = await getCurrentDbUser();
 
     if (!user) {
-        notFound();
+        throw new Error("You must be signed in.");
     }
 
     const recipe = await getRecipeBySlug(slug, user.id);

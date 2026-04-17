@@ -19,6 +19,10 @@ export default async function AddRecipePage() {
 
   const user = await getCurrentDbUser();
 
+  if (!user) {
+    throw new Error("You must be signed in.");
+  }
+
   const categories: Category[] = await getCategories(undefined, user?.id ?? undefined);
   const ingredients: Ingredient[] = await getIngredients(undefined, user?.id ?? undefined);
   const units: Unit[] = await getUnits(undefined, user?.id ?? undefined);

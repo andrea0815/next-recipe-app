@@ -18,6 +18,10 @@ export async function createUnit(
     try {
         const user = await getCurrentDbUser();
 
+        if (!user) {
+            throw new Error("You must be signed in.");
+        }
+
         const name = String(formData.get("name") ?? "").trim();
         const plural = String(formData.get("plural") ?? "").trim();
         const abbreviation = String(formData.get("abbreviation") ?? "").trim();
@@ -94,6 +98,10 @@ export async function editUnit(
     try {
         const user = await getCurrentDbUser();
 
+        if (!user) {
+            throw new Error("You must be signed in.");
+        }
+
         const name = String(formData.get("name") ?? "").trim();
         const plural = String(formData.get("plural") ?? "").trim();
         const abbreviation = String(formData.get("abbreviation") ?? "").trim();
@@ -166,6 +174,10 @@ export async function editUnitWithoutRedirect(
 export async function removeUnit(id: string) {
     try {
         const user = await getCurrentDbUser();
+
+        if (!user) {
+            throw new Error("You must be signed in.");
+        }
 
         await deleteUnit(id, user.id);
         revalidatePath("/profile/units");

@@ -20,6 +20,10 @@ export async function createIngredient(
     try {
         const user = await getCurrentDbUser();
 
+        if (!user) {
+            throw new Error("You must be signed in.");
+        }
+
         const name = String(formData.get("name") ?? "").trim();
         const plural = String(formData.get("plural") ?? "").trim();
 
@@ -92,6 +96,10 @@ export async function editIngredient(
     try {
         const user = await getCurrentDbUser();
 
+        if (!user) {
+            throw new Error("You must be signed in.");
+        }
+
         const name = String(formData.get("name") ?? "").trim();
         const plural = String(formData.get("plural") ?? "").trim();
 
@@ -160,6 +168,10 @@ export async function editIngredientWithoutRedirect(
 export async function removeIngredient(id: string) {
     try {
         const user = await getCurrentDbUser();
+
+        if (!user) {
+            throw new Error("You must be signed in.");
+        }
 
         await deleteIngredient(id, user.id);
 
