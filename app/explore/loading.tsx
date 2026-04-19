@@ -8,7 +8,7 @@ import { RecipeListType } from "@/types/general";
 
 export default function Loading() {
     return (<>
-        <HeaderTabBar type={RecipeListType.EXPLORE} />
+        <HeaderTabBarSkeleton />
         <GeneralSection>
             <RecipeGalleryWrapper>
                 <div className='flex flex-col items-center gap-2 w-full'>
