@@ -114,7 +114,7 @@ export default function InputSelectSearchable<
         <button
           type="button"
           onClick={() => (open ? handleClose() : handleOpen())}
-          className="block h-(--btn-h-sm) w-full rounded-lg border border-gray-500 bg-white p-2 text-left text-text overflow-clip"
+          className="block h-(--btn-h-sm) w-full rounded-lg border border-gray-500 bg-white p-2 text-left text-text overflow-clip cursor-pointer"
         >
           {selectedItem ? String(selectedItem[labelKey]) : placeholder}
         </button>
@@ -150,7 +150,7 @@ export default function InputSelectSearchable<
                       <button
                         type="button"
                         onClick={() => handleSelect(itemValue)}
-                        className={`w-full px-3 py-2 text-left hover:bg-gray-300 ${isSelected ? "bg-gray-100 font-medium" : ""
+                        className={`w-full px-3 py-2 text-left hover:bg-gray-300 cursor-pointer ${isSelected ? "bg-gray-100 font-medium" : ""
                           }`}
                       >
                         {itemLabel}

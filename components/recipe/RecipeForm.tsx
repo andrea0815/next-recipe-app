@@ -5,14 +5,14 @@ import { createRecipe, editRecipe } from '@/actions/recipes';
 import type { Category } from '@/types/category';
 import type { Unit } from '@/types/unit';
 import type { Ingredient } from '@/types/ingredient';
-import type { RecipeDraft, RecipeFields } from '@/types/recipe';
+import type { HeatingMeta, RecipeDraft, RecipeFields } from '@/types/recipe';
+import { HeatingMode, HEATING_META } from '@/types/recipe';
 import type { PanelRef } from '@/components/ingredient/IngredientPanel';
 import { ActionResult } from "@/types/actions";
 import { FormMode, ItemType } from '@/types/general';
 
 import IngredientEditor from './IngredientEditor';
 import StepEditor from './StepEditor';
-import InputWrapper from '../form/InputWrapper';
 import Switch from '../form/Switch';
 import InputFieldText from '../form/InputFieldText';
 import InputMultiSelect from '../form/InputMultiSelect';
@@ -22,6 +22,11 @@ import IconAdd from '../icons/IconAdd';
 import SectionWrapper from '../containers/SectionWrapper';
 import SectionHeadline from '../typography/SectionHeadline';
 import NumberSelect from '../form/NumberSelect';
+import InputWrapper from '../form/InputWrapper';
+import InputSelect from '../form/InputSelect';
+import IconBack from '../icons/IconBack';
+import IconCompas from '../icons/IconCompas';
+import IconAlertTriangle from '../icons/IconAlertTriangle';
 
 export default function RecipeForm({
     categories,
@@ -51,8 +56,10 @@ export default function RecipeForm({
     const [hasFieldErrors, setHasFieldErros] = useState(Object.keys(state.fieldErrors ?? {}).length > 0);
     const [draft, setDraft] = useState<RecipeDraft>(initialDraft);
 
+    const heatingOptions: HeatingMeta[] = Object.values(HEATING_META);
+
+
     useEffect(() => {
-        console.log(state);
         setHasFieldErros(Object.keys(state.fieldErrors ?? {}).length > 0)
     }, [state])
 
@@ -134,6 +141,7 @@ export default function RecipeForm({
                         labelName="Categories"
                         items={categories}
                         selectedValues={draft.category_ids}
+                        placeholder="Select categories …"
                         valueKey="id"
                         labelKey="name"
                         onChange={(ids) => updateDraft("category_ids", ids)}
@@ -141,11 +149,102 @@ export default function RecipeForm({
                 </SectionWrapper>
 
                 <SectionWrapper customClass='w-full max-w-200 flex flex-col gap-4'>
+                    <div className="flex justify-between items-center">
+                        <h2 className='text-xl font-semibold'>Baking Details</h2>
+                        <Switch
+                            checked={draft.heating_details_enabled}
+                            name="heating_details_enabled"
+                            onChange={(checked) => updateDraft("heating_details_enabled", checked)}
+                        />
+                    </div>
+
+                    {draft.heating_details_enabled &&
+                        <div className='mt-4 flex gap-4'>
+
+                            <div className='flex-1 flex flex-col justify-center items-center bg-gray-300 px-4 pt-4 pb-6 rounded-lg aspect-square'>
+                                <p>Heating Mode</p>
+
+
+                                <div className='flex-1 flex justify-center items-center'>
+                                    <IconAlertTriangle size={50} />
+                                </div>
+                                <div className='w-full'>
+                                    <InputSelect<RecipeDraft, "heating_mode", HeatingMeta>
+                                        field="heating_mode"
+                                        items={heatingOptions}
+                                        updateDraftValue={(field, value) => updateDraft(field, value)}
+                                        name="heating_mode"
+                                        draftValue={draft.heating_mode ?? ""}
+                                        {...(!state.success && state.fieldErrors?.heating_mode
+                                            ? { error: state.fieldErrors.heating_mode }
+                                            : {})}
+                                        customClass="w-full"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className='flex-1 flex flex-col justify-center items-center bg-gray-300 px-4 pt-4 pb-6 rounded-lg aspect-square'>
+                                <p>Time (Minutes)</p>
+
+                                <div className='flex-1 flex justify-center items-center'>
+                                    <IconAlertTriangle size={50} />
+                                </div>
+                                <div className=''>
+                                    <NumberSelect
+                                        portions={draft.time ?? 10}
+                                        name='time'
+                                        stretch={true}
+                                        onPortionChange={(valueOrUpdater) => {
+                                            const nextValue =
+                                                typeof valueOrUpdater === "function"
+                                                    ? valueOrUpdater(draft.time ?? 0)
+                                                    : valueOrUpdater;
+
+                                            updateDraft("time", nextValue);
+                                        }}
+                                    />
+                                </div>
+
+
+                            </div>
+
+                            <div className='flex-1 flex flex-col justify-center items-center bg-gray-300 px-4 pt-4 pb-6 rounded-lg aspect-square'>
+                                <p>Temperature (°C)</p>
+
+                                <div className='flex-1 flex justify-center items-center'>
+                                    <IconAlertTriangle size={50} />
+                                </div>
+                                <div className=''>
+                                    <NumberSelect
+                                        portions={draft.temperature ?? 180}
+                                        name='temperature'
+                                        step={5}
+                                        min={0}
+                                        stretch={true}
+                                        onPortionChange={(valueOrUpdater) => {
+                                            const nextValue =
+                                                typeof valueOrUpdater === "function"
+                                                    ? valueOrUpdater(draft.temperature ?? 0)
+                                                    : valueOrUpdater;
+                                            updateDraft("temperature", nextValue);
+                                        }}
+                                    />
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+                    }
+
+                </SectionWrapper>
+
+                <SectionWrapper customClass='w-full max-w-200 flex flex-col gap-4'>
 
                     <SectionHeadline>Ingredients</SectionHeadline>
 
                     <div className='mb-4'>
-
                         <NumberSelect
                             portions={draft.portions}
                             name='portions'
@@ -183,6 +282,9 @@ export default function RecipeForm({
                         onGroupsEnabledChange={(enabled) => updateDraft("groups_enabled", enabled)}
                     />
                 </SectionWrapper>
+
+
+
 
                 <SectionWrapper customClass='w-full max-w-200 flex flex-col gap-4'>
 

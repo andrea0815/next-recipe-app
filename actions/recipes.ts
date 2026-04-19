@@ -22,6 +22,7 @@ export type Errors = {
     text?: string;
     hint?: string;
     form?: string;
+    heatingDetailsActive?: string;
 }
 
 export async function createRecipe(
@@ -40,6 +41,7 @@ export async function createRecipe(
 
     const is_public = formData.get("is_public") === "on";
     const groups_enabled = formData.get("groups_enabled") === "on";
+    const heating_details_enabled = formData.get("heating_details_enabled") === "on";
 
     const category_ids = formData.getAll("category_ids") as string[];
 
@@ -50,6 +52,9 @@ export async function createRecipe(
     const unit_ids = formData.getAll("unit_ids") as string[];
     const ingredient_ids = formData.getAll("ingredient_ids") as string[];
     const positions = formData.getAll("positions").map((p) => Number(p));
+    const time = (formData.get("time") as number | null);
+    const temperature = (formData.get("temperature") as number | null);
+    const heating_mode = (formData.get("heating_mode") as string | null)?.trim() ?? null;
 
     const step_texts = (formData.getAll("step_texts") as string[]).map((s) => s.trim());
     const step_hints = (formData.getAll("step_hints") as string[]).map((s) => s.trim());
@@ -100,6 +105,20 @@ export async function createRecipe(
         }
     }
 
+    if (heating_details_enabled) {
+        if (time == null) {
+            fieldErrors.time = "Time is required";
+        }
+
+        if (temperature == null) {
+            fieldErrors.temperature = "Temperature is required";
+        }
+
+        if (heating_mode == null) {
+            fieldErrors.heating_mode = "Heating mode is required";
+        }
+    }
+
     if (Object.keys(fieldErrors).length > 0) {
         return {
             success: false,
@@ -135,10 +154,13 @@ export async function createRecipe(
             is_public,
             groups_enabled,
             category_ids,
+            heating_details_enabled,
+            time,
+            temperature,
+            heating_mode,
             ingredient_lines,
             steps
         );
-
     } catch (error) {
         return errorToActionResult<RecipeFields, undefined>(error);
     }
@@ -161,6 +183,7 @@ export async function editRecipe(id: string, slug: string, prevState: ActionResu
 
     const is_public = formData.get("is_public") === "on";
     const groups_enabled = formData.get("groups_enabled") === "on";
+    const heating_details_enabled = formData.get("heating_details_enabled") === "on";
 
     const category_ids = formData.getAll("category_ids") as string[];
 
@@ -171,6 +194,9 @@ export async function editRecipe(id: string, slug: string, prevState: ActionResu
     const unit_ids = formData.getAll("unit_ids") as string[];
     const ingredient_ids = formData.getAll("ingredient_ids") as string[];
     const positions = formData.getAll("positions").map((p) => Number(p));
+    const time = (formData.get("time") as number | null);
+    const temperature = (formData.get("temperature") as number | null);
+    const heating_mode = (formData.get("heating_mode") as string | null)?.trim() ?? "";
 
     const step_texts = (formData.getAll("step_texts") as string[]).map((s) => s.trim());
     const step_hints = (formData.getAll("step_hints") as string[]).map((s) => s.trim());
@@ -218,6 +244,20 @@ export async function editRecipe(id: string, slug: string, prevState: ActionResu
                     fieldErrors.group_names = "Every group must contain at least one ingredient";
                 }
             }
+        }
+    }
+
+    if (heating_details_enabled) {
+        if (time == null) {
+            fieldErrors.time = "Time is required";
+        }
+
+        if (temperature == null) {
+            fieldErrors.temperature = "Temperature is required";
+        }
+
+        if (heating_mode == null) {
+            fieldErrors.heating_mode = "Heating mode is required";
         }
     }
 
@@ -257,6 +297,10 @@ export async function editRecipe(id: string, slug: string, prevState: ActionResu
             is_public,
             groups_enabled,
             category_ids,
+            heating_details_enabled,
+            time,
+            temperature,
+            heating_mode,
             ingredient_lines,
             steps
         );

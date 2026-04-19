@@ -37,6 +37,10 @@ export default async function AddRecipePage() {
     portions: 2,
     groups_enabled: false,
     category_ids: [],
+    heating_details_enabled: false,
+    time: 10,
+    temperature: 180,
+    heating_mode: "",
     groups: [
       {
         group_name: "",

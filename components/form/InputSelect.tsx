@@ -8,7 +8,7 @@ type SelectItem = {
     name: string;
 };
 
-type InputSelectSearchableProps<
+type InputSelectProps<
     TDraft,
     K extends keyof TDraft,
     TItem extends SelectItem
@@ -23,7 +23,7 @@ type InputSelectSearchableProps<
     error?: string;
 };
 
-export default function InputSelectSearchable<
+export default function InputSelect<
     TDraft,
     K extends keyof TDraft,
     TItem extends SelectItem
@@ -36,7 +36,7 @@ export default function InputSelectSearchable<
     updateDraftValue,
     customClass = "",
     error,
-}: InputSelectSearchableProps<TDraft, K, TItem>) {
+}: InputSelectProps<TDraft, K, TItem>) {
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState("");
     const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -99,7 +99,7 @@ export default function InputSelectSearchable<
                 <button
                     type="button"
                     onClick={() => (open ? setOpen(false) : handleOpen())}
-                    className="block w-full h-10 p-2 bg-white text-text rounded-lg border border-gray-500 text-left"
+                    className="block w-full h-10 p-2 bg-white text-text rounded-lg border border-gray-500 text-left cursor-pointer"
                 >
                     {selectedItem?.name ?? "Select an option…"}
                 </button>

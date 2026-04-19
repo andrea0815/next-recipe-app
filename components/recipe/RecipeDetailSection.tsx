@@ -9,6 +9,10 @@ import Tag from "@/components/general/Tag";
 import SectionWrapper from "@/components/containers/SectionWrapper";
 import RecipeDetailIngredients from "./RecipeDetailIngredients";
 import { RecipeListType } from "@/types/general";
+import HeatingDetailCard from "./HeatingDetailCard";
+import IconAlertTriangle from "../icons/IconAlertTriangle";
+import { HEATING_META, HeatingMeta } from "@/types/recipe";
+import { ReactNode } from "react";
 
 export default function RecipeDetailSection({
     recipe,
@@ -20,8 +24,15 @@ export default function RecipeDetailSection({
     isOwnRecipe: boolean,
     groupedIngredients: Record<string, any[]>,
     type: RecipeListType
-}) {    
-    
+}) {
+
+    const heatingOptions: HeatingMeta[] = Object.values(HEATING_META);
+
+    const getHeatingMetaById = (id: string): HeatingMeta | null => {
+        return heatingOptions.find((option) => option.id === id) ?? null;
+    };
+    const HeatingModeIcon = getHeatingMetaById(recipe.heating_mode)?.icon
+
     return (
         <div>
             <div className="w-full h-[50dvh] relative rounded-lg mb-6 overflow-hidden flex justify-center items-center">
@@ -72,14 +83,36 @@ export default function RecipeDetailSection({
             </div>
 
             <div className="flex md:flex-row-reverse flex-col gap-10">
-                <SectionWrapper customClass="lg:self-start flex-1">
-                    <RecipeDetailIngredients
-                        groupedIngredients={groupedIngredients}
-                        portions={Number(recipe.portions)}
-                        groupsEnabled={!!recipe.groups_enabled}
-                        recipeId={recipe.id}
-                    />
-                </SectionWrapper>
+                <div className="flex flex-col gap-4 md:min-w-100">
+                    {recipe.heating_details_enabled &&
+                        <div className="grid grid-cols-3 gap-2">
+                            <HeatingDetailCard
+                                label="Heating Mode"
+                                icon={HeatingModeIcon ? <HeatingModeIcon /> : null}
+                                value={getHeatingMetaById(recipe.heating_mode)?.name}
+                            />
+                            <HeatingDetailCard
+                                label="Time"
+                                icon={<IconAlertTriangle />}
+                                value={recipe.time}
+                            />
+                            <HeatingDetailCard
+                                label="Temperature"
+                                icon={<IconAlertTriangle />}
+                                value={recipe.temperature}
+                            />
+                        </div>
+                    }
+
+                    <SectionWrapper customClass="lg:self-start flex-1 w-full">
+                        <RecipeDetailIngredients
+                            groupedIngredients={groupedIngredients}
+                            portions={Number(recipe.portions)}
+                            groupsEnabled={!!recipe.groups_enabled}
+                            recipeId={recipe.id}
+                        />
+                    </SectionWrapper>
+                </div>
 
                 <div className="flex-2 pb-15">
                     <h2 className='text-2xl  font-bold mb-6'>Instructions</h2>

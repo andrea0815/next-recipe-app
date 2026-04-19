@@ -177,6 +177,7 @@ export default function IngredientEditor({
                 items={units}
                 field="unit_id"
                 labelName="Unit"
+                placeholder="Select unit …"
                 draftValue={group.draft.unit_id}
                 addButton={addButton}
                 updateDraftValue={(_, value) => updateDraft(index, "unit_id", value)}
@@ -189,6 +190,7 @@ export default function IngredientEditor({
                 items={ingredients}
                 field="ingredient_id"
                 labelName="Ingredient"
+                placeholder="Select ingredient …"
                 draftValue={group.draft.ingredient_id}
                 addButton={addButton}
                 updateDraftValue={(_, value) => updateDraft(index, "ingredient_id", value)}

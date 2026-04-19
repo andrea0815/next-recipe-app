@@ -28,7 +28,7 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
     if (!user) {
         throw new Error("You must be signed in.");
     }
-    
+
     const categories: Category[] = await getCategories(undefined, user?.id ?? undefined);
     const ingredients: Ingredient[] = await getIngredients(undefined, user?.id ?? undefined);
     const units: Unit[] = await getUnits(undefined, user?.id ?? undefined);
@@ -73,6 +73,10 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
         groups_enabled: recipe.groups_enabled,
         category_ids: recipe.categories.map((category) => category.id),
         groups: groups,
+        heating_details_enabled: recipe.heating_details_enabled,
+        time: recipe.time,
+        temperature: recipe.temperature,
+        heating_mode: recipe.heating_mode,
         steps: recipe.steps.map(
             (step: {
                 text: string;
