@@ -7,13 +7,13 @@ export default function RecipeDetailSectionSkeleton() {
             <div className="w-full h-[50dvh] relative rounded-lg mb-6 overflow-hidden flex justify-center items-center bg-gray-200 animate-pulse">
             </div>
 
-            <h1 className='text-4xl h-20 w-150 text-center rounded-lg font-bold mb-1 bg-gray-200 animate-pulse'></h1>
+            <h1 className='text-4xl h-10 w-150 max-w-2/3 text-center rounded-xl font-bold mb-4 bg-gray-200 animate-pulse'></h1>
 
-            <h2 className="text-xl h-10 w-100 text-center rounded-lg bg-gray-200 animate-pulse"></h2>
+            <h2 className="text-xl h-6 w-100 max-w-1/2 text-center rounded-xl bg-gray-200 animate-pulse"></h2>
 
-            <div className='flex gap-2 w-[60vw] m-auto justify-center mt-6 mb-15 flex-wrap'>
-                {Array.from({ length: 5 }).map((category: any, index) => (
-                    <div key={index} className="h-10 w-25 rounded-full bg-gray-200 animate-pulse"></div>
+            <div className='flex gap-3 w-[60vw] m-auto justify-center mt-6 mb-15 flex-wrap'>
+                {Array.from({ length: 3 }).map((category: any, index) => (
+                    <div key={index} className="h-8 w-25 rounded-full bg-gray-200 animate-pulse"></div>
                 ))}
             </div>
 
@@ -25,7 +25,7 @@ export default function RecipeDetailSectionSkeleton() {
 
 
                 <div className="flex-2 max-w-200 pb-15">
-                    <h2 className='text-2xl  font-bold mb-6'>Steps</h2>
+                    <h2 className='text-2xl  font-bold mb-6'>Instructions</h2>
 
                     <ul className='flex flex-col gap-6'>
                         {Array.from({ length: 4 }).map((recipeStep: any, index: number) => (

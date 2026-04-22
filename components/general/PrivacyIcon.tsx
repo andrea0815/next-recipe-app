@@ -22,7 +22,7 @@ export default function PrivacyIcon({ isPublic }: { isPublic: boolean }) {
       transition-all
       duration-300
       -translate-x-1
-      group-hover/visibility:w-12
+      group-hover/visibility:w-13
       group-hover/visibility:max-w-20
       group-hover/visibility:opacity-100
       group-hover/visibility:translate-x-0

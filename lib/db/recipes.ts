@@ -34,26 +34,26 @@ type RecipeWithCategoriesOther = Prisma.recipesGetPayload<{
 export async function getUserRecipes({
     query,
     userId,
-    categoryIds,
-    ingredientIds,
+    categoryNames,
+    ingredientNames,
     cursor,
     take = 12,
 }: {
     query?: string;
     userId?: string;
-    categoryIds?: string[];
-    ingredientIds?: string[];
+    categoryNames?: string[];
+    ingredientNames?: string[];
     cursor?: string;
     take?: number;
 } = {}): Promise<PaginatedResult<RecipeListItem>> {
     const recipes: RecipeWithCategories[] = await prisma.recipes.findMany({
         where: {
             ...(userId && { owner_id: userId }),
+
             ...(query && {
                 OR: [
                     { name: { contains: query, mode: "insensitive" } },
                     { subtitle: { contains: query, mode: "insensitive" } },
-
                     { users: { username: { contains: query, mode: "insensitive" } } },
                     {
                         recipe_categories: {
@@ -66,34 +66,42 @@ export async function getUserRecipes({
                     },
                 ],
             }),
-            ...(categoryIds && categoryIds.length > 0 && {
+
+            ...(categoryNames && categoryNames.length > 0 && {
                 recipe_categories: {
                     some: {
-                        category_id: {
-                            in: categoryIds,
+                        categories: {
+                            name: { in: categoryNames },
+                            ...(userId && { owner_id: userId }),
                         },
                     },
                 },
             }),
-            ...(ingredientIds && ingredientIds.length > 0 && {
+
+            ...(ingredientNames && ingredientNames.length > 0 && {
                 recipe_ingredients: {
                     some: {
-                        ingredient_id: {
-                            in: ingredientIds,
+                        ingredients: {
+                            name: { in: ingredientNames },
+                            ...(userId && { owner_id: userId }),
                         },
                     },
                 },
             }),
         },
+
         orderBy: [
             { created_at: "desc" },
             { id: "desc" },
         ],
+
         take: take + 1,
+
         ...(cursor && {
             cursor: { id: cursor },
             skip: 1,
         }),
+
         include: {
             recipe_categories: {
                 include: {

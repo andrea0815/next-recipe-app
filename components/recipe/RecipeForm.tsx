@@ -58,6 +58,10 @@ export default function RecipeForm({
     const [hasFieldErrors, setHasFieldErros] = useState(Object.keys(state.fieldErrors ?? {}).length > 0);
     const [draft, setDraft] = useState<RecipeDraft>(initialDraft);
 
+    useEffect(() => {
+        console.log(draft.category_ids);
+    }, [draft])
+
     const heatingOptions: HeatingMeta[] = Object.values(HEATING_META);
 
     const getHeatingMetaById = (id: string): HeatingMeta | null => {
@@ -150,6 +154,7 @@ export default function RecipeForm({
                         placeholder="Select categories …"
                         valueKey="id"
                         labelKey="name"
+                        name='category_ids'
                         onChange={(ids) => updateDraft("category_ids", ids)}
                     />
                 </SectionWrapper>

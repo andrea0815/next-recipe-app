@@ -29,6 +29,8 @@ export async function createRecipe(
     prevState: ActionResult<RecipeFields, undefined>,
     formData: FormData
 ): Promise<ActionResult<RecipeFields, undefined>> {
+    console.log("createRecipe");
+
     const user = await getCurrentDbUser();
 
     if (!user) {
@@ -44,6 +46,7 @@ export async function createRecipe(
     const heating_details_enabled = formData.get("heating_details_enabled") === "on";
 
     const category_ids = formData.getAll("category_ids") as string[];
+    console.log(category_ids);
 
     const portions = (formData.get("portions") as string | null)?.trim() ?? "";
     const all_group_names = (formData.getAll("all_group_names") as string[]).map((g) => g.trim());
@@ -170,6 +173,7 @@ export async function createRecipe(
 
 export async function editRecipe(id: string, slug: string, prevState: ActionResult<RecipeFields, undefined>, formData: FormData
 ): Promise<ActionResult<RecipeFields, undefined>> {
+    console.log("editRecipe");
 
     const user = await getCurrentDbUser();
 
@@ -186,6 +190,7 @@ export async function editRecipe(id: string, slug: string, prevState: ActionResu
     const heating_details_enabled = formData.get("heating_details_enabled") === "on";
 
     const category_ids = formData.getAll("category_ids") as string[];
+    console.log(category_ids);
 
     const portions = (formData.get("portions") as string | null)?.trim() ?? "";
     const all_group_names = (formData.getAll("all_group_names") as string[]).map((g) => g.trim());

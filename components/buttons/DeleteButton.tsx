@@ -8,7 +8,9 @@ import IconTrash from '@/components/icons/IconTrash';
 export default function DeleteButton({ itemId }: { itemId: string }) {
 
     const removeById = async (id: string) => {
-        await removeRecipe(id);
+        if (itemId === "") {
+            await removeRecipe(id);
+        }
     }
 
     return (

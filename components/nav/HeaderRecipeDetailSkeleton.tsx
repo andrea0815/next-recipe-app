@@ -13,8 +13,11 @@ export default function HeaderRecipeDetailSkeleton({ isOwner }: { isOwner: boole
 
                 {isOwner &&
                     <div className='flex gap-2'>
-                        <div className="h-10 w-25 rounded-lg bg-gray-200 animate-pulse"></div>
-                        <div className="h-10 w-25 rounded-lg bg-gray-200 animate-pulse"></div>
+                        <Button
+                            priority='secondary'
+                            size='small'
+                        >Edit</Button>
+                        <DeleteButton itemId={""} />
                     </div>
                 }
             </div>

@@ -48,7 +48,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
     if (!isOwner) {
         return (
             <>
-                <HeaderRecipeDetail recipeId={recipe.id} slug={recipe.slug} isOwner={isOwner} />
+                <HeaderRecipeDetail recipeId={recipe.id} slug={recipe.slug} isOwner={isOwner} mode={RecipeListType.COLLECTION} />
                 <NoPermissionClient />
             </>
         );
@@ -56,7 +56,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
 
     return (
         <>
-            <HeaderRecipeDetail recipeId={recipe.id} slug={recipe.slug} isOwner={isOwner} />
+            <HeaderRecipeDetail recipeId={recipe.id} slug={recipe.slug} isOwner={isOwner} mode={RecipeListType.COLLECTION} />
             <GeneralSection>
                 <RecipeDetailSection
                     recipe={recipe}

@@ -8,6 +8,7 @@ import SectionWrapper from "@/components/containers/SectionWrapper";
 import HeatingDetailCard from "./HeatingDetailCard";
 import IconClock from "../icons/IconClock";
 import IconThermormeter from "../icons/IconThermormeter";
+import PrivacyIcon from "../general/PrivacyIcon";
 
 export default function RecipeDetailSection({
     recipe,
@@ -36,9 +37,7 @@ export default function RecipeDetailSection({
                 )}
 
                 {isOwnRecipe && (
-                    <Tag customClass="absolute top-4 right-4">
-                        {recipe.is_public ? "public" : "private"}
-                    </Tag>
+                    <PrivacyIcon isPublic={recipe.is_public} />
                 )}
             </div>
 

@@ -1,52 +1,87 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+
 import { PaginatedResult, RecipeListType } from "@/types/general";
 import RecipeList from "@/components/recipe/RecipeList";
-
-import type { RecipeListItem } from "@/types/recipe";
 import RecipeListSkeleton from "@/components/recipe/RecipeListSkeleton";
 
+import type { RecipeListItem } from "@/types/recipe";
+
 type RecipeListClientProps = {
-    initialRecipes: RecipeListItem[];
-    initialNextCursor: string | null;
-    initialHasMore: boolean;
-    categoryIds?: string[];
     getUrl: string;
     mode: RecipeListType;
 };
 
 export default function RecipeListClient({
-    initialRecipes,
-    initialNextCursor,
-    initialHasMore,
-    categoryIds = [],
-    getUrl = "",
+    getUrl,
     mode,
 }: RecipeListClientProps) {
-
-    const [recipes, setRecipes] = useState(initialRecipes);
-    const [nextCursor, setNextCursor] = useState<string | null>(initialNextCursor);
-    const [hasMore, setHasMore] = useState(initialHasMore);
-    const [loading, setLoading] = useState(false);
+    const searchParams = useSearchParams();
 
     const observerRef = useRef<IntersectionObserver | null>(null);
-    const sentinelRef = useRef<HTMLDivElement | null>(null); // used as marker for interactionObserver
+    const sentinelRef = useRef<HTMLDivElement | null>(null);
+    const requestIdRef = useRef(0);
+
+    const [recipes, setRecipes] = useState<RecipeListItem[]>([]);
+    const [nextCursor, setNextCursor] = useState<string | null>(null);
+    const [hasMore, setHasMore] = useState(false);
+
+    const [loadingInitial, setLoadingInitial] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
+
+    const paramsString = searchParams.toString();
 
     const queryStringBase = useMemo(() => {
-        const params = new URLSearchParams();
+        const params = new URLSearchParams(paramsString);
 
-        for (const categoryId of categoryIds) {
-            if (categoryId) params.append("categoryIds", categoryId);
+        params.delete("cursor");
+
+        return params.toString();
+    }, [paramsString]);
+
+    const loadInitial = useCallback(async () => {
+        const currentRequestId = ++requestIdRef.current;
+        setLoadingInitial(true);
+
+        try {
+            const response = await fetch(`${getUrl}?${queryStringBase}`, {
+                method: "GET",
+                cache: "no-store",
+            });
+
+            console.log(response);
+
+            if (!response.ok) {
+                throw new Error("Failed to load recipes.");
+            }
+
+            const data: PaginatedResult<RecipeListItem> = await response.json();
+
+            if (requestIdRef.current !== currentRequestId) return;
+
+            setRecipes(data.items);
+            setNextCursor(data.nextCursor);
+            setHasMore(data.hasMore);
+        } catch (error) {
+            if (requestIdRef.current !== currentRequestId) return;
+
+            console.error(error);
+            setRecipes([]);
+            setNextCursor(null);
+            setHasMore(false);
+        } finally {
+            if (requestIdRef.current === currentRequestId) {
+                setLoadingInitial(false);
+            }
         }
-
-        return params;
-    }, [categoryIds]);
+    }, [getUrl, queryStringBase]);
 
     const handleLoadMore = useCallback(async () => {
-        if (!nextCursor || loading || !hasMore) return;
+        if (!nextCursor || loadingMore || !hasMore || loadingInitial) return;
 
-        setLoading(true);
+        setLoadingMore(true);
 
         try {
             const params = new URLSearchParams(queryStringBase);
@@ -54,6 +89,7 @@ export default function RecipeListClient({
 
             const response = await fetch(`${getUrl}?${params.toString()}`, {
                 method: "GET",
+                cache: "no-store",
             });
 
             if (!response.ok) {
@@ -68,19 +104,27 @@ export default function RecipeListClient({
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false);
+            setLoadingMore(false);
         }
-    }, [nextCursor, loading, hasMore, queryStringBase]);
+    }, [nextCursor, loadingMore, hasMore, loadingInitial, queryStringBase, getUrl]);
+
+    useEffect(() => {
+        setRecipes([]);
+        setNextCursor(null);
+        setHasMore(false);
+        loadInitial();
+    }, [loadInitial]);
 
     useEffect(() => {
         const node = sentinelRef.current;
-        if (!node) return;
+        if (!node || loadingInitial || !hasMore) return;
 
         observerRef.current?.disconnect();
 
         observerRef.current = new IntersectionObserver(
             (entries) => {
                 const firstEntry = entries[0];
+
                 if (firstEntry?.isIntersecting) {
                     handleLoadMore();
                 }
@@ -97,15 +141,25 @@ export default function RecipeListClient({
         return () => {
             observerRef.current?.disconnect();
         };
-    }, [handleLoadMore]);
+    }, [handleLoadMore, loadingInitial, hasMore]);
+
+    if (loadingInitial) {
+        return <RecipeListSkeleton count={8} />;
+    }
 
     return (
         <>
             <RecipeList recipes={recipes} type={mode} />
 
-            {loading && <RecipeListSkeleton count={8} />}
+            {loadingMore && <RecipeListSkeleton count={4} />}
 
-            {hasMore && <div ref={sentinelRef} className="h-10 w-full" aria-hidden="true" />}
+            {hasMore && (
+                <div
+                    ref={sentinelRef}
+                    className="h-10 w-full"
+                    aria-hidden="true"
+                />
+            )}
         </>
     );
 }

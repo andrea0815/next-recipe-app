@@ -1,5 +1,3 @@
-"use client";
-
 import type { RecipeListItem } from '@/types/recipe';
 import RecipeCard from "./RecipeCard";
 import { RecipeListType } from '@/types/general';

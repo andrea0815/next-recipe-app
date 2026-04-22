@@ -11,9 +11,11 @@ import { RecipeListType } from "@/types/general";
 export default function Loading() {
     return (<>
         <HeaderBack />
-        <FormSection headline="Edit Recipe">
-            <RecipeFormSkeleton />
-        </FormSection>
+        <GeneralSection>
+            <FormSection headline="Edit Recipe">
+                <RecipeFormSkeleton />
+            </FormSection>
+        </GeneralSection>
     </>
     );
 }

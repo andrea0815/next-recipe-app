@@ -10,7 +10,7 @@ import type { Category } from '@/types/category';
 import type { Ingredient } from "@/types/ingredient";
 import type { Unit } from "@/types/unit";
 import type { RecipeDraft, RecipeGroupDraft, RecipeLineDraft } from '@/types/recipe';
-import { FormMode } from '@/types/general';
+import { FormMode, RecipeListType } from '@/types/general';
 
 
 import RecipeForm from '@/components/recipe/RecipeForm';
@@ -94,13 +94,13 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
     const isOwner = recipe.owner_id === user.id;
 
     if (!isOwner) return (<>
-        <HeaderRecipeDetail recipeId={recipe.id} slug={recipe.slug} isOwner={isOwner} />
+        <HeaderBack href={`/collection/${recipe.slug}`} />
         <NoPermissionClient />
     </>)
 
     return (
         <>
-            <HeaderBack />
+            <HeaderBack href={`/collection/${recipe.slug}`} />
             <GeneralSection>
                 <FormSection headline="Edit Recipe">
                     <RecipeForm categories={categories} initialIngredients={ingredients} units={units} initialDraft={propagatedDraft} mode={FormMode.EDIT} />

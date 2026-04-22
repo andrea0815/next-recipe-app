@@ -1,22 +1,20 @@
-"use client"
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useState, useRef, useEffect } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 
-import type { Ingredient } from '@/types/ingredient';
-import type { SearchParams } from '@/types/search';
+import type { Ingredient } from "@/types/ingredient";
+import type { SearchParams } from "@/types/search";
 
-import SearchBar from './SearchBar';
-import SearchPanelContent from './SearchPanelContent';
-import Tag from '../general/Tag';
+import SearchBar from "./SearchBar";
+import SearchPanelContent from "./SearchPanelContent";
+import Tag from "../general/Tag";
 
 export default function SearchPanel({
     ingredients,
 }: {
-    ingredients: Ingredient[]
+    ingredients: Ingredient[];
 }) {
-
-    const router = useRouter();
     const pathname = usePathname();
     const params = useSearchParams();
 
@@ -25,15 +23,14 @@ export default function SearchPanel({
     const ingredientNames = params.getAll("ingredients");
 
     const initialSearchParams = {
-        query: "",
+        query: query ?? "",
         category: category ?? "",
         ingredient_names: ingredientNames ?? [],
-    }
+    };
 
-    const [open, setOpen] = useState(false)
-    const [searchParams, setSearchParams] = useState<SearchParams>(initialSearchParams)
+    const [open, setOpen] = useState(false);
+    const [searchParams, setSearchParams] = useState<SearchParams>(initialSearchParams);
     const containerRef = useRef<HTMLDivElement | null>(null);
-
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -60,6 +57,12 @@ export default function SearchPanel({
         setOpen(false);
     }, [category, query, ingredientNames.join(",")]);
 
+    function updateUrl(nextParams: URLSearchParams) {
+        const queryString = nextParams.toString();
+        const nextUrl = queryString ? `${pathname}?${queryString}` : pathname;
+        window.history.pushState(null, "", nextUrl);
+    }
+
     function updateSearchParams<K extends keyof SearchParams>(
         field: K,
         value: SearchParams[K]
@@ -71,117 +74,119 @@ export default function SearchPanel({
     }
 
     function handleClearButton() {
-
-        const params = new URLSearchParams();
-
-        if (searchParams.query?.trim()) {
-            params.delete("query");
-        }
-
-        if (searchParams.category?.trim()) {
-            params.delete("category");
-        }
-
-        if (searchParams.ingredient_names.length > 0) {
-            params.delete("ingredients");
-        }
+        const nextParams = new URLSearchParams();
 
         setOpen(false);
+        updateUrl(nextParams);
 
-        const queryString = params.toString();
-        router.push(queryString ? `${pathname}?${queryString}` : pathname);
-        setSearchParams(initialSearchParams);
+        setSearchParams({
+            query: "",
+            category: "",
+            ingredient_names: [],
+        });
     }
 
     function handleSearchButton() {
-        const params = new URLSearchParams();
+        const nextParams = new URLSearchParams();
 
         if (searchParams.query?.trim()) {
-            params.set("query", searchParams.query.trim());
+            nextParams.set("query", searchParams.query.trim());
         }
 
         if (searchParams.category?.trim()) {
-            params.set("category", searchParams.category.trim());
+            nextParams.set("category", searchParams.category.trim());
         }
 
         for (const ingredientName of searchParams.ingredient_names) {
-            params.append("ingredients", ingredientName);
+            nextParams.append("ingredients", ingredientName);
         }
 
         setOpen(false);
-
-        const queryString = params.toString();
-        router.push(queryString ? `${pathname}?${queryString}` : pathname);
+        updateUrl(nextParams);
     }
 
     function handleQuerySearchButton() {
-        const params = new URLSearchParams();
+        const nextParams = new URLSearchParams();
 
         if (searchParams.query?.trim()) {
-            params.set("query", searchParams.query.trim());
+            nextParams.set("query", searchParams.query.trim());
         }
 
         if (searchParams.category?.trim()) {
-            params.set("category", searchParams.category.trim());
+            nextParams.set("category", searchParams.category.trim());
+        }
+
+        for (const ingredientName of searchParams.ingredient_names) {
+            nextParams.append("ingredients", ingredientName);
         }
 
         setOpen(false);
-
-        const queryString = params.toString();
-        router.push(queryString ? `${pathname}?${queryString}` : pathname);
+        updateUrl(nextParams);
     }
 
-    function handleSearchWithQuery(query: string) {
-        const params = new URLSearchParams();
+    function handleSearchWithQuery(nextQuery: string) {
+        const nextParams = new URLSearchParams(params.toString());
 
-        if (query.trim()) {
-            params.set("query", query);
+        if (nextQuery.trim()) {
+            nextParams.set("query", nextQuery.trim());
+        } else {
+            nextParams.delete("query");
         }
 
-        router.push(`${pathname}?${params.toString()}`);
+        nextParams.delete("cursor");
+        updateUrl(nextParams);
     }
 
     function handleClearQuery() {
         const next = "";
-        updateSearchParams("query", next)
+        updateSearchParams("query", next);
         handleSearchWithQuery(next);
     }
 
     return (
-        <div className='w-full sm:my-5 flex flex-col justify-center items-center'>
-            <div className='w-full flex max-w-150 flex-col items-center justify-center'>
-                <div className='h-18.5 w-full justify-center'>
-                    <div ref={containerRef} className='sticky top-0  z-5 flex flex-col justify-start items-center rounded-xl w-full'>
-                        <SearchBar onFilterClick={() => setOpen((prev) => !prev)} isOpen={open} searchParams={searchParams} onSearchClick={handleQuerySearchButton} onQueryChange={(query) => updateSearchParams("query", query)} handleClearQuery={handleClearQuery} />
+        <div className="w-full sm:my-5 flex flex-col justify-center items-center">
+            <div className="w-full flex max-w-150 flex-col items-center justify-center">
+                <div className="h-18.5 w-full justify-center">
+                    <div
+                        ref={containerRef}
+                        className="sticky top-0 z-5 flex flex-col justify-start items-center rounded-xl w-full"
+                    >
+                        <SearchBar
+                            onFilterClick={() => setOpen((prev) => !prev)}
+                            isOpen={open}
+                            searchParams={searchParams}
+                            onSearchClick={handleQuerySearchButton}
+                            onQueryChange={(value) => updateSearchParams("query", value)}
+                            handleClearQuery={handleClearQuery}
+                        />
+
                         <SearchPanelContent
                             isOpen={open}
                             ingredients={ingredients}
                             selectedIngredients={searchParams.ingredient_names}
-                            onSearchButton={() => handleSearchButton()}
-                            onClearButton={() => handleClearButton()}
-                            onIngredientsChange={(names) => updateSearchParams("ingredient_names", names)}
+                            onSearchButton={handleSearchButton}
+                            onClearButton={handleClearButton}
+                            onIngredientsChange={(names) =>
+                                updateSearchParams("ingredient_names", names)
+                            }
                         />
-                        <div className="absolute inset-0 -z-10 backdrop-blur-sm bg-section-50 rounded-xl"></div>
+
+                        <div className="absolute inset-0 -z-10 backdrop-blur-sm bg-section-50 rounded-xl" />
                     </div>
                 </div>
 
-                {(ingredientNames.length >= 1) &&
-                    <div className='mt-3 flex flex-col gap-1'>
-                        {/* <p className='text-sm text-primary'>Selected Ingredients</p> */}
-                        <ul className=' flex gap-2'>
+                {ingredientNames.length >= 1 && (
+                    <div className="mt-3 flex flex-col gap-1">
+                        <ul className="flex gap-2">
                             {ingredientNames.map((item, index) => (
-                                <Tag key={index}
-                                    size='medium'
-                                    color='sage'
-                                >{item}</Tag>
+                                <Tag key={index} size="medium" color="sage">
+                                    {item}
+                                </Tag>
                             ))}
-
                         </ul>
                     </div>
-                }
-
+                )}
             </div>
-
         </div>
     );
 }
