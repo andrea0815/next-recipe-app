@@ -21,14 +21,14 @@ export default function SearchBar({
 }) {
 
     return (
-        <div className="flex gap-2 w-full sm:py-3 sm:px-4 p-2">
+        <div className="flex gap-2 w-full sm:py-3 sm:px-3 p-2">
 
             <div className="relative w-full">
                 <input
                     type="text"
                     value={searchParams.query}
                     onChange={(e) => onQueryChange(e.target.value)}
-                    className="bg-white w-full px-4 py-3 pr-10 rounded-lg transition-all"
+                    className="bg-white w-full h-(--btn-h-md) px-4 py-3 pr-10 rounded-lg transition-all"
                     placeholder="Search …"
                 />
 
@@ -36,29 +36,31 @@ export default function SearchBar({
                     <button
                         type="button"
                         onClick={() => handleClearQuery()}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 cursor-pointer"
+                        className="absolute right-12 top-1/2 -translate-y-1/2 rounded-lg text-gray-500 bg-transparent hover:bg-gray-300 cursor-pointer p-2 transition-colors"
                         aria-label="Clear search"
                     >
                         <IconClose />
                     </button>
                 )}
+
+                <button
+                    onClick={onSearchClick}
+                    disabled={searchParams.query === ""}
+                    className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg text-primary bg-transparent hover:bg-gray-300 cursor-pointer p-2 transition-colors"
+                >
+                    <IconSearch />
+                </button>
             </div>
 
-            {!isOpen && <Button
-                priority="tertiary"
-                onClick={onSearchClick}
-                disabled={searchParams.query === ""}
-                isIcon={true}
-            >
-                <IconSearch />
-            </Button>}
+
 
             <Button
                 priority={searchParams.ingredient_names.length === 0 ? "secondary" : "primary"}
                 onClick={onFilterClick}
                 isIcon={true}
             >
-                <IconFilter />
+                {isOpen ? <IconClose /> : <IconFilter />}
+
             </Button>
         </div>
     );

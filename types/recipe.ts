@@ -4,6 +4,14 @@ import { Unit } from "./unit";
 import { ComponentType, ReactNode } from "react";
 import IconAdd from "@/components/icons/IconAdd";
 import { IconURL } from "next/dist/lib/metadata/types/metadata-types";
+import IconBottomHeat from "@/components/icons/IconBottomHeat";
+import IconTopBottomHeat from "@/components/icons/IconTopBottomHeat";
+import IconConvection from "@/components/icons/IconConvection";
+import IconFanAssisted from "@/components/icons/IconFanAssisted";
+import IconFanAssistedBottomHeat from "@/components/icons/IconFanAssistedBottomHeat";
+import IconFanAssistedTopBottomHeat from "@/components/icons/IconFanAssistedTopBottomHeat";
+import IconFanAssistedGrill from "@/components/icons/IconFanAssistedGrill";
+import IconGrill from "@/components/icons/IconGrill";
 
 export type IngredientLineBase = {
     ingredient_id: string;
@@ -117,12 +125,13 @@ export type RecipeFields = {
 
 export enum HeatingMode {
     TOP_BOTTOM_HEAT = "top_bottom_heat", // Ober-Unterhitze
+    BOTTOM_HEAT = "bottom_heat", // Unterhitze
     CONVECTION = "convection", // Heißluft
     FAN_ASSISTED = "fan_assisted", // Umluft
-    GRILL = "grill", // Grill
-    TOP_HEAT = "top_heat", // Oberhitze
-    BOTTOM_HEAT = "bottom_heat", // Unterhitze
-    DEFROST = "defrost", // Auftauen
+    FAN_ASSISTED_BOTTOM_HEAT = "fan_assisted_bottom_heat", // Umluft/Unterhitze
+    FAN_ASSISTED_TOP_BOTTOM_HEAT = "fan_assisted_top_bottom_heat", // Umluft/Ober-/Unterhitze
+    FAN_ASSISTED_GRILL = "fan_assisted_grill", // Umluft/Grill
+    GRILL = "grill", // Grill    
 }
 
 export type HeatingMeta = {
@@ -135,36 +144,41 @@ export const HEATING_META: Record<HeatingMode, HeatingMeta> = {
     [HeatingMode.TOP_BOTTOM_HEAT]: {
         id: "1",
         name: "Ober-Unterhitze",
-        icon: IconAdd,
+        icon: IconTopBottomHeat,
+    },
+    [HeatingMode.BOTTOM_HEAT]: {
+        id: "2",
+        name: "Unterhitze",
+        icon: IconBottomHeat,
     },
     [HeatingMode.CONVECTION]: {
-        id: "2",
-        name: "Heißluft",
-        icon: IconAdd,
-    },
-    [HeatingMode.DEFROST]: {
         id: "3",
-        name: "Auftauen",
-        icon: IconAdd,
+        name: "Heißluft",
+        icon: IconConvection,
     },
     [HeatingMode.FAN_ASSISTED]: {
         id: "4",
         name: "Umluft",
-        icon: IconAdd,
+        icon: IconFanAssisted,
+    },
+    [HeatingMode.FAN_ASSISTED_BOTTOM_HEAT]: {
+        id: "5",
+        name: "Umluft mit Unterhitze",
+        icon: IconFanAssistedBottomHeat,
+    },
+    [HeatingMode.FAN_ASSISTED_TOP_BOTTOM_HEAT]: {
+        id: "6",
+        name: "Umluft mit Ober-/Unterhitze",
+        icon: IconFanAssistedTopBottomHeat,
     },
     [HeatingMode.GRILL]: {
-        id: "5",
-        name: "Grill",
-        icon: IconAdd,
-    },
-    [HeatingMode.TOP_HEAT]: {
-        id: "6",
-        name: "Oberhitze",
-        icon: IconAdd,
-    },
-    [HeatingMode.BOTTOM_HEAT]: {
         id: "7",
-        name: "Unterhitze",
-        icon: IconAdd,
+        name: "Grillfunktion",
+        icon: IconGrill,
+    },
+    [HeatingMode.FAN_ASSISTED_GRILL]: {
+        id: "8",
+        name: "Grillfunktion mit Umluft",
+        icon: IconFanAssistedGrill,
     },
 };

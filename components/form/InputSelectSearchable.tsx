@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import InputWrapper from "./InputWrapper";
+import IconArrowDown from "../icons/IconArrowDown";
 
 type InputSelectSearchableProps<
   TDraft,
@@ -114,9 +115,15 @@ export default function InputSelectSearchable<
         <button
           type="button"
           onClick={() => (open ? handleClose() : handleOpen())}
-          className="block h-(--btn-h-sm) w-full rounded-lg border border-gray-500 bg-white p-2 text-left text-text overflow-clip cursor-pointer"
+          className="block group h-(--btn-h-sm) w-full rounded-lg border border-gray-500 bg-white p-2 text-left text-text overflow-clip cursor-pointer"
         >
           {selectedItem ? String(selectedItem[labelKey]) : placeholder}
+
+          <div
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg text-gray-500 bg-transparent group-hover:bg-gray-200 cursor-pointer p-1 transition-colors"
+          >
+            <IconArrowDown />
+          </div>
         </button>
 
         {open && (

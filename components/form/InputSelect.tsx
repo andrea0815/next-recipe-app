@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import InputWrapper from "./InputWrapper";
+import IconArrowDown from "../icons/IconArrowDown";
 
 type SelectItem = {
     id: string;
@@ -99,9 +100,14 @@ export default function InputSelect<
                 <button
                     type="button"
                     onClick={() => (open ? setOpen(false) : handleOpen())}
-                    className="block w-full h-10 p-2 bg-white text-text rounded-lg border border-gray-500 text-left cursor-pointer"
+                    className="block group relative w-full h-10 p-2 bg-white text-text rounded-lg border border-gray-500 text-left cursor-pointer truncate"
                 >
                     {selectedItem?.name ?? "Select an option…"}
+                    <div
+                        className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg text-gray-500 bg-transparent group-hover:bg-gray-200 cursor-pointer p-1 transition-colors"
+                    >
+                        <IconArrowDown />
+                    </div>
                 </button>
 
                 {open && (

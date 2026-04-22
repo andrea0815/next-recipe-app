@@ -1,18 +1,13 @@
-import { getRecipeBySlug } from "@/lib/db/recipes";
-import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 
-import { notFound } from "next/navigation";
+import { RecipeListType } from "@/types/general";
+import { HEATING_META, HeatingMeta } from "@/types/recipe";
 
-import DeleteButton from "@/components/buttons/DeleteButton";
-import Button from "@/components/buttons/Button";
+import RecipeDetailIngredients from "./RecipeDetailIngredients";
 import Tag from "@/components/general/Tag";
 import SectionWrapper from "@/components/containers/SectionWrapper";
-import RecipeDetailIngredients from "./RecipeDetailIngredients";
-import { RecipeListType } from "@/types/general";
 import HeatingDetailCard from "./HeatingDetailCard";
-import IconAlertTriangle from "../icons/IconAlertTriangle";
-import { HEATING_META, HeatingMeta } from "@/types/recipe";
-import { ReactNode } from "react";
+import IconClock from "../icons/IconClock";
+import IconThermormeter from "../icons/IconThermormeter";
 
 export default function RecipeDetailSection({
     recipe,
@@ -93,13 +88,15 @@ export default function RecipeDetailSection({
                             />
                             <HeatingDetailCard
                                 label="Time"
-                                icon={<IconAlertTriangle />}
+                                icon={<IconClock />}
                                 value={recipe.time}
+                                unit={Number(recipe.time) > 1 ? "Minuten" : "Minute"}
                             />
                             <HeatingDetailCard
                                 label="Temperature"
-                                icon={<IconAlertTriangle />}
+                                icon={<IconThermormeter />}
                                 value={recipe.temperature}
+                                unit="°C"
                             />
                         </div>
                     }

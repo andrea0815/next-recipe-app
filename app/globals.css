@@ -82,7 +82,7 @@
   }
 
   * :focus-visible {
-    @apply outline-primary outline-2 -outline-offset-4;
+    @apply outline-primary outline-2 -outline-offset-2;
   }
 
   .no-scrollbar {

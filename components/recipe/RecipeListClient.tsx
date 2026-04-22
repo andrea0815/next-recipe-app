@@ -8,7 +8,6 @@ import type { RecipeListItem } from "@/types/recipe";
 import RecipeListSkeleton from "@/components/recipe/RecipeListSkeleton";
 
 type RecipeListClientProps = {
-    key: string;
     initialRecipes: RecipeListItem[];
     initialNextCursor: string | null;
     initialHasMore: boolean;
@@ -18,7 +17,6 @@ type RecipeListClientProps = {
 };
 
 export default function RecipeListClient({
-    key,
     initialRecipes,
     initialNextCursor,
     initialHasMore,

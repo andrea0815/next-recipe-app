@@ -10,7 +10,7 @@ export default function PrivacyIcon({ isPublic }: { isPublic: boolean }) {
     return (
         <div
             title={isPublic ? "Public Recipe" : "Private Recipe"}
-            className="group/visibility text-primary absolute top-2 right-2 text-xs flex items-center bg-white rounded-full p-1 overflow-hidden cursor-pointer"
+            className="group/visibility text-primary absolute top-2 right-2 text-xs flex items-center bg-white/75 rounded-full p-1 overflow-hidden cursor-pointer"
         >
             <p
                 className="
@@ -31,7 +31,7 @@ export default function PrivacyIcon({ isPublic }: { isPublic: boolean }) {
                     {text}
                 </span>
             </p>
-            {isPublic ? <IconGlobe /> : <IconLock />}
+            {isPublic ? <IconGlobe size={16} /> : <IconLock size={16} />}
         </div>
     );
 }

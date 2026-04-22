@@ -27,6 +27,8 @@ import InputSelect from '../form/InputSelect';
 import IconBack from '../icons/IconBack';
 import IconCompas from '../icons/IconCompas';
 import IconAlertTriangle from '../icons/IconAlertTriangle';
+import IconClock from '../icons/IconClock';
+import IconThermormeter from '../icons/IconThermormeter';
 
 export default function RecipeForm({
     categories,
@@ -58,6 +60,10 @@ export default function RecipeForm({
 
     const heatingOptions: HeatingMeta[] = Object.values(HEATING_META);
 
+    const getHeatingMetaById = (id: string): HeatingMeta | null => {
+        return heatingOptions.find((option) => option.id === id) ?? null;
+    };
+    const HeatingModeIcon = getHeatingMetaById(draft.heating_mode ?? "")?.icon
 
     useEffect(() => {
         setHasFieldErros(Object.keys(state.fieldErrors ?? {}).length > 0)
@@ -159,15 +165,15 @@ export default function RecipeForm({
                     </div>
 
                     {draft.heating_details_enabled &&
-                        <div className='mt-4 flex gap-4'>
+                        <div className='mt-4 flex gap-4 flex-col sm:flex-row'>
 
-                            <div className='flex-1 flex flex-col justify-center items-center bg-gray-300 px-4 pt-4 pb-6 rounded-lg aspect-square'>
-                                <p>Heating Mode</p>
-
-
-                                <div className='flex-1 flex justify-center items-center'>
-                                    <IconAlertTriangle size={50} />
+                            <div className='flex-1 flex flex-col justify-center items-center bg-gray-300 px-4 pt-4 pb-6 rounded-lg sm:aspect-square'>
+                                <div className='flex-1 flex justify-center items-center text-green-400 p-6 sm:p-0'>
+                                    {HeatingModeIcon ? <HeatingModeIcon size={50} /> : <p className='h-12.5'>Nothing selected.</p>}
                                 </div>
+
+
+
                                 <div className='w-full'>
                                     <InputSelect<RecipeDraft, "heating_mode", HeatingMeta>
                                         field="heating_mode"
@@ -178,16 +184,18 @@ export default function RecipeForm({
                                         {...(!state.success && state.fieldErrors?.heating_mode
                                             ? { error: state.fieldErrors.heating_mode }
                                             : {})}
-                                        customClass="w-full"
+                                        customClass="w-full text-center"
                                     />
                                 </div>
+
+                                <p className='mt-2'>Heating Mode</p>
                             </div>
 
-                            <div className='flex-1 flex flex-col justify-center items-center bg-gray-300 px-4 pt-4 pb-6 rounded-lg aspect-square'>
-                                <p>Time (Minutes)</p>
+                            <div className='flex-1 flex flex-col justify-center items-center bg-gray-300 px-4 pt-4 pb-6 rounded-lg sm:aspect-square'>
 
-                                <div className='flex-1 flex justify-center items-center'>
-                                    <IconAlertTriangle size={50} />
+
+                                <div className='flex-1 flex justify-center items-center text-green-400 p-6 sm:p-0'>
+                                    <IconClock size={50} />
                                 </div>
                                 <div className=''>
                                     <NumberSelect
@@ -205,14 +213,15 @@ export default function RecipeForm({
                                     />
                                 </div>
 
+                                <p className='mt-2'>Time (Minutes)</p>
+
 
                             </div>
 
-                            <div className='flex-1 flex flex-col justify-center items-center bg-gray-300 px-4 pt-4 pb-6 rounded-lg aspect-square'>
-                                <p>Temperature (°C)</p>
+                            <div className='flex-1 flex flex-col justify-center items-center bg-gray-300 px-4 pt-4 pb-6 rounded-lg sm:aspect-square'>
 
-                                <div className='flex-1 flex justify-center items-center'>
-                                    <IconAlertTriangle size={50} />
+                                <div className='flex-1 flex justify-center items-center text-green-400 p-6 sm:p-0'>
+                                    <IconThermormeter size={50} />
                                 </div>
                                 <div className=''>
                                     <NumberSelect
@@ -230,6 +239,8 @@ export default function RecipeForm({
                                         }}
                                     />
                                 </div>
+                                <p className='mt-2'>Temperature (°C)</p>
+
 
 
                             </div>
