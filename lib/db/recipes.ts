@@ -31,6 +31,88 @@ type RecipeWithCategoriesOther = Prisma.recipesGetPayload<{
     };
 }>;
 
+function recipeFilters({
+    query,
+    userId,
+    categoryNames,
+    ingredientNames,
+    ownRecipes,
+}: {
+    query?: string | undefined;
+    userId?: string | undefined;
+    categoryNames?: string[] | undefined;
+    ingredientNames?: string[] | undefined;
+    ownRecipes: boolean;
+}) {
+    return {
+        ...(ownRecipes
+            ? userId && { owner_id: userId }
+            : {
+                ...(userId && {
+                    owner_id: {
+                        not: userId,
+                    },
+                }),
+                is_public: true,
+            }),
+
+        ...(query && {
+            OR: [
+                { name: { contains: query, mode: "insensitive" as const } },
+                { subtitle: { contains: query, mode: "insensitive" as const } },
+                { users: { username: { contains: query, mode: "insensitive" as const } } },
+                {
+                    recipe_categories: {
+                        some: {
+                            categories: {
+                                name: { contains: query, mode: "insensitive" as const },
+                            },
+                        },
+                    },
+                },
+            ],
+        }),
+
+        ...(categoryNames && categoryNames.length > 0 && {
+            recipe_categories: {
+                some: {
+                    categories: {
+                        name: { in: categoryNames },
+
+                        // important:
+                        // filter by categories that are either global or owned by the current user
+                        ...(userId && {
+                            OR: [
+                                { owner_id: userId },
+                                { owner_id: null },
+                            ],
+                        }),
+                    },
+                },
+            },
+        }),
+
+        ...(ingredientNames && ingredientNames.length > 0 && {
+            recipe_ingredients: {
+                some: {
+                    ingredients: {
+                        name: { in: ingredientNames },
+
+                        // important:
+                        // filter by ingredients that are either global or owned by the current user
+                        ...(userId && {
+                            OR: [
+                                { owner_id: userId },
+                                { owner_id: null },
+                            ],
+                        }),
+                    },
+                },
+            },
+        }),
+    };
+}
+
 export async function getUserRecipes({
     query,
     userId,
@@ -47,48 +129,13 @@ export async function getUserRecipes({
     take?: number;
 } = {}): Promise<PaginatedResult<RecipeListItem>> {
     const recipes: RecipeWithCategories[] = await prisma.recipes.findMany({
-        where: {
-            ...(userId && { owner_id: userId }),
-
-            ...(query && {
-                OR: [
-                    { name: { contains: query, mode: "insensitive" } },
-                    { subtitle: { contains: query, mode: "insensitive" } },
-                    { users: { username: { contains: query, mode: "insensitive" } } },
-                    {
-                        recipe_categories: {
-                            some: {
-                                categories: {
-                                    name: { contains: query, mode: "insensitive" },
-                                },
-                            },
-                        },
-                    },
-                ],
-            }),
-
-            ...(categoryNames && categoryNames.length > 0 && {
-                recipe_categories: {
-                    some: {
-                        categories: {
-                            name: { in: categoryNames },
-                            ...(userId && { owner_id: userId }),
-                        },
-                    },
-                },
-            }),
-
-            ...(ingredientNames && ingredientNames.length > 0 && {
-                recipe_ingredients: {
-                    some: {
-                        ingredients: {
-                            name: { in: ingredientNames },
-                            ...(userId && { owner_id: userId }),
-                        },
-                    },
-                },
-            }),
-        },
+        where: recipeFilters({
+            query,
+            userId,
+            categoryNames,
+            ingredientNames,
+            ownRecipes: true,
+        }),
 
         orderBy: [
             { created_at: "desc" },
@@ -139,62 +186,26 @@ export async function getUserRecipes({
 export async function getOtherRecipes({
     query,
     userId,
-    categoryIds,
-    ingredientIds,
+    categoryNames,
+    ingredientNames,
     cursor,
     take = 12,
 }: {
     query?: string;
     userId?: string;
-    categoryIds?: string[];
-    ingredientIds?: string[];
+    categoryNames?: string[];
+    ingredientNames?: string[];
     cursor?: string;
     take?: number;
 } = {}): Promise<PaginatedResult<RecipeListItem>> {
     const recipes: RecipeWithCategoriesOther[] = await prisma.recipes.findMany({
-        where: {
-            ...(userId && {
-                owner_id: {
-                    not: userId,
-                },
-            }),
-            is_public: true,
-            ...(query && {
-                OR: [
-                    { name: { contains: query, mode: "insensitive" } },
-                    { subtitle: { contains: query, mode: "insensitive" } },
-
-                    { users: { username: { contains: query, mode: "insensitive" } } },
-                    {
-                        recipe_categories: {
-                            some: {
-                                categories: {
-                                    name: { contains: query, mode: "insensitive" },
-                                },
-                            },
-                        },
-                    },
-                ],
-            }),
-            ...(categoryIds && categoryIds.length > 0 && {
-                recipe_categories: {
-                    some: {
-                        category_id: {
-                            in: categoryIds,
-                        },
-                    },
-                },
-            }),
-            ...(ingredientIds && ingredientIds.length > 0 && {
-                recipe_ingredients: {
-                    some: {
-                        ingredient_id: {
-                            in: ingredientIds,
-                        },
-                    },
-                },
-            }),
-        },
+        where: recipeFilters({
+            query,
+            userId,
+            categoryNames,
+            ingredientNames,
+            ownRecipes: false,
+        }),
         orderBy: [
             { created_at: "desc" },
             { id: "desc" },

@@ -20,11 +20,11 @@ export async function GET(req: NextRequest) {
 
     const query = searchParams.get("query") ?? undefined;
     const cursor = searchParams.get("cursor") ?? undefined;
-    const categoryIds = searchParams.getAll("categoryIds");
+    const categoryNames = searchParams.getAll("category");
 
     const data = await getOtherRecipes({
         userId: user.id,
-        categoryIds,
+        categoryNames,
         take: 12,
         ...(query !== undefined ? { query } : {}),
         ...(cursor !== undefined ? { cursor } : {}),

@@ -54,9 +54,10 @@ export default function RecipeListClient({
             console.log(response);
 
             if (!response.ok) {
-                throw new Error("Failed to load recipes.");
+                const errorText = await response.text();
+                console.error("Recipe API error:", response.status, errorText);
+                throw new Error(`Failed to load recipes: ${response.status}`);
             }
-
             const data: PaginatedResult<RecipeListItem> = await response.json();
 
             if (requestIdRef.current !== currentRequestId) return;

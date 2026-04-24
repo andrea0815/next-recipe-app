@@ -35,7 +35,7 @@ export default async function ExplorePage() {
                     </Suspense>
                 </div>
                 <RecipeListClient
-                    getUrl={"/api/recipes/other"}
+                    getUrl={"/api/recipes/others"}
                     mode={RecipeListType.EXPLORE}
                 />
             </RecipeGalleryWrapper>
