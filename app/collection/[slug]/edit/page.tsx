@@ -103,7 +103,7 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
             <HeaderBack href={`/collection/${recipe.slug}`} />
             <GeneralSection>
                 <FormSection headline="Edit Recipe">
-                    <RecipeForm categories={categories} initialIngredients={ingredients} units={units} initialDraft={propagatedDraft} mode={FormMode.EDIT} />
+                    <RecipeForm categories={categories} initialIngredients={ingredients} initialUnits={units} initialDraft={propagatedDraft} mode={FormMode.EDIT} />
                 </FormSection>
             </GeneralSection>
         </>
