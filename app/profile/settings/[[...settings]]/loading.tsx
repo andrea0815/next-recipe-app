@@ -1,9 +1,7 @@
-import React from 'react';
-import ShoppingListSkeleton from '@/components/shoppinglist/ShoppingListSkeleton';
-import SectionWrapper from '@/components/containers/SectionWrapper';
+import SettingsSectionSkeleton from './SettingsSectionSkeleton';
 
 export default function loading() {
     return (
-        <ShoppingListSkeleton />
+        <SettingsSectionSkeleton />
     );
 }

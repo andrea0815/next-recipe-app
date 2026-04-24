@@ -12,6 +12,7 @@ import ListSection from "@/components/general/ListSection";
 import PageHeadline from "@/components/typography/PageHeadline";
 import IngredientPanel from "@/components/ingredient/IngredientPanel";
 import ListAddButton from "@/components/general/ListAddButton";
+import GeneralSection from "@/components/containers/GeneralSection";
 
 export default function IngredientSection({
     preparedIngredients,

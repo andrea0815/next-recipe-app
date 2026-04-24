@@ -18,7 +18,7 @@ export default function ProfileSettingsClient({
     }
 
     return (
-        <ul className="w-full border-t border-gray-300">
+        <ul className="w-full border-t border-gray-300 max-w-200">
             <li className="py-3 flex justify-between items-center w-full border-b border-gray-300">
                 <p>Recipes are public by default:</p>
                 <Switch

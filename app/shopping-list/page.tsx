@@ -1,13 +1,6 @@
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
-import Image from "next/image";
-import Link from "next/link";
 import { getShoppingItemsByUser } from "@/lib/db/shoppingList";
-import { removeAllShoppingItems } from "@/actions/shoppingList";
-import { RecipeListItem } from "@/types/recipe";
-import SectionWrapper from "@/components/containers/SectionWrapper";
-import PageHeadline from "@/components/typography/PageHeadline";
-import Button from "@/components/buttons/Button";
-import ShoppingList from "@/components/shoppinglist/ShoppingList";
+import ShoppingListSection from "./ShoppingListSection";
 
 
 export default async function ShoppingListPage() {
@@ -22,12 +15,7 @@ export default async function ShoppingListPage() {
 
   return (
     <>
-      <div className="flex flex-col gap-2 w-full items-center flex-1">
-        <PageHeadline>Shopping List</PageHeadline>
-        <SectionWrapper customClass="max-w-200 w-full flex-1 flex flex-col justify-start items-center">
-          <ShoppingList items={ShoppingItems} />
-        </SectionWrapper>
-      </div>
+      <ShoppingListSection shoppingItems={ShoppingItems} />
     </>
   );
 }

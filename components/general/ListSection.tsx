@@ -67,7 +67,7 @@ export default function ListSection({ type, items, removeItem, onEditButton }: L
 
     return (
         <>
-            <SectionWrapper customClass="max-w-200 w-full flex-1 ">
+            <SectionWrapper customClass="max-w-200 w-full flex-1 min-h-200">
                 <div className="overflow-scroll pr-4 flex flex-col justify-start items-center ">
                     <ul className={`w-full gap-x-4 ${gridClass}`}>
                         <p className="mb-4 font-bold">Name</p>

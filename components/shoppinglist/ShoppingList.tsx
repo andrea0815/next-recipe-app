@@ -102,14 +102,6 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
         });
     };
 
-    // if (items.length === 0) {
-    //     return (
-    //         <p className="text-center flex-1 text-gray-500 flex justify-center items-center">
-    //             Your shopping list is empty.
-    //         </p>
-    //     );
-    // }
-
     return (
         <form action={removeCheckedShoppingItems} className="w-full flex flex-col gap-4 flex-1">
             {selectedItemIds.map((id) => (
