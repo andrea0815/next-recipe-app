@@ -23,7 +23,8 @@ export default function IngredientEditor({
   units,
   groups,
   groupsEnabled,
-  addButton,
+  addIngredientButton,
+  addUnitButton,
   onGroupsChange,
   onGroupsEnabledChange,
 }: {
@@ -32,7 +33,8 @@ export default function IngredientEditor({
   units: Unit[];
   groups: RecipeGroupDraft[],
   groupsEnabled: boolean,
-  addButton: ReactNode,
+  addIngredientButton: ReactNode,
+  addUnitButton: ReactNode,
   onGroupsChange: (groups: RecipeGroupDraft[]) => void,
   onGroupsEnabledChange: (enabled: boolean) => void,
 }) {
@@ -179,7 +181,7 @@ export default function IngredientEditor({
                 labelName="Unit"
                 placeholder="Select unit …"
                 draftValue={group.draft.unit_id}
-                addButton={addButton}
+                addButton={addUnitButton}
                 updateDraftValue={(_, value) => updateDraft(index, "unit_id", value)}
                 customClass="w-full sm:basis-[20%] shrink-0"
                 valueKey="id"
@@ -192,7 +194,7 @@ export default function IngredientEditor({
                 labelName="Ingredient"
                 placeholder="Select ingredient …"
                 draftValue={group.draft.ingredient_id}
-                addButton={addButton}
+                addButton={addIngredientButton}
                 updateDraftValue={(_, value) => updateDraft(index, "ingredient_id", value)}
                 customClass="flex-1 w-full"
                 valueKey="id"

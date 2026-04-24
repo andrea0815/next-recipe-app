@@ -3,7 +3,7 @@ export type Unit = {
     name: string;
     plural: string | null;
     abbreviation: string | null;
-    owner_id: string | null;
+    owner_id?: string | null;
 }
 
 export type UnitDraft = {

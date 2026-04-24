@@ -44,7 +44,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
     const isOwner = recipe.owner_id === user.id;
 
     return (<>
-        <HeaderRecipeDetail recipeId={recipe.id} isOwner={isOwner} />
+        <HeaderRecipeDetail recipeId={recipe.id} isOwner={isOwner} mode={RecipeListType.EXPLORE} />
         <GeneralSection>
             <RecipeDetailSection
                 recipe={recipe}

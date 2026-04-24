@@ -6,7 +6,7 @@ import type { Category } from '@/types/category';
 import type { Unit } from '@/types/unit';
 import type { Ingredient } from '@/types/ingredient';
 import type { HeatingMeta, RecipeDraft, RecipeFields } from '@/types/recipe';
-import { HeatingMode, HEATING_META } from '@/types/recipe';
+import { HEATING_META } from '@/types/recipe';
 import type { PanelRef } from '@/components/ingredient/IngredientPanel';
 import { ActionResult } from "@/types/actions";
 import { FormMode, ItemType } from '@/types/general';
@@ -22,24 +22,21 @@ import IconAdd from '../icons/IconAdd';
 import SectionWrapper from '../containers/SectionWrapper';
 import SectionHeadline from '../typography/SectionHeadline';
 import NumberSelect from '../form/NumberSelect';
-import InputWrapper from '../form/InputWrapper';
 import InputSelect from '../form/InputSelect';
-import IconBack from '../icons/IconBack';
-import IconCompas from '../icons/IconCompas';
-import IconAlertTriangle from '../icons/IconAlertTriangle';
 import IconClock from '../icons/IconClock';
 import IconThermormeter from '../icons/IconThermormeter';
+import UnitPanel from '../unit/UnitPanel';
 
 export default function RecipeForm({
     categories,
     initialIngredients,
-    units,
+    initialUnits,
     initialDraft,
     mode
 }: {
     categories: Category[];
     initialIngredients: Ingredient[];
-    units: Unit[];
+    initialUnits: Unit[];
     initialDraft: RecipeDraft;
     mode: FormMode;
 }) {
@@ -59,24 +56,26 @@ export default function RecipeForm({
     const [draft, setDraft] = useState<RecipeDraft>(initialDraft);
 
     useEffect(() => {
-        console.log(draft.category_ids);
-    }, [draft])
+        setHasFieldErros(Object.keys(state.fieldErrors ?? {}).length > 0)
+    }, [state])
 
+
+    // Heating Options
     const heatingOptions: HeatingMeta[] = Object.values(HEATING_META);
-
     const getHeatingMetaById = (id: string): HeatingMeta | null => {
         return heatingOptions.find((option) => option.id === id) ?? null;
     };
     const HeatingModeIcon = getHeatingMetaById(draft.heating_mode ?? "")?.icon
 
-    useEffect(() => {
-        setHasFieldErros(Object.keys(state.fieldErrors ?? {}).length > 0)
-    }, [state])
-
-
+    // Ingredients
     const [ingredients, setIngredients] = useState(initialIngredients);
     const [selectedIngredientId, setSelectedIngredientId] = useState("");
     const IngredientPanelRef = useRef<PanelRef>(null);
+
+    // Units
+    const [units, setUnits] = useState<Unit[]>(initialUnits);
+    const [selectedUnitId, setSelectedUnitId] = useState("");
+    const UnitPanelRef = useRef<PanelRef>(null);
 
     const submitButtonText = mode === FormMode.CREATE ?
         {
@@ -281,7 +280,7 @@ export default function RecipeForm({
                         units={units}
                         groups={draft.groups}
                         groupsEnabled={draft.groups_enabled}
-                        addButton={
+                        addIngredientButton={
                             <div className='w-full px-2 pt-2'>
                                 <Button
                                     type="button"
@@ -289,6 +288,19 @@ export default function RecipeForm({
                                     size='small'
                                     stretch={true}
                                     onClick={() => IngredientPanelRef.current?.open()}
+                                >
+                                    <IconAdd />  Add
+                                </Button>
+                            </div>
+                        }
+                        addUnitButton={
+                            <div className='w-full px-2 pt-2'>
+                                <Button
+                                    type="button"
+                                    priority='secondary'
+                                    size='small'
+                                    stretch={true}
+                                    onClick={() => UnitPanelRef.current?.open()}
                                 >
                                     <IconAdd />  Add
                                 </Button>
@@ -351,6 +363,15 @@ export default function RecipeForm({
                 }}
             />
 
+            <UnitPanel
+                ref={UnitPanelRef}
+                mode={FormMode.CREATE}
+                type={ItemType.UNIT}
+                onCreated={(unit) => {
+                    setUnits((prev) => [...prev, unit]);
+                    setSelectedUnitId(unit.id);
+                }}
+            />
         </>
     );
 }
