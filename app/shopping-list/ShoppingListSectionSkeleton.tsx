@@ -7,7 +7,7 @@ export default function ShoppingListSectionSkeleton() {
     return (
         <div className="flex flex-col gap-2 w-full items-center flex-1">
             <PageHeadline>Shopping List</PageHeadline>
-            <SectionWrapper customClass="max-w-200 w-full flex-1 flex flex-col justify-start items-center">
+            <SectionWrapper customClass="max-w-200 w-full flex-1 flex flex-col justify-start items-center ">
                 <ShoppingList items={[]} />
             </SectionWrapper>
         </div>

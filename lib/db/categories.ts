@@ -26,6 +26,23 @@ export async function getCategories(query?: string, userId?: string) {
     });
 }
 
+export async function getGlobalCategories(query?: string) {
+    return prisma.categories.findMany({
+        where: {
+            AND: [
+                { owner_id: null },
+                query
+                    ? {
+                        OR: [
+                            { name: { contains: query, mode: "insensitive" } },
+                        ],
+                    }
+                    : {},
+            ],
+        },
+    });
+}
+
 export async function getCategoriesByUserId(query?: string, userId?: string) {
     return prisma.categories.findMany({
         where: {

@@ -49,8 +49,6 @@ export default function UnitForm({
     useEffect(() => {
         if (!state.message) return;
 
-        console.log("toast effect", state);
-
         if (state.success) {
             showSuccessToast(state.message);
 

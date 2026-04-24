@@ -51,8 +51,6 @@ export default function RecipeListClient({
                 cache: "no-store",
             });
 
-            console.log(response);
-
             if (!response.ok) {
                 const errorText = await response.text();
                 console.error("Recipe API error:", response.status, errorText);

@@ -12,7 +12,7 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
 
     return (
         <div
-            className="flex flex-col h-full justify-between group">
+            className="flex flex-col h-full justify-between group sm:pb-2 pb-1">
             <div>
 
                 <div className="relative aspect-square bg-gray-500 sm:rounded-xl rounded-lg overflow-hidden">
@@ -49,7 +49,7 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
                     {recipe.name}
                 </h2>
 
-                <p className="leading-tight sm:text-sm text-xs text-text-light sm:mt-2 mt-1">{recipe.subtitle}</p>
+                <p className="leading-tight sm:text-sm text-xs text-text-light sm:mt-2 my-1">{recipe.subtitle}</p>
             </div>
 
             {type === RecipeListType.EXPLORE && (

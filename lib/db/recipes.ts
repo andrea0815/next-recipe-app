@@ -81,11 +81,13 @@ function recipeFilters({
 
                         // important:
                         // filter by categories that are either global or owned by the current user
-                        ...(userId && {
+                        ...(userId && ownRecipes ? {
                             OR: [
                                 { owner_id: userId },
                                 { owner_id: null },
                             ],
+                        } : {
+                            owner_id: null
                         }),
                     },
                 },
