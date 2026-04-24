@@ -30,7 +30,7 @@ export default function RecipeDetailSection({
     const HeatingModeIcon = getHeatingMetaById(recipe.heating_mode)?.icon
 
     return (
-        <div>
+        <>
             <div className="w-full h-[50dvh] relative rounded-lg mb-6 overflow-hidden flex justify-center items-center">
                 {recipe.image_uri && (
                     <img src={recipe.image_uri} alt={recipe.name} className="min-w-full min-h-full object-cover object-center" />
@@ -76,7 +76,7 @@ export default function RecipeDetailSection({
                 ))}
             </div>
 
-            <div className="flex md:flex-row-reverse flex-col gap-10">
+            <div className="w-full flex md:flex-row-reverse flex-col gap-10">
                 <div className="flex flex-col gap-4 md:min-w-100">
                     {recipe.heating_details_enabled &&
                         <div className="grid grid-cols-3 gap-2">
@@ -137,6 +137,6 @@ export default function RecipeDetailSection({
                 </div>
             </div>
 
-        </div >
+        </ >
     );
 }

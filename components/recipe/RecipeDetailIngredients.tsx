@@ -36,7 +36,7 @@ export default function RecipeDetailIngredients({
             <h2 className='text-2xl mt-10 font-bold mb-4'>Ingredients</h2>
 
 
-            <div className="grid w-full grid-cols-[max-content_max-content_max-content_1fr] lg:gap-x-4 gap-x-2">
+            <div className="grid w-full grid-cols-[max-content_max-content_max-content_1fr] lg:gap-x-4 gap-x-2 mb-4">
                 {Object.entries(groupedIngredients).map(([groupName, ingredients]) => (
                     <React.Fragment key={groupName}>
 

@@ -48,8 +48,6 @@ export default function CategoryForm({
     useEffect(() => {
         if (!state.message) return;
 
-        console.log("toast effect", state);
-
         if (state.success) {
             showSuccessToast(state.message);
 

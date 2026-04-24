@@ -6,7 +6,7 @@ import IconProfile from '../icons/IconProfile';
 
 export default function Navbar() {
   return (
-    <div className='fixed z-20 w-full sm:w-fit px-2 mt-5 text-text pointer-events-auto'>
+    <div className='fixed z-20 w-full sm:w-fit px-3 mt-5 text-text pointer-events-auto'>
       <div className='relative py-2 px-2 flex gap-2 justify-center w-full overflow-hidden rounded-full'>
         <div className='absolute inset-0 z-0 backdrop-blur-sm bg-section-50'></div>
 
