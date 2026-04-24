@@ -3,7 +3,7 @@
 import { getRecipeBySlug } from "@/lib/db/recipes";
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import RecipeDetailSection from "@/components/recipe/RecipeDetailSection";
 import { RecipeListType } from "@/types/general";
@@ -46,12 +46,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
     const isOwner = recipe.owner_id === user.id;
 
     if (!isOwner) {
-        return (
-            <>
-                <HeaderRecipeDetail recipeId={recipe.id} slug={recipe.slug} isOwner={isOwner} mode={RecipeListType.COLLECTION} />
-                <NoPermissionClient />
-            </>
-        );
+        redirect(`/explore/${slug}`)
     }
 
     return (

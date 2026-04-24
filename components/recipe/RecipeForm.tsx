@@ -26,6 +26,7 @@ import InputSelect from '../form/InputSelect';
 import IconClock from '../icons/IconClock';
 import IconThermormeter from '../icons/IconThermormeter';
 import UnitPanel from '../unit/UnitPanel';
+import ImageUpload from './ImageUpload';
 
 export default function RecipeForm({
     categories,
@@ -97,6 +98,8 @@ export default function RecipeForm({
             ...prev,
             [field]: value,
         }));
+
+        console.log(draft);
     }
 
     return (
@@ -137,15 +140,6 @@ export default function RecipeForm({
                         />
                     </div>
 
-                    <InputFieldText<RecipeDraft, "image_uri">
-                        field="image_uri"
-                        labelName="Image"
-                        draftValue={draft.image_uri}
-                        updateDraftValue={updateDraft}
-                        {...(!state.success && state.fieldErrors?.image_uri
-                            ? { error: state.fieldErrors.image_uri }
-                            : {})} />
-
                     <InputMultiSelect<Category, "id", "name">
                         labelName="Categories"
                         items={categories}
@@ -155,6 +149,14 @@ export default function RecipeForm({
                         labelKey="name"
                         name='category_ids'
                         onChange={(ids) => updateDraft("category_ids", ids)}
+                    />
+                </SectionWrapper>
+
+                <SectionWrapper customClass='w-full max-w-200 flex flex-col gap-4'>
+                    <ImageUpload<RecipeDraft, "image_uri">
+                        field="image_uri"
+                        updateDraftValue={updateDraft}
+                        draftValue={draft.image_uri}
                     />
                 </SectionWrapper>
 
@@ -169,14 +171,12 @@ export default function RecipeForm({
                     </div>
 
                     {draft.heating_details_enabled &&
-                        <div className='mt-4 flex gap-4 flex-col sm:flex-row'>
+                        <div className='mt-4 grid grid-cols-3 gap-4 sm:flex-row'>
 
                             <div className='flex-1 flex flex-col justify-center items-center bg-gray-300 px-4 pt-4 pb-6 rounded-lg sm:aspect-square'>
                                 <div className='flex-1 flex justify-center items-center text-green-400 p-6 sm:p-0'>
                                     {HeatingModeIcon ? <HeatingModeIcon size={50} /> : <p className='h-12.5'>Nothing selected.</p>}
                                 </div>
-
-
 
                                 <div className='w-full'>
                                     <InputSelect<RecipeDraft, "heating_mode", HeatingMeta>
