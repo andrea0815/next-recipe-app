@@ -104,7 +104,7 @@ export default function Tag({
                     title={title}
                     {...(onClick ? { onClick } : {})}
                     className={className + " cursor-pointer"}
-                    scroll={false}
+                    scroll={true}
                 >
                     {children}
                 </Link>

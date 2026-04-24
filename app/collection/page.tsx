@@ -31,7 +31,7 @@ export default async function CollectionPage() {
 
             <GeneralSection>
                 <RecipeGalleryWrapper>
-                    <div className="flex flex-col items-center gap-2 w-full">
+                    <div className="flex flex-col items-center gap-4 w-full">
                         <Button
                             href="/collection/create"
                             customClass="flex md:hidden w-full"

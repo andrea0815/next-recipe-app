@@ -104,7 +104,7 @@ export default function Button({
             <Link
                 href={href ? href : ""}
                 className={className}
-                scroll={false}
+                scroll={true}
             >
                 {children}
             </Link>

@@ -19,7 +19,7 @@ export default function NavbarItem({
 
   return (
     <Link href={link}
-      scroll={false}
+      scroll={true}
     >
       <div
         className={`flex items-center rounded-full px-3 py-2 transition-all duration-300 ${isActive ? "bg-white" : "hover:bg-white/70"

@@ -69,7 +69,7 @@ export default function TabBarItem({
     return (
         <Link
             href={href ?? ""}
-            scroll={false}
+            scroll={true}
             className="px-1 py-2 text-sm whitespace-nowrap cursor-pointer"
         >
             {inner}

@@ -8,7 +8,6 @@ import { RecipeListType } from '@/types/general';
 import Tag from '../general/Tag';
 import PrivacyIcon from '../general/PrivacyIcon';
 
-
 export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, type: RecipeListType }) {
 
     return (
@@ -24,7 +23,7 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
                                     ? `/collection/${recipe.slug}`
                                     : `/explore/${recipe.slug}`
                             }
-                            scroll={false}
+                            scroll={true}
                             className="block relative w-full h-full"
                         >
                             <Image
@@ -44,24 +43,7 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
                     )}
                 </div>
 
-                {recipe.categories && (
-                    <div className="mt-2 flex flex-row overflow-scroll no-scrollbar gap-2 items-end">
-                        {recipe.categories.map((category) => (
-                            <Tag
-                                key={category.id}
-                                customClass="text-xs"
-                                color='white'
-                                href={
-                                    type === RecipeListType.COLLECTION ?
-                                        `/collection?category=${category.name}` :
-                                        `/explore?category=${category.name}`
-                                }
-                            > {category.name}</Tag>
-                        ))
-                        }
-                    </div>
-                )
-                }
+
 
                 <h2 className="sm:text-xl text-md font-semibold mt-3 leading-[1.4rem]">
                     {recipe.name}
@@ -73,6 +55,25 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
             {type === RecipeListType.EXPLORE && (
                 <a className="leading-tight sm:text-sm text-xs text-primary sm:mt-2 underline" href={`/explore?query=${recipe.username}`}>{recipe.username}</a>
             )}
+
+            {recipe.categories && (
+                <div className="mt-2 flex flex-row overflow-scroll no-scrollbar gap-2 items-end">
+                    {recipe.categories.map((category) => (
+                        <Tag
+                            key={category.id}
+                            customClass="text-xs"
+                            color='white'
+                            href={
+                                type === RecipeListType.COLLECTION ?
+                                    `/collection?category=${category.name}` :
+                                    `/explore?category=${category.name}`
+                            }
+                        > {category.name}</Tag>
+                    ))
+                    }
+                </div>
+            )
+            }
 
         </div >
     );

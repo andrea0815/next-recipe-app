@@ -6,7 +6,7 @@ export default function RecipeListSkeleton({ count = 12 }: { count?: number }) {
             {Array.from({ length: count }, (_, index) => (
                 <div
                     key={index}
-                    className="h-90 w-full rounded-xl bg-gray-200 animate-pulse"
+                    className="aspect-2/3 w-full rounded-xl bg-gray-300 animate-pulse"
                 />
             ))}
         </div>

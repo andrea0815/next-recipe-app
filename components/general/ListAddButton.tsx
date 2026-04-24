@@ -14,7 +14,7 @@ export default function ListAddButton({
     const meta = ITEM_META[type];
 
     return (
-        <div className="flex flex-col items-center gap-2 w-full">
+        <div className="flex flex-col items-center gap-4 w-full">
             <Button
                 type="button"
                 onClick={() => onPress()}
