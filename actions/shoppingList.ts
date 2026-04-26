@@ -95,23 +95,43 @@ export async function removeAllShoppingItems(id: string) {
     }
 }
 
-export async function removeCheckedShoppingItems(formData: FormData): Promise<void> {
+export async function removeCheckedShoppingItems(
+    prevState: ActionResult<ShoppingItemFields, undefined>,
+    formData: FormData
+): Promise<ActionResult<ShoppingItemFields, undefined>> {
     try {
         const user = await getCurrentDbUser();
 
         if (!user) {
-            throw new Error("You must be signed in.");
+            return {
+                success: false,
+                message: "You must be signed in.",
+            };
         }
 
         const itemIds = formData.getAll("shoppingItemIds").map(String);
 
-        if (itemIds.length === 0) return;
+        if (itemIds.length === 0) {
+            return {
+                success: false,
+                message: "No shopping items selected.",
+            };
+        }
 
         await deleteManyShoppingItemsById(itemIds, user.id);
+
         revalidatePath("/profile/shopping-list");
 
+        return {
+            success: true,
+            message: "Items removed.",
+        };
     } catch (error) {
         console.error(error);
-        throw error;
+
+        return {
+            success: false,
+            message: "Something went wrong while removing items.",
+        };
     }
 }

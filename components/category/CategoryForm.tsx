@@ -10,6 +10,7 @@ import type { CategoryDraft, CategoryFields, CategoryPayload } from "@/types/cat
 import type { ActionResult } from "@/types/actions";
 import InputFieldText from "../form/InputFieldText";
 import Button from "../buttons/Button";
+import IconSpinner from "../icons/IconSpinner";
 
 type CategoryFormProps = {
     initialDraft: CategoryDraft;
@@ -90,7 +91,13 @@ export default function CategoryForm({
                 disabled={pending}
                 customClass="mt-4"
             >
-                {pending ? submitButtonText.pending : submitButtonText.default}
+                {pending ? <>
+                    <IconSpinner />
+                    <p>{submitButtonText.pending}</p>
+                </> : <>
+                    <p>{submitButtonText.default}</p>
+                </>
+                }
             </Button>
         </form>
     );

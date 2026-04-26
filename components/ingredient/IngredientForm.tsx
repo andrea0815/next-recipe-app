@@ -18,6 +18,7 @@ import type { ActionResult } from "@/types/actions";
 
 import InputFieldText from "../form/InputFieldText";
 import Button from "../buttons/Button";
+import IconSpinner from "../icons/IconSpinner";
 
 type IngredientFormProps = {
     initialDraft: IngredientDraft;
@@ -101,7 +102,13 @@ export default function IngredientForm({
                 disabled={pending}
                 customClass="mt-4"
             >
-                {pending ? submitButtonText.pending : submitButtonText.default}
+                {pending ? <>
+                    <IconSpinner />
+                    <p>{submitButtonText.pending}</p>
+                </> : <>
+                    <p>{submitButtonText.default}</p>
+                </>
+                }
             </Button>
         </form>
     );

@@ -15,6 +15,7 @@ import HeaderTabBar from '@/components/nav/HeaderTabBar';
 import RecipeToastHandler from '@/components/recipe/RecipeToastHandler';
 import HeaderTabBarSkeleton from '@/components/nav/HeaderTabBarSkeleton';
 import SearchPanelSkeleton from '@/components/search/SearchPanelSkeleton';
+import RecipeListSkeleton from '@/components/recipe/RecipeListSkeleton';
 
 export default async function CollectionPage() {
     const user = await getCurrentDbUser();

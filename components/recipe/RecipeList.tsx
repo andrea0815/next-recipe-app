@@ -15,7 +15,6 @@ export default function RecipeList({ recipes, type }: { recipes: RecipeListItem[
 
     return (
         <ul className="w-full sm:gap-3 gap-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-
             {recipes.map((recipe) => (
                 <li
                     key={recipe.id}

@@ -9,6 +9,8 @@ import IconClose from "../icons/IconClose";
 import IconArrowUp from "../icons/IconArrowUp";
 import IconAdd from "../icons/IconAdd";
 import ConfirmAction from "../errors/ConfirmaAction";
+import { Span } from "next/dist/trace";
+import IconSpinner from "../icons/IconSpinner";
 
 export default function ImageUpload<TDraft, K extends keyof TDraft>({
     draftValue,
@@ -24,12 +26,15 @@ export default function ImageUpload<TDraft, K extends keyof TDraft>({
         draftValue || draftValue !== "" ? draftValue : null
     );
     const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+    const [pendingCompression, setPendingCompression] = useState(false);
+    const [pendingUpload, setPendingUpload] = useState(false);
 
     const placeholderUrl = "/image/placeholder.png"
 
     async function selectImage(event: React.ChangeEvent<HTMLInputElement>) {
         const file = event.target.files?.[0];
         if (!file) return;
+        setPendingCompression(true)
 
         const compressed = await imageCompression(file, {
             maxSizeMB: 0.5,
@@ -37,6 +42,7 @@ export default function ImageUpload<TDraft, K extends keyof TDraft>({
             useWebWorker: true,
         });
 
+        setPendingCompression(false)
         setCompressedFile(compressed);
         setSelectedFileName(compressed.name);
     }
@@ -47,10 +53,14 @@ export default function ImageUpload<TDraft, K extends keyof TDraft>({
         const formData = new FormData();
         formData.append("file", compressedFile);
 
+        setPendingUpload(true);
+
         const res = await fetch("/api/upload-image", {
             method: "POST",
             body: formData,
         });
+
+        setPendingUpload(false);
 
         const text = await res.text();
 
@@ -110,7 +120,12 @@ export default function ImageUpload<TDraft, K extends keyof TDraft>({
                         priority="secondary"
                         size="small"
                     >
-                        <IconArrowUp /> Upload Image
+                        {pendingUpload ? <>
+                            <IconSpinner /> Uploading Image ...
+                        </> : <>
+                            <IconArrowUp /> Upload Image
+                        </>
+                        }
                     </Button>
                 )}
             </div>
@@ -139,13 +154,22 @@ export default function ImageUpload<TDraft, K extends keyof TDraft>({
                 className="w-full flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-gray-500 px-6 py-6 text-center transition hover:bg-gray-300 active:scale-[0.99] disabled:cursor-none"
             >
                 {!url && <>
-                    <span className="text-base font-semibold text-gray-800 flex gap-2 items-">
-                        <IconAdd /> Choose image
-                    </span>
 
-                    <span className="mt-1 text-sm text-gray-700">
-                        Click to upload a recipe photo
-                    </span>
+                    {pendingCompression ?
+                        <>
+                            <span className="flex gap-3"> <IconSpinner /> Compressing image ...</span>
+                        </>
+                        :
+                        <>
+                            <span className="text-base font-semibold text-gray-800 flex gap-2 items-">
+                                <IconAdd /> Choose image
+                            </span>
+
+                            <span className="mt-1 text-sm text-gray-700">
+                                Click to upload a recipe photo
+                            </span>
+                        </>
+                    }
 
                     {selectedFileName && (
                         <span className="mt-3 max-w-full truncate rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600">

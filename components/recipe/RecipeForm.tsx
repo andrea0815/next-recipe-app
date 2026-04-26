@@ -27,6 +27,7 @@ import IconClock from '../icons/IconClock';
 import IconThermormeter from '../icons/IconThermormeter';
 import UnitPanel from '../unit/UnitPanel';
 import ImageUpload from './ImageUpload';
+import IconSpinner from '../icons/IconSpinner';
 
 export default function RecipeForm({
     categories,
@@ -171,7 +172,7 @@ export default function RecipeForm({
                     </div>
 
                     {draft.heating_details_enabled &&
-                        <div className='mt-4 grid grid-cols-3 gap-4 sm:flex-row'>
+                        <div className='mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:flex-row'>
 
                             <div className='flex-1 flex flex-col justify-center items-center bg-gray-300 px-4 pt-4 pb-6 rounded-lg sm:aspect-square'>
                                 <div className='flex-1 flex justify-center items-center text-green-400 p-6 sm:p-0'>
@@ -349,7 +350,13 @@ export default function RecipeForm({
                         isPending
                     }
                 >
-                    {isPending ? submitButtonText.pending : submitButtonText.static}
+                    {isPending ? <>
+                        <IconSpinner />
+                        <p>{submitButtonText.pending}</p>
+                    </> : <>
+                        <p>{submitButtonText.static}</p>
+                    </>
+                    }
                 </Button>
             </form >
 

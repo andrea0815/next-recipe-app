@@ -4,12 +4,19 @@ import { removeRecipe } from "@/actions/recipes";
 import Button from '@/components/buttons/Button';
 import ConfirmAction from '@/components/errors/ConfirmaAction';
 import IconTrash from '@/components/icons/IconTrash';
+import { useState } from "react";
+import IconSpinner from "../icons/IconSpinner";
 
 export default function DeleteButton({ itemId }: { itemId: string }) {
 
+    const [pending, setPending] = useState(false);
+
     const removeById = async (id: string) => {
-        if (itemId === "") {
+
+        if (itemId !== "") {
+            setPending(true)
             await removeRecipe(id);
+            setPending(false)
         }
     }
 
@@ -21,7 +28,8 @@ export default function DeleteButton({ itemId }: { itemId: string }) {
             onConfirm={removeById.bind(null, itemId)}
             trigger={(openConfirm) => (
                 <Button onClick={openConfirm} color="red" size='small' priority="secondary">
-                    <IconTrash /> Delete Recipe
+                    {pending ? <IconSpinner /> : <IconTrash />}
+                    Delete Recipe
                 </Button>
             )}
         />

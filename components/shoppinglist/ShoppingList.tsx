@@ -7,15 +7,27 @@ import UnitDisplay from "@/components/unit/UnitDisplay";
 import IngredientDisplay from "@/components/ingredient/InrgredientDisplay";
 import { getSortedItems } from "./getSortedItems";
 import { removeCheckedShoppingItems } from "@/actions/shoppingList";
+import { useActionState } from "react";
 
-import type { ShoppingListEntry, ShoppingItem } from "@/types/shoppingList";
+import type { ShoppingListEntry, ShoppingItem, ShoppingItemFields } from "@/types/shoppingList";
 import IconCheck from "@/components/icons/IconCheck";
 import IconArrowDown from "@/components/icons/IconArrowDown";
 import IconArrowUp from "@/components/icons/IconArrowUp";
+import IconSpinner from "../icons/IconSpinner";
+import { ActionResult } from "@/types/actions";
 
 export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
     const sortedItems: ShoppingListEntry[] = getSortedItems(items);
     const [toBeRemovedKeys, setToBeRemovedKeys] = useState<Set<string>>(new Set());
+
+    const initialState: ActionResult<ShoppingItemFields, undefined> = {
+        success: false,
+        message: "",
+    };
+    const [state, formAction, pending] = useActionState(
+        removeCheckedShoppingItems,
+        initialState
+    );
 
     const getEntryKey = (entry: ShoppingListEntry) => {
         if (entry.type === "single") {
@@ -103,7 +115,7 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
     };
 
     return (
-        <form action={removeCheckedShoppingItems} className="w-full flex flex-col gap-4 flex-1">
+        <form action={formAction} className="w-full flex flex-col gap-4 flex-1">
             {selectedItemIds.map((id) => (
                 <input key={id} type="hidden" name="shoppingItemIds" value={id} />
             ))}
@@ -123,7 +135,8 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
                     type="submit"
                     disabled={selectedItemIds.length === 0}
                 >
-                    Remove items
+                    {pending && <IconSpinner />}
+                    {pending ? "Removing..." : "Remove items"}
                 </Button>
             </div>
 
