@@ -2,6 +2,7 @@ import SectionWrapper from "@/components/containers/SectionWrapper";
 import PageHeadline from "@/components/typography/PageHeadline";
 import ShoppingList from "@/components/shoppinglist/ShoppingList";
 import { ShoppingItem } from "@/types/shoppingList";
+import LoaderDots from "@/components/general/LoaderDots";
 
 export default function ShoppingListSectionSkeleton() {
     return (
