@@ -14,7 +14,6 @@ import FormSection from "@/components/containers/FormSection";
 import GeneralSection from "@/components/containers/GeneralSection";
 import HeaderBack from "@/components/nav/HeaderBack";
 
-
 export default async function AddRecipePage() {
 
   const user = await getCurrentDbUser();
