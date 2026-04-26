@@ -179,9 +179,13 @@ export default function ImageUpload<TDraft, K extends keyof TDraft>({
                 </>}
 
                 {!selectedFileName && url && (
-                    <img
-                        className="h-full max-w-full"
-                        src={url} alt="" />
+                    <div className="flex h-full max-h-100 w-full items-center justify-center overflow-hidden">
+                        <img
+                            src={url}
+                            alt=""
+                            className="max-h-full max-w-full object-contain"
+                        />
+                    </div>
                 )}
             </label>
 
