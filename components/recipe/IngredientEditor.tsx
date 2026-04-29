@@ -18,6 +18,7 @@ import ConfirmAction from "../errors/ConfirmaAction";
 import IngredientDisplay from "@/components/ingredient/InrgredientDisplay";
 import InputSelectSearchableAsync from "../form/InputSelectSearchableAsync";
 import InputSelectLoading from "../form/InputSelectLoading";
+import { log } from "console";
 
 export default function IngredientEditor({
   state,
@@ -203,7 +204,7 @@ export default function IngredientEditor({
               )}
 
               {ingredientsLoading ? (
-                <InputSelectLoading  labelName="Ingredient" placeholder="Select ingredient …" />
+                <InputSelectLoading labelName="Ingredient" placeholder="Select ingredient …" />
               ) : (
                 <InputSelectSearchable<
                   RecipeLineDraft,
@@ -242,6 +243,8 @@ export default function IngredientEditor({
               {group.lines.map((line, lineIndex) => {
                 const unit = unitById.get(line.unit_id);
                 const ing = ingredientById.get(line.ingredient_id);
+
+                console.log(ing);
 
                 return (
                   <div

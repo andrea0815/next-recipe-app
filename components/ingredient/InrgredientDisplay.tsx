@@ -15,7 +15,7 @@ export default function IngredientDisplay({
 
     const displayed =
         Number(amount) > 1
-            ? ingredient.plural ?? ingredient.name
+            ? (ingredient.plural || ingredient.plural !== "") ? ingredient.plural : ingredient.name
             : ingredient.name;
 
     return <>{displayed}</>;
