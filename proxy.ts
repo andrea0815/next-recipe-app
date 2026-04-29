@@ -27,7 +27,10 @@ export default clerkMiddleware(async (auth, req) => {
       pathname.startsWith("/sign-up"))
   ) {
     return NextResponse.redirect(new URL("/collection", req.url));
-  }
+  } 
+  // else if (pathname === "/") {
+  //   return NextResponse.redirect(new URL("/collection", req.url));
+  // }
 
   // Let everything else continue normally
   return NextResponse.next();
