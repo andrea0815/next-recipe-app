@@ -10,9 +10,9 @@ export default function Loading() {
                     <Logo />
                 </div>
 
-                <p className="text-sm font-medium flex gap-3">
-                    <IconSpinner /> Loading
-                </p>
+                <div className="text-sm font-medium flex gap-3">
+                    <IconSpinner /> <p>Loading</p>
+                </div>
             </div>
         </div>
     );
