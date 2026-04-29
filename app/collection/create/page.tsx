@@ -22,9 +22,8 @@ export default async function AddRecipePage() {
     throw new Error("You must be signed in.");
   }
 
-  const categories: Category[] = await getCategories(undefined, user?.id ?? undefined);
-  const ingredients: Ingredient[] = await getIngredients(undefined, user?.id ?? undefined);
-  const units: Unit[] = await getUnits(undefined, user?.id ?? undefined);
+  console.log(user);
+  
 
   const emptyDraft: RecipeDraft = {
     id: "",
@@ -57,12 +56,25 @@ export default async function AddRecipePage() {
     ],
   };
 
+  const categoriesPromise = getCategories(undefined, user?.id ?? undefined);
+  const ingredientsPromise = getIngredients(undefined, user?.id ?? undefined);
+  const unitsPromise = getUnits(undefined, user?.id ?? undefined);
+
+  console.log(unitsPromise);
+  console.log(ingredientsPromise);
+  
+
   return (<>
     <>
       <HeaderBack />
       <GeneralSection>
         <FormSection headline="Create Recipe">
-          <RecipeForm categories={categories} initialIngredients={ingredients} initialUnits={units} initialDraft={emptyDraft} mode={FormMode.CREATE} />
+          <RecipeForm
+            categoriesPromise={categoriesPromise}
+            ingredientsPromise={ingredientsPromise}
+            unitsPromise={unitsPromise}
+            initialDraft={emptyDraft}
+            mode={FormMode.CREATE} />
         </FormSection>
       </GeneralSection>
     </>

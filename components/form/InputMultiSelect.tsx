@@ -1,5 +1,7 @@
+"use client";
+
 import InputWrapper from "./InputWrapper";
-import { useMemo, useState } from "react";
+import { use, useMemo, useState } from "react";
 import InputSelectSearchable from "./InputSelectSearchable";
 import Tag from "../general/Tag";
 import IconClose from "../icons/IconClose";
@@ -14,7 +16,7 @@ type InputMultiSelectProps<
   TValueKey extends keyof TItem,
   TLabelKey extends keyof TItem
 > = {
-  items: TItem[];
+  itemsPromise: Promise<TItem[]>;
   labelName?: string;
   selectedValues: TItem[TValueKey][];
   onChange: (values: TItem[TValueKey][]) => void;
@@ -31,7 +33,7 @@ export default function InputMultiSelect<
   TValueKey extends keyof TItem,
   TLabelKey extends keyof TItem
 >({
-  items,
+  itemsPromise,
   labelName,
   selectedValues,
   onChange,
@@ -42,6 +44,9 @@ export default function InputMultiSelect<
   valueKey,
   labelKey,
 }: InputMultiSelectProps<TItem, TValueKey, TLabelKey>) {
+
+  const items = use(itemsPromise);
+
   const [draftValue, setDraftValue] = useState("");
 
   const selected = useMemo(
@@ -61,7 +66,6 @@ export default function InputMultiSelect<
   );
 
   function add(rawValue: string) {
-
     if (!rawValue) return;
 
     const item = items.find((item) => String(item[valueKey]) === rawValue);
@@ -80,12 +84,18 @@ export default function InputMultiSelect<
   }
 
   return (
-    <InputWrapper 
+    <InputWrapper
       {...(labelName !== undefined ? { labelName } : {})}
       {...(customClass !== undefined ? { customClass } : {})}
       {...(error !== undefined ? { error } : {})}
     >
-      <InputSelectSearchable<{ value: string }, "value", TItem, TValueKey, TLabelKey>
+      <InputSelectSearchable<
+        { value: string },
+        "value",
+        TItem,
+        TValueKey,
+        TLabelKey
+      >
         items={available}
         field="value"
         draftValue={draftValue}

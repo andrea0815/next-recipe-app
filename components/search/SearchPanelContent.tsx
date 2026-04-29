@@ -1,26 +1,28 @@
 import { Ingredient } from '@/types/ingredient';
-import React from 'react';
-import InputSelectSearchable from '../form/InputSelectSearchable';
 import InputMultiSelect from '../form/InputMultiSelect';
-import SectionHeadline from '../typography/SectionHeadline';
 import Button from '../buttons/Button';
 import IconSearch from '../icons/IconSearch';
+import { Suspense } from 'react';
 
 export default function SearchPanelContent({
     isOpen = true,
-    ingredients,
+    ingredientsPromise,
     selectedIngredients,
     onSearchButton,
     onClearButton,
     onIngredientsChange,
 }: {
     isOpen: boolean
-    ingredients: Ingredient[]
+    ingredientsPromise: Promise<Ingredient[]>
     selectedIngredients: string[]
     onSearchButton: () => void
     onClearButton: () => void
     onIngredientsChange: (ingredients: string[]) => void,
 }) {
+
+    if (!ingredientsPromise) {
+  throw new Error("SearchPanelContent did not receive ingredientsPromise");
+}
 
     const handleSearchButton = () => {
         onSearchButton();
@@ -31,24 +33,22 @@ export default function SearchPanelContent({
 
     return (
         <div
-            className={`${isOpen ? "max-h-[50dvh] h–[inherit]" : "max-h-0 overflow-hidden"
+            className={`${isOpen ? "max-h-[50dvh] h-[inherit]" : "max-h-0 overflow-hidden"
                 } w-full transition-all duration-300 flex`}
         >
             <div className="flex-1 sm:p-3 p-2 w-full flex flex-col gap-4 items-between">
                 <h3 className='text-xl font-semibold text-left mt-4'>Filter by Ingredients</h3>
                 <div className='flex-1 mb-10'>
-                    {/* <InputMultiSelect<Ingredient, "name", "name">
-                        items={ingredients}
-                        selectedValues={selectedIngredients}
-                        onChange={onIngredientsChange}
-                    /> */}
-                    <InputMultiSelect<Ingredient, "name", "name">
-                        items={ingredients}
-                        selectedValues={selectedIngredients}
-                        onChange={onIngredientsChange}
-                        valueKey="name"
-                        labelKey="name"
-                    />
+
+                    <Suspense fallback={<p>Loading</p>}>
+                        <InputMultiSelect<Ingredient, "name", "name">
+                            itemsPromise={ingredientsPromise}
+                            selectedValues={selectedIngredients}
+                            onChange={onIngredientsChange}
+                            valueKey="name"
+                            labelKey="name"
+                        />
+                    </Suspense>
                 </div>
                 <Button
                     stretch={true}

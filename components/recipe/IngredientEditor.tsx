@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useMemo, use, Suspense } from "react";
 import type { Unit } from "@/types/unit";
 import type { Ingredient } from "@/types/ingredient";
 import type { RecipeGroupDraft, RecipeLineDraft } from "@/types/recipe";
@@ -16,11 +16,15 @@ import IconAdd from "../icons/IconAdd";
 import IconClose from "../icons/IconClose";
 import ConfirmAction from "../errors/ConfirmaAction";
 import IngredientDisplay from "@/components/ingredient/InrgredientDisplay";
+import InputSelectSearchableAsync from "../form/InputSelectSearchableAsync";
+import InputSelectLoading from "../form/InputSelectLoading";
 
 export default function IngredientEditor({
   state,
   ingredients,
   units,
+  ingredientsLoading,
+  unitsLoading,
   groups,
   groupsEnabled,
   addIngredientButton,
@@ -31,6 +35,8 @@ export default function IngredientEditor({
   state: any;
   ingredients: Ingredient[];
   units: Unit[];
+  ingredientsLoading: boolean;
+  unitsLoading: boolean;
   groups: RecipeGroupDraft[],
   groupsEnabled: boolean,
   addIngredientButton: ReactNode,
@@ -38,7 +44,6 @@ export default function IngredientEditor({
   onGroupsChange: (groups: RecipeGroupDraft[]) => void,
   onGroupsEnabledChange: (enabled: boolean) => void,
 }) {
-
 
   const unitById = useMemo(
     () => new Map(units.map((u) => [u.id, u])),
@@ -174,32 +179,53 @@ export default function IngredientEditor({
                 error={state?.errors?.amounts}
                 customClass="w-full sm:basis-[12%] sm:shrink-0 min-w-15"
               />
+              {unitsLoading ? (
+                <InputSelectLoading labelName="Unit" placeholder="Select unit …" />
+              ) : (
+                <InputSelectSearchable<
+                  RecipeLineDraft,
+                  "unit_id",
+                  Unit,
+                  "id",
+                  "name"
+                >
+                  items={units}
+                  field="unit_id"
+                  labelName="Unit"
+                  placeholder="Select unit …"
+                  draftValue={group.draft.unit_id}
+                  addButton={addUnitButton}
+                  updateDraftValue={(_, value) => updateDraft(index, "unit_id", value)}
+                  customClass="w-full sm:basis-[20%] shrink-0"
+                  valueKey="id"
+                  labelKey="name"
+                />
+              )}
 
-              <InputSelectSearchable<RecipeLineDraft, "unit_id", Unit, "id", "name">
-                items={units}
-                field="unit_id"
-                labelName="Unit"
-                placeholder="Select unit …"
-                draftValue={group.draft.unit_id}
-                addButton={addUnitButton}
-                updateDraftValue={(_, value) => updateDraft(index, "unit_id", value)}
-                customClass="w-full sm:basis-[20%] shrink-0"
-                valueKey="id"
-                labelKey="name"
-              />
-
-              <InputSelectSearchable<RecipeLineDraft, "ingredient_id", Ingredient, "id", "name">
-                items={ingredients}
-                field="ingredient_id"
-                labelName="Ingredient"
-                placeholder="Select ingredient …"
-                draftValue={group.draft.ingredient_id}
-                addButton={addIngredientButton}
-                updateDraftValue={(_, value) => updateDraft(index, "ingredient_id", value)}
-                customClass="flex-1 w-full"
-                valueKey="id"
-                labelKey="name"
-              />
+              {ingredientsLoading ? (
+                <InputSelectLoading  labelName="Ingredient" placeholder="Select ingredient …" />
+              ) : (
+                <InputSelectSearchable<
+                  RecipeLineDraft,
+                  "ingredient_id",
+                  Ingredient,
+                  "id",
+                  "name"
+                >
+                  items={ingredients}
+                  field="ingredient_id"
+                  labelName="Ingredient"
+                  placeholder="Select ingredient …"
+                  draftValue={group.draft.ingredient_id}
+                  addButton={addIngredientButton}
+                  updateDraftValue={(_, value) =>
+                    updateDraft(index, "ingredient_id", value)
+                  }
+                  customClass="flex-1 w-full"
+                  valueKey="id"
+                  labelKey="name"
+                />
+              )}
 
               <Button
                 onClick={() => addLine(index)}

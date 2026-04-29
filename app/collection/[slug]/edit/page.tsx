@@ -29,9 +29,10 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
         throw new Error("You must be signed in.");
     }
 
-    const categories: Category[] = await getCategories(undefined, user?.id ?? undefined);
-    const ingredients: Ingredient[] = await getIngredients(undefined, user?.id ?? undefined);
-    const units: Unit[] = await getUnits(undefined, user?.id ?? undefined);
+    const categoriesPromise = getCategories(undefined, user?.id ?? undefined);
+    const ingredientsPromise = getIngredients(undefined, user?.id ?? undefined);
+    const unitsPromise = getUnits(undefined, user?.id ?? undefined);
+
     const recipe = await getRecipeBySlug(slug, user.id);
 
     if (!recipe) {
@@ -103,7 +104,12 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
             <HeaderBack href={`/collection/${recipe.slug}`} />
             <GeneralSection>
                 <FormSection headline="Edit Recipe">
-                    <RecipeForm categories={categories} initialIngredients={ingredients} initialUnits={units} initialDraft={propagatedDraft} mode={FormMode.EDIT} />
+                    <RecipeForm
+                        categoriesPromise={categoriesPromise}
+                        ingredientsPromise={ingredientsPromise}
+                        unitsPromise={unitsPromise}
+                        initialDraft={propagatedDraft}
+                        mode={FormMode.EDIT} />
                 </FormSection>
             </GeneralSection>
         </>

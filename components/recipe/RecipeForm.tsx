@@ -1,5 +1,5 @@
 "use client";
-import { useActionState, useState, useRef, useEffect } from 'react';
+import { useActionState, useState, useRef, useEffect, Suspense } from 'react';
 import { createRecipe, editRecipe } from '@/actions/recipes';
 
 import type { Category } from '@/types/category';
@@ -28,17 +28,18 @@ import IconThermormeter from '../icons/IconThermormeter';
 import UnitPanel from '../unit/UnitPanel';
 import ImageUpload from './ImageUpload';
 import IconSpinner from '../icons/IconSpinner';
+import InputSelectLoading from '../form/InputSelectLoading';
 
 export default function RecipeForm({
-    categories,
-    initialIngredients,
-    initialUnits,
+    categoriesPromise,
+    ingredientsPromise,
+    unitsPromise,
     initialDraft,
     mode
 }: {
-    categories: Category[];
-    initialIngredients: Ingredient[];
-    initialUnits: Unit[];
+    categoriesPromise: Promise<Category[]>;
+    ingredientsPromise: Promise<Ingredient[]>;
+    unitsPromise: Promise<Unit[]>;
     initialDraft: RecipeDraft;
     mode: FormMode;
 }) {
@@ -69,15 +70,68 @@ export default function RecipeForm({
     };
     const HeatingModeIcon = getHeatingMetaById(draft.heating_mode ?? "")?.icon
 
+    console.log(unitsPromise);
+    console.log(ingredientsPromise);
     // Ingredients
-    const [ingredients, setIngredients] = useState(initialIngredients);
-    const [selectedIngredientId, setSelectedIngredientId] = useState("");
     const IngredientPanelRef = useRef<PanelRef>(null);
-
+    const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+    const [selectedIngredientId, setSelectedIngredientId] = useState("");
+    const [ingredientsLoading, setIngredientsLoading] = useState(true);
     // Units
-    const [units, setUnits] = useState<Unit[]>(initialUnits);
-    const [selectedUnitId, setSelectedUnitId] = useState("");
     const UnitPanelRef = useRef<PanelRef>(null);
+    const [units, setUnits] = useState<Unit[]>([]);
+    const [selectedUnitId, setSelectedUnitId] = useState("");
+    const [unitsLoading, setUnitsLoading] = useState(true);
+
+    useEffect(() => {
+        let active = true;
+
+        setIngredientsLoading(true);
+
+        Promise.resolve(ingredientsPromise)
+            .then((loadedIngredients) => {
+                if (!active) return;
+                setIngredients(loadedIngredients);
+            })
+            .catch((error) => {
+                console.error("Failed to load ingredients", error);
+                if (!active) return;
+                setIngredients([]);
+            })
+            .finally(() => {
+                if (!active) return;
+                setIngredientsLoading(false);
+            });
+
+        return () => {
+            active = false;
+        };
+    }, [ingredientsPromise]);
+
+    useEffect(() => {
+        let active = true;
+
+        setUnitsLoading(true);
+
+        Promise.resolve(unitsPromise)
+            .then((loadedUnits) => {
+                if (!active) return;
+                setUnits(loadedUnits);
+            })
+            .catch((error) => {
+                console.error("Failed to load units", error);
+                if (!active) return;
+                setUnits([]);
+            })
+            .finally(() => {
+                if (!active) return;
+                setUnitsLoading(false);
+            });
+
+        return () => {
+            active = false;
+        };
+    }, [unitsPromise]);
 
     const submitButtonText = mode === FormMode.CREATE ?
         {
@@ -141,16 +195,18 @@ export default function RecipeForm({
                         />
                     </div>
 
-                    <InputMultiSelect<Category, "id", "name">
-                        labelName="Categories"
-                        items={categories}
-                        selectedValues={draft.category_ids}
-                        placeholder="Select categories …"
-                        valueKey="id"
-                        labelKey="name"
-                        name='category_ids'
-                        onChange={(ids) => updateDraft("category_ids", ids)}
-                    />
+                    <Suspense fallback={<InputSelectLoading labelName="Categories" placeholder="Select categories …" />}>
+                        <InputMultiSelect<Category, "id", "name">
+                            labelName="Categories"
+                            itemsPromise={categoriesPromise}
+                            selectedValues={draft.category_ids}
+                            placeholder="Select categories …"
+                            valueKey="id"
+                            labelKey="name"
+                            name='category_ids'
+                            onChange={(ids) => updateDraft("category_ids", ids)}
+                        />
+                    </Suspense>
                 </SectionWrapper>
 
                 <SectionWrapper customClass='w-full max-w-200 flex flex-col gap-4'>
@@ -279,41 +335,42 @@ export default function RecipeForm({
                         state={state}
                         ingredients={ingredients}
                         units={units}
+                        ingredientsLoading={ingredientsLoading}
+                        unitsLoading={unitsLoading}
                         groups={draft.groups}
                         groupsEnabled={draft.groups_enabled}
                         addIngredientButton={
-                            <div className='w-full px-2 pt-2'>
+                            <div className="w-full px-2 pt-2">
                                 <Button
                                     type="button"
-                                    priority='secondary'
-                                    size='small'
+                                    priority="secondary"
+                                    size="small"
                                     stretch={true}
                                     onClick={() => IngredientPanelRef.current?.open()}
                                 >
-                                    <IconAdd />  Add
+                                    <IconAdd /> Add
                                 </Button>
                             </div>
                         }
                         addUnitButton={
-                            <div className='w-full px-2 pt-2'>
+                            <div className="w-full px-2 pt-2">
                                 <Button
                                     type="button"
-                                    priority='secondary'
-                                    size='small'
+                                    priority="secondary"
+                                    size="small"
                                     stretch={true}
                                     onClick={() => UnitPanelRef.current?.open()}
                                 >
-                                    <IconAdd />  Add
+                                    <IconAdd /> Add
                                 </Button>
                             </div>
                         }
                         onGroupsChange={(groups) => updateDraft("groups", groups)}
-                        onGroupsEnabledChange={(enabled) => updateDraft("groups_enabled", enabled)}
+                        onGroupsEnabledChange={(enabled) =>
+                            updateDraft("groups_enabled", enabled)
+                        }
                     />
                 </SectionWrapper>
-
-
-
 
                 <SectionWrapper customClass='w-full max-w-200 flex flex-col gap-4'>
 
@@ -370,6 +427,10 @@ export default function RecipeForm({
                 }}
             />
 
+            {/* <Suspense>
+                <AddIngredientHandler panelRef={IngredientPanelRef} ingredientsPromise={ingredientsPromise} />
+                <AddUnitHandler panelRef={UnitPanelRef} unitsPromise={unitsPromise} />
+            </Suspense> */}
             <UnitPanel
                 ref={UnitPanelRef}
                 mode={FormMode.CREATE}

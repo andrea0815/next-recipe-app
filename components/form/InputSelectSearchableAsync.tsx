@@ -1,17 +1,17 @@
 "use client";
 
-import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { ReactNode, useEffect, use, useMemo, useRef, useState } from "react";
 import InputWrapper from "./InputWrapper";
 import IconArrowDown from "../icons/IconArrowDown";
 
-type InputSelectSearchableProps<
+type InputSelectSearchableAsyncProps<
   TDraft,
   K extends keyof TDraft,
   TItem,
   TValueKey extends keyof TItem,
   TLabelKey extends keyof TItem
 > = {
-  items: TItem[];
+  itemsPromise: Promise<TItem[]>;
   labelName?: string;
   field: K;
   name?: string;
@@ -26,14 +26,14 @@ type InputSelectSearchableProps<
   labelKey: TLabelKey;
 };
 
-export default function InputSelectSearchable<
+export default function InputSelectSearchableAsync<
   TDraft,
   K extends keyof TDraft,
   TItem,
   TValueKey extends keyof TItem,
   TLabelKey extends keyof TItem
 >({
-  items,
+  itemsPromise,
   labelName,
   field,
   name,
@@ -46,7 +46,9 @@ export default function InputSelectSearchable<
   searchPlaceholder = "Search...",
   valueKey,
   labelKey,
-}: InputSelectSearchableProps<TDraft, K, TItem, TValueKey, TLabelKey>) {
+}: InputSelectSearchableAsyncProps<TDraft, K, TItem, TValueKey, TLabelKey>) {
+
+  const items = use(itemsPromise);
 
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");

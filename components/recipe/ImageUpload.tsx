@@ -151,7 +151,7 @@ export default function ImageUpload<TDraft, K extends keyof TDraft>({
 
             <label
                 htmlFor="recipe-image"
-                className="w-full flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-gray-500 px-6 py-6 text-center transition hover:bg-gray-300 active:scale-[0.99] disabled:cursor-none"
+                className="w-full flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-gray-500 px-6 py-6 text-center transition hover:bg-gray-300 active:scale-[0.99]"
             >
                 {!url && <>
 
@@ -179,11 +179,11 @@ export default function ImageUpload<TDraft, K extends keyof TDraft>({
                 </>}
 
                 {!selectedFileName && url && (
-                    <div className="flex h-full max-h-100 w-full items-center justify-center overflow-hidden">
+                    <div className="flex w-full items-center justify-center overflow-hidden">
                         <img
                             src={url}
                             alt=""
-                            className="max-h-full max-w-full object-contain"
+                            className="block h-auto w-auto max-h-80 max-w-full object-contain"
                         />
                     </div>
                 )}

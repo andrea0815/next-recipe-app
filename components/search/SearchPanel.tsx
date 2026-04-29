@@ -11,9 +11,9 @@ import SearchPanelContent from "./SearchPanelContent";
 import Tag from "../general/Tag";
 
 export default function SearchPanel({
-    ingredients,
+    ingredientsPromise,
 }: {
-    ingredients: Ingredient[];
+    ingredientsPromise: Promise<Ingredient[]>;
 }) {
     const pathname = usePathname();
     const params = useSearchParams();
@@ -27,6 +27,10 @@ export default function SearchPanel({
         category: category ?? "",
         ingredient_names: ingredientNames ?? [],
     };
+
+    if (!ingredientsPromise) {
+  throw new Error("SearchPanel did not receive ingredientsPromise");
+}
 
     const [open, setOpen] = useState(false);
     const [searchParams, setSearchParams] = useState<SearchParams>(initialSearchParams);
@@ -162,7 +166,7 @@ export default function SearchPanel({
 
                         <SearchPanelContent
                             isOpen={open}
-                            ingredients={ingredients}
+                            ingredientsPromise={ingredientsPromise}
                             selectedIngredients={searchParams.ingredient_names}
                             onSearchButton={handleSearchButton}
                             onClearButton={handleClearButton}

@@ -20,7 +20,7 @@ export default function SearchPanelSkeleton() {
                         <SearchBar onFilterClick={() => null} isOpen={false} searchParams={{ query: "", ingredient_names: [], category: "" }} onSearchClick={() => null} onQueryChange={() => null} handleClearQuery={() => null} />
                         <SearchPanelContent
                             isOpen={false}
-                            ingredients={[]}
+                            ingredientsPromise={Promise.resolve([])}
                             selectedIngredients={[]}
                             onSearchButton={() => null}
                             onClearButton={() => null}

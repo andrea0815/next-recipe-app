@@ -1,4 +1,6 @@
 import SectionWrapper from '../containers/SectionWrapper';
+import LoaderDots from '../general/LoaderDots';
+import IconSpinner from '../icons/IconSpinner';
 import SectionHeadline from '../typography/SectionHeadline';
 
 export default function RecipeFormSkeleton() {
@@ -6,11 +8,12 @@ export default function RecipeFormSkeleton() {
     return (
         <>
             <div
-
                 className='w-full max-w-200 flex flex-col gap-4 justify-center items-center'
             >
-                <SectionWrapper customClass='w-full h-[502px] max-w-200 flex flex-col gap-4 bg-gray-200 animate-pulse'>
-                  <div></div>
+                <SectionWrapper customClass='w-full h-200 max-w-200 flex flex-col gap-4 bg-gray-200 animate-pulse justify-start items-center'>
+                    <div className='my-20'>
+                        <LoaderDots />
+                    </div>
                 </SectionWrapper>
 
                 <SectionWrapper customClass='w-full h-200 max-w-200 flex flex-col gap-4 bg-gray-200 animate-pulse'>
