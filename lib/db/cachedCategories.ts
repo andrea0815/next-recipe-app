@@ -4,8 +4,6 @@ import { getCategories, getGlobalCategories } from "@/lib/db/categories";
 
 const getCachedCategoriesInternal = unstable_cache(
     async (userId?: string) => {
-        console.log("REAL DB HIT: getCategories", userId);
-
         return getCategories(undefined, userId);
     },
     ["categories"],
@@ -21,8 +19,6 @@ export async function getCachedCategories(userId?: string) {
 
 export const getCachedGlobalCategories = unstable_cache(
     async () => {
-        console.log("REAL DB HIT: getGlobalCategories");
-
         return getGlobalCategories(undefined);
     },
     ["global-categories"],

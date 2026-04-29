@@ -52,11 +52,7 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
                 <p className="leading-tight sm:text-sm text-xs text-text-light sm:mt-2 my-1">{recipe.subtitle}</p>
             </div>
 
-            {type === RecipeListType.EXPLORE && (
-                <a className="leading-tight sm:text-sm text-xs text-primary sm:mt-2 underline" href={`/explore?query=${recipe.username}`}>{recipe.username}</a>
-            )}
-
-            {recipe.categories && (
+            {recipe.categories.length > 0 && (
                 <div className="mt-2 flex flex-row overflow-scroll no-scrollbar gap-2 items-end">
                     {recipe.categories.map((category) => (
                         <Tag
@@ -73,7 +69,12 @@ export default function RecipeCard({ recipe, type }: { recipe: RecipeListItem, t
                     }
                 </div>
             )
+
             }
+            {type === RecipeListType.EXPLORE && (
+                <a className="leading-tight sm:text-sm text-xs text-primary sm:mt-2 underline" href={`/explore?query=${recipe.username}`}>{recipe.username}</a>
+            )}
+
 
         </div >
     );

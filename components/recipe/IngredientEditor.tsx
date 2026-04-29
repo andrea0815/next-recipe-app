@@ -244,8 +244,6 @@ export default function IngredientEditor({
                 const unit = unitById.get(line.unit_id);
                 const ing = ingredientById.get(line.ingredient_id);
 
-                console.log(ing);
-
                 return (
                   <div
                     key={`${line.ingredient_id}-${line.unit_id}-${index}`}
