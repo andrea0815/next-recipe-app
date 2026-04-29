@@ -45,8 +45,8 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
         const groupName = ingredientLine.group_name ?? "";
 
         const line: RecipeLineDraft = {
-            amount: Number(ingredientLine.amount),
-            unit_id: ingredientLine.unit_id,
+            amount: Number(ingredientLine.amount) ?? 1,
+            unit_id: ingredientLine.unit_id ?? "",
             ingredient_id: ingredientLine.ingredient_id,
         };
 
