@@ -1,7 +1,4 @@
 import { Suspense } from 'react';
-import { getUserRecipes } from "@/lib/db/recipes";
-import { getCategoryIdFromName } from "@/lib/db/categories";
-import { getIngredientIdsFromNames } from "@/lib/db/ingredients";
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 
 import RecipeGalleryWrapper from '@/components/containers/RecipeGalleryWrapper';
