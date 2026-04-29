@@ -32,8 +32,6 @@ export async function generateMetadata({
         };
     }
 
-    console.log(recipe);
-
     const imageUrl = recipe.image_uri?.startsWith("http")
         ? recipe.image_uri
         : `${process.env.NEXT_PUBLIC_SITE_URL}${recipe.image_uri}`;
