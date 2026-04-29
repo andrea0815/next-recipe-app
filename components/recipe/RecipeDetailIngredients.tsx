@@ -28,8 +28,8 @@ export default function RecipeDetailIngredients({
 
             <div className='my-4'>
                 <NumberSelect
-                    portions={portionsDisplay}
-                    onPortionChange={setPortionsDisplay}
+                    value={portionsDisplay}
+                    onValueChange={setPortionsDisplay}
                 />
             </div>
 
