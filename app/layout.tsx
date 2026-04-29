@@ -7,6 +7,7 @@ import Header from "@/components/nav/Header";
 import Footer from "@/components/footer/Footer";
 import ToastProvider from "@/components/general/ToastProvider";
 import ScrollToTop from "@/components/general/ScrollTop";
+import { Suspense } from "react";
 
 const recursive = Recursive({
   variable: "--font-recursive",
@@ -82,7 +83,9 @@ export default function RootLayout({
         <body
           className={`${recursive.variable} text-text antialiased bg-greay-100 min-h-screen flex flex-col justify-between no-scrollbar`}
         >
-          <ScrollToTop />
+          <Suspense fallback={null}>
+            <ScrollToTop />
+          </Suspense>
           <SignedIn>
             <Header />
           </SignedIn>
