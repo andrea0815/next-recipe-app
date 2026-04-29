@@ -10,13 +10,14 @@ import ProfileSettings from './ProfileSettings';
 import Footer from '@/components/footer/Footer';
 import SettingsSection from './SettingsSection';
 import SettingsSectionSkeleton from './SettingsSectionSkeleton';
+import NotSignedIn from '@/components/general/NotSignedIn';
 
 export default async function ProfileAccountPage() {
 
     const user = await getCurrentDbUser();
 
     if (!user) {
-        throw new Error("You must be signed in.");
+        return <NotSignedIn />
     }
 
     return (

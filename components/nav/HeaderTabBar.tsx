@@ -11,10 +11,10 @@ export default async function HeaderTabBar({
     userId,
 }: {
     type: RecipeListType;
-    userId?: string;
+    userId?: string | null;
 }) {
     const categories =
-        type === RecipeListType.COLLECTION
+        type === RecipeListType.COLLECTION && userId
             ? await getCachedCategories(userId)
             : await getCachedGlobalCategories();
 

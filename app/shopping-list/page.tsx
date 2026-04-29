@@ -1,6 +1,7 @@
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 import { getShoppingItemsByUser } from "@/lib/db/shoppingList";
 import ShoppingListSection from "./ShoppingListSection";
+import NotSignedIn from "@/components/general/NotSignedIn";
 
 
 export default async function ShoppingListPage() {
@@ -8,7 +9,7 @@ export default async function ShoppingListPage() {
   const user = await getCurrentDbUser();
 
   if (!user) {
-    throw new Error("You must be signed in.");
+    return <NotSignedIn />;
   }
 
   const ShoppingItems = await getShoppingItemsByUser(user?.id ?? undefined);

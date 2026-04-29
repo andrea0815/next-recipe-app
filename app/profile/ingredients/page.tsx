@@ -7,12 +7,13 @@ import type { Ingredient } from '@/types/ingredient';
 import type { ListItem } from '@/types/general';
 
 import IngredientSection from "./IngredientSection";
+import NotSignedIn from "@/components/general/NotSignedIn";
 
 export default async function IngredientsPage() {
   const user = await getCurrentDbUser();
 
   if (!user) {
-    throw new Error("You must be signed in.");
+    return <NotSignedIn />
   }
 
   const ingredients: Ingredient[] = await getIngredients(undefined, user?.id);

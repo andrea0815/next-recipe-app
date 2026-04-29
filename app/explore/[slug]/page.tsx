@@ -42,7 +42,7 @@ export async function generateMetadata({
             title: recipe.name,
             description: recipe.subtitle || `Check out this recipe: ${recipe.name}`,
             type: "article",
-            url: `${process.env.NEXT_PUBLIC_SITE_URL}/recipes/${recipe.slug}`,
+            url: `${process.env.NEXT_PUBLIC_SITE_URL}/explore/${recipe.slug}`,
             images: [
                 {
                     url: imageUrl,
@@ -65,11 +65,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
     const { slug } = await params;
     const user = await getCurrentDbUser();
 
-    if (!user) {
-        throw new Error("You must be signed in.");
-    }
-
-    const recipe = await getRecipeBySlug(slug, user.id);
+    const recipe = await getRecipeBySlug(slug, user?.id ?? undefined);
 
     if (!recipe) {
         notFound();
@@ -90,7 +86,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
             return acc;
         }, {});
 
-    const isOwner = recipe.owner_id === user.id;
+    const isOwner = user?.id ? recipe.owner_id === user?.id : false;
 
     return (<>
         <HeaderRecipeDetail recipeId={recipe.id} isOwner={isOwner} mode={RecipeListType.EXPLORE} />

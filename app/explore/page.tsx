@@ -18,20 +18,16 @@ export default async function ExplorePage() {
 
     const user = await getCurrentDbUser();
 
-    if (!user) {
-        throw new Error("You must be signed in.");
-    }
-
     return (<>
         <Suspense fallback={<HeaderTabBarSkeleton />}>
-            <HeaderTabBar type={RecipeListType.EXPLORE} userId={user.id} />
+            <HeaderTabBar type={RecipeListType.EXPLORE} userId={user?.id ?? null} />
         </Suspense>
 
         <GeneralSection>
             <RecipeGalleryWrapper>
                 <div className="flex flex-col items-center gap-4 w-full">
                     <Suspense fallback={<SearchPanelSkeleton />}>
-                        <SearchPanelServer userId={user.id} />
+                        <SearchPanelServer userId={user?.id ?? null} />
                     </Suspense>
                 </div>
                 <RecipeListClient

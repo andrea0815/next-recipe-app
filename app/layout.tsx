@@ -86,9 +86,9 @@ export default function RootLayout({
           <Suspense fallback={null}>
             <ScrollToTop />
           </Suspense>
-          <SignedIn>
-            <Header />
-          </SignedIn>
+
+          <Header />
+
           <main className="flex flex-col justify-start items-center flex-1 no-scrollbar">
             {children}
           </main>

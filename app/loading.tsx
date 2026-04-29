@@ -11,7 +11,7 @@ export default function Loading() {
                 </div>
 
                 <div className="text-sm font-medium flex gap-3">
-                    <IconSpinner /> <p>Loading</p>
+                    <IconSpinner colorClass="text-white" /> <p className="text-white">Loading</p>
                 </div>
             </div>
         </div>
