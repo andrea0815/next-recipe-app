@@ -3,9 +3,6 @@ import { getCategories } from "@/lib/db/categories";
 import { getUnits } from "@/lib/db/units";
 import { getIngredients } from "@/lib/db/ingredients";
 
-import type { Category } from '@/types/category';
-import type { Ingredient } from "@/types/ingredient";
-import type { Unit } from "@/types/unit";
 import type { RecipeDraft } from '@/types/recipe';
 import { FormMode } from '@/types/general';
 
@@ -20,10 +17,7 @@ export default async function AddRecipePage() {
 
   if (!user) {
     throw new Error("You must be signed in.");
-  }
-
-  console.log(user);
-  
+  }  
 
   const emptyDraft: RecipeDraft = {
     id: "",
@@ -59,10 +53,6 @@ export default async function AddRecipePage() {
   const categoriesPromise = getCategories(undefined, user?.id ?? undefined);
   const ingredientsPromise = getIngredients(undefined, user?.id ?? undefined);
   const unitsPromise = getUnits(undefined, user?.id ?? undefined);
-
-  console.log(unitsPromise);
-  console.log(ingredientsPromise);
-  
 
   return (<>
     <>

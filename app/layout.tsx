@@ -15,7 +15,7 @@ const recursive = Recursive({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://recipeez.com"),
+  metadataBase: new URL("https://recipeez.andreawindisch.com"),
 
   title: {
     default: "Recipeez | Recipe Organizer",
@@ -39,13 +39,12 @@ export const metadata: Metadata = {
     type: "website",
     url: "/",
     siteName: "Recipeez",
-    title: "Recipeez",
-    description:
-      "Organize your recipes and share them with friends.",
+    title: "Recipeez | Recipe Organizer",
+    description: "Organize your recipes and share them with friends.",
     locale: "en_US",
     images: [
       {
-        url: "/opengraph-image.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Recipeez",
@@ -55,15 +54,14 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Recipeez",
-    description:
-      "Organize your recipes and share them with friends.",
-    images: ["/twitter-image.png"],
+    title: "Recipeez | Recipe Organizer",
+    description: "Organize your recipes and share them with friends.",
+    images: ["/og-image.png"],
   },
 
   robots: {
-    index: false,
-    follow: false,
+    index: true,
+    follow: true,
   },
 
   icons: {
