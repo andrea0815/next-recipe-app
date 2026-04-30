@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/og-image.png",
+        url: "/opengraph-image.png",
         width: 1200,
         height: 630,
         alt: "Recipeez",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Recipeez | Recipe Organizer",
     description: "Organize your recipes and share them with friends.",
-    images: ["/og-image.png"],
+    images: ["/opengraph-image.png"],
   },
 
   robots: {
