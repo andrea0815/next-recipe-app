@@ -16,6 +16,7 @@ import IconClose from "../icons/IconClose";
 import ConfirmAction from "../errors/ConfirmaAction";
 import IngredientDisplay from "@/components/ingredient/InrgredientDisplay";
 import InputSelectLoading from "../form/InputSelectLoading";
+import Checkbox from "../form/Checkbox";
 
 export default function IngredientEditor({
   state,
@@ -193,30 +194,41 @@ export default function IngredientEditor({
 
             <div className="">
               {/* Draft input row */}
-              <div className="flex sm:flex-row flex-col gap-2 items-end justify-between bg-gray-300 px-2 py-3 rounded-lg">
-
-                <>
-                  <input
-                    type="checkbox"
-                    name="hasAmount"
-                    checked={group.draft.hasAmount}
-                    onChange={(e) => {
-                      const hasAmount = e.target.checked;
-
-                      updateDraftFields(index, hasAmount
-                        ? {
-                          hasAmount: true,
-                          amount: group.draft.amount ?? 1,
-                        }
-                        : {
-                          hasAmount: false,
-                          amount: null,
-                          hasUnit: false,
-                          unit_id: null,
-                        }
-                      );
-                    }}
-                  />
+              <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-end bg-gray-300 px-2 py-3 rounded-lg">
+                <div className="flex items-end gap-2 flex-row-reverse sm:flex-row w-full sm:basis-[14%] sm:shrink-0">
+                  <div className="h-[var(--btn-h-sm)] flex items-center justify-center shrink-0">
+                    <Checkbox
+                      checked={group.draft.hasAmount}
+                      onChange={(e) => {
+                        updateDraftFields(index, e
+                          ? {
+                            hasAmount: true,
+                            amount: group.draft.amount ?? 1,
+                          }
+                          : {
+                            hasAmount: false,
+                            amount: null,
+                            hasUnit: false,
+                            unit_id: null,
+                          }
+                        );
+                      }}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        className="h-4 w-4"
+                      >
+                        <path
+                          d="M5 13l4 4L19 7"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </Checkbox>
+                  </div>
 
                   <InputFieldNumber<RecipeLineDraft, "amount">
                     labelName="Amount"
@@ -226,55 +238,68 @@ export default function IngredientEditor({
                     min={0}
                     step={0.1}
                     error={state?.errors?.amounts}
-                    customClass="w-full sm:basis-[12%] sm:shrink-0 min-w-15"
+                    customClass="w-full min-w-15"
                     disabled={!group.draft.hasAmount}
                   />
-                </>
+                </div>
 
                 {unitsLoading ? (
                   <InputSelectLoading labelName="Unit" placeholder="Select unit …" />
                 ) : (
                   <>
-                    <input
-                      type="checkbox"
-                      name="hasUnit"
-                      checked={group.draft.hasUnit}
-                      disabled={!group.draft.hasAmount}
-                      onChange={(e) => {
-                        const hasUnit = e.target.checked;
+                    <div className="flex items-end gap-2 flex-row-reverse sm:flex-row w-full sm:basis-[22%] sm:shrink-0">
+                      <div className="h-[var(--btn-h-sm)] flex items-center justify-center shrink-0">
+                        <Checkbox
+                          checked={group.draft.hasUnit}
+                          onChange={(e) => {
+                            updateDraftFields(index, e
+                              ? {
+                                hasUnit: true,
+                                unit_id: group.draft.unit_id ?? "",
+                              }
+                              : {
+                                hasUnit: false,
+                                unit_id: null,
+                              }
+                            );
+                          }}
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            className="h-4 w-4"
+                          >
+                            <path
+                              d="M5 13l4 4L19 7"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </Checkbox>
+                      </div>
 
-                        updateDraftFields(index, hasUnit
-                          ? {
-                            hasUnit: true,
-                            unit_id: group.draft.unit_id ?? "",
-                          }
-                          : {
-                            hasUnit: false,
-                            unit_id: null,
-                          }
-                        );
-                      }}
-                    />
-
-                    <InputSelectSearchable<
-                      RecipeLineDraft,
-                      "unit_id",
-                      Unit,
-                      "id",
-                      "name"
-                    >
-                      items={units}
-                      field="unit_id"
-                      labelName="Unit"
-                      placeholder="Select unit …"
-                      draftValue={group.draft.unit_id}
-                      addButton={addUnitButton}
-                      updateDraftValue={(_, value) => updateDraft(index, "unit_id", value)}
-                      customClass="w-full sm:basis-[20%] shrink-0"
-                      valueKey="id"
-                      labelKey="name"
-                      disabled={!group.draft.hasUnit || !group.draft.hasAmount}
-                    />
+                      <InputSelectSearchable<
+                        RecipeLineDraft,
+                        "unit_id",
+                        Unit,
+                        "id",
+                        "name"
+                      >
+                        items={units}
+                        field="unit_id"
+                        labelName="Unit"
+                        placeholder="Select unit …"
+                        draftValue={group.draft.unit_id}
+                        addButton={addUnitButton}
+                        updateDraftValue={(_, value) => updateDraft(index, "unit_id", value)}
+                        customClass="w-full"
+                        valueKey="id"
+                        labelKey="name"
+                        disabled={!group.draft.hasUnit || !group.draft.hasAmount}
+                      />
+                    </div>
                   </>
                 )}
 
@@ -370,38 +395,43 @@ export default function IngredientEditor({
             </div>
 
             {/* Optional: show a message if no lines */}
-            {group.lines.length === 0 && (
-              <p className="text-text/70 text-sm text-center m-6">No ingredients added yet.</p>
-            )}
+            {
+              group.lines.length === 0 && (
+                <p className="text-text/70 text-sm text-center m-6">No ingredients added yet.</p>
+              )
+            }
 
-            {groupsEnabled && (
-              <>
-                <ConfirmAction
-                  title="Delete group?"
-                  description="Deleting the group will delete all ingredients inside it."
-                  confirmText="Delete"
-                  onConfirm={() => removeGroup(index)}
-                  trigger={(openConfirm) => (
-                    <Button
-                      onClick={openConfirm}
-                      disabled={groups.length <= 1}
-                      priority="tertiary"
-                      color="red"
-                      yPadding={false}
-                      customClass="mt-3"
-                    >
-                      <IconClose /> Remove group
-                    </Button>
-                  )}
-                />
-              </>
-            )}
+            {
+              groupsEnabled && (
+                <>
+                  <ConfirmAction
+                    title="Delete group?"
+                    description="Deleting the group will delete all ingredients inside it."
+                    confirmText="Delete"
+                    onConfirm={() => removeGroup(index)}
+                    trigger={(openConfirm) => (
+                      <Button
+                        onClick={openConfirm}
+                        disabled={groups.length <= 1}
+                        priority="tertiary"
+                        color="red"
+                        yPadding={false}
+                        customClass="mt-3"
+                      >
+                        <IconClose /> Remove group
+                      </Button>
+                    )}
+                  />
+                </>
+              )
+            }
 
           </div>
         )
       })}
 
-      {groupsEnabled &&
+      {
+        groupsEnabled &&
         <Button
           onClick={addGroup}
           priority="secondary"
@@ -411,17 +441,19 @@ export default function IngredientEditor({
           <IconAdd /> Add Group</Button>
       }
 
-      {(state?.errors?.amounts ||
-        state?.errors?.unit_ids ||
-        state?.errors?.ingredient_ids ||
-        state?.errors?.group_names) && (
+      {
+        (state?.errors?.amounts ||
+          state?.errors?.unit_ids ||
+          state?.errors?.ingredient_ids ||
+          state?.errors?.group_names) && (
           <div className="space-y-1">
             {state.errors.amounts && <p className="text-red-500">{state.errors.amounts}</p>}
             {state.errors.unit_ids && <p className="text-red-500">{state.errors.unit_ids}</p>}
             {state.errors.ingredient_ids && <p className="text-red-500">{state.errors.ingredient_ids}</p>}
             {state.errors.group_names && <p className="text-red-500">{state.errors.group_names}</p>}
           </div>
-        )}
-    </div>
+        )
+      }
+    </div >
   );
 }
