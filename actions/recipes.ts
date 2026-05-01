@@ -49,13 +49,22 @@ export async function createRecipe(
     const portions = (formData.get("portions") as string | null)?.trim() ?? "";
     const all_group_names = (formData.getAll("all_group_names") as string[]).map((g) => g.trim());
     const group_names = (formData.getAll("group_names") as string[]).map((g) => g.trim());
-    const amounts = formData.getAll("amounts").map((p) => Number(p));
-    const unit_ids = formData.getAll("unit_ids") as string[];
     const ingredient_ids = formData.getAll("ingredient_ids") as string[];
     const positions = formData.getAll("positions").map((p) => Number(p));
     const time = (formData.get("time") as number | null);
     const temperature = (formData.get("temperature") as number | null);
     const heating_mode = (formData.get("heating_mode") as string | null)?.trim() ?? null;
+    const rawAmounts = formData.getAll("amounts");
+    const rawUnitIds = formData.getAll("unit_ids");
+    const amounts = rawAmounts.map((value) => {
+        const amount = Number(value);
+        return Number.isFinite(amount) ? amount : null;
+    });
+
+    const unit_ids = rawUnitIds.map((value) => {
+        const unitId = String(value).trim();
+        return unitId.length > 0 ? unitId : null;
+    });
 
     const step_texts = (formData.getAll("step_texts") as string[]).map((s) => s.trim());
     const step_hints = (formData.getAll("step_hints") as string[]).map((s) => s.trim());

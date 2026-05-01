@@ -19,7 +19,7 @@ export default function RecipeDetailSectionSkeleton() {
 
             <div className="w-full flex lg:flex-row-reverse flex-col gap-10">
                 <SectionWrapper customClass="lg:self-start flex-1">
-                    <div className="w-full h-[50dvh] relative rounded-lg mb-6 overflow-hidden flex justify-center items-center bg-gray-200 animate-pulse">
+                    <div className="w-full h-[50svh] relative rounded-lg mb-6 overflow-hidden flex justify-center items-center bg-gray-200 animate-pulse">
                     </div>
                 </SectionWrapper>
 

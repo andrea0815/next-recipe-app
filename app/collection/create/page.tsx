@@ -3,9 +3,6 @@ import { getCategories } from "@/lib/db/categories";
 import { getUnits } from "@/lib/db/units";
 import { getIngredients } from "@/lib/db/ingredients";
 
-import type { Category } from '@/types/category';
-import type { Ingredient } from "@/types/ingredient";
-import type { Unit } from "@/types/unit";
 import type { RecipeDraft } from '@/types/recipe';
 import { FormMode } from '@/types/general';
 

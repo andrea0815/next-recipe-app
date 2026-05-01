@@ -1,5 +1,8 @@
-import InputWrapper from './InputWrapper';
-import {useState, useEffect} from "react"
+"use client";
+
+import { useEffect, useState } from "react";
+import InputWrapper from "./InputWrapper";
+
 
 type InputFieldNumberProps<TDraft, K extends keyof TDraft> = {
   field: K;
@@ -12,6 +15,7 @@ type InputFieldNumberProps<TDraft, K extends keyof TDraft> = {
   error?: string;
   customClass?: string;
   disabled?: boolean;
+
 };
 
 export default function InputFieldNumber<TDraft, K extends keyof TDraft>({
@@ -25,6 +29,7 @@ export default function InputFieldNumber<TDraft, K extends keyof TDraft>({
   error,
   customClass = "",
   disabled = false,
+
 }: InputFieldNumberProps<TDraft, K>) {
   const [inputValue, setInputValue] = useState(
     draftValue === null ? "" : String(draftValue)
@@ -71,6 +76,7 @@ export default function InputFieldNumber<TDraft, K extends keyof TDraft>({
         min={min}
         step={step}
         disabled={disabled}
+
       />
     </InputWrapper>
   );

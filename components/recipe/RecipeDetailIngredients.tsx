@@ -28,8 +28,8 @@ export default function RecipeDetailIngredients({
 
             <div className='my-4'>
                 <NumberSelect
-                    portions={portionsDisplay}
-                    onPortionChange={setPortionsDisplay}
+                    value={portionsDisplay}
+                    onValueChange={setPortionsDisplay}
                 />
             </div>
 
@@ -53,8 +53,9 @@ export default function RecipeDetailIngredients({
                         {ingredients.map((recipeIngredient, index) => {
                             const calculatedAmount =
                                 portions > 0
-                                    ? Number(recipeIngredient.amount) * (portionsDisplay / portions)
+                                    ? Number((Number(recipeIngredient.amount) * (portionsDisplay / portions)).toFixed(1))
                                     : 0;
+
 
                             return (
                                 <React.Fragment key={index}>

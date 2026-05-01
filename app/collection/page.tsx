@@ -1,7 +1,4 @@
 import { Suspense } from 'react';
-import { getUserRecipes } from "@/lib/db/recipes";
-import { getCategoryIdFromName } from "@/lib/db/categories";
-import { getIngredientIdsFromNames } from "@/lib/db/ingredients";
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 
 import RecipeGalleryWrapper from '@/components/containers/RecipeGalleryWrapper';
@@ -16,12 +13,20 @@ import RecipeToastHandler from '@/components/recipe/RecipeToastHandler';
 import HeaderTabBarSkeleton from '@/components/nav/HeaderTabBarSkeleton';
 import SearchPanelSkeleton from '@/components/search/SearchPanelSkeleton';
 import RecipeListSkeleton from '@/components/recipe/RecipeListSkeleton';
+import NotSignedIn from '@/components/general/NotSignedIn';
+import Header from '@/components/nav/Header';
+import HeaderSectionWrapper from '@/components/containers/HeaderSectionWrapper';
 
 export default async function CollectionPage() {
     const user = await getCurrentDbUser();
 
     if (!user) {
-        throw new Error("You must be signed in.");
+        return (<>
+            <HeaderSectionWrapper></HeaderSectionWrapper>
+            <GeneralSection>
+                <NotSignedIn />
+            </GeneralSection>
+        </>)
     }
 
     return (

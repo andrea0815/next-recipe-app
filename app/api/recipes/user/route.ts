@@ -21,10 +21,12 @@ export async function GET(req: NextRequest) {
   const query = searchParams.get("query") ?? undefined;
   const cursor = searchParams.get("cursor") ?? undefined;
   const categoryNames = searchParams.getAll("category");
+  const ingredientNames = searchParams.getAll("ingredients");
 
   const data = await getUserRecipes({
     userId: user.id,
     categoryNames,
+    ingredientNames,
     take: 12,
     ...(query !== undefined ? { query } : {}),
     ...(cursor !== undefined ? { cursor } : {}),

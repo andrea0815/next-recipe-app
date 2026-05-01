@@ -7,22 +7,17 @@ const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/api/webhooks(.*)",
+  "/explore(.*)",
 ])
-
-// const isAdminRoute = createRouteMatcher(["/admin(.*)"])
-// export default clerkMiddleware(async (auth, req) => {
-//   // if (isProtectedRoute(req)) await auth.protect();
-//   if (!isPublicRoute(req)) await auth.protect();
-// });
 
 export default clerkMiddleware(async (auth, req) => {
   const { userId } = await auth();
   const { pathname } = req.nextUrl;
 
   // Not signed in and trying to access a protected route
-  if (!userId && !isPublicRoute(req)) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
+  // if (!userId && !isPublicRoute(req)) {
+  //   return NextResponse.redirect(new URL("/", req.url));
+  // }
 
   // Signed in users: only redirect away from public entry/auth pages
   if (
@@ -32,7 +27,10 @@ export default clerkMiddleware(async (auth, req) => {
       pathname.startsWith("/sign-up"))
   ) {
     return NextResponse.redirect(new URL("/collection", req.url));
-  }
+  } 
+  // else if (pathname === "/") {
+  //   return NextResponse.redirect(new URL("/collection", req.url));
+  // }
 
   // Let everything else continue normally
   return NextResponse.next();

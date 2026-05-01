@@ -3,6 +3,7 @@ import InputMultiSelect from '../form/InputMultiSelect';
 import Button from '../buttons/Button';
 import IconSearch from '../icons/IconSearch';
 import { Suspense } from 'react';
+import InputSelectLoading from '../form/InputSelectLoading';
 
 export default function SearchPanelContent({
     isOpen = true,
@@ -21,8 +22,8 @@ export default function SearchPanelContent({
 }) {
 
     if (!ingredientsPromise) {
-  throw new Error("SearchPanelContent did not receive ingredientsPromise");
-}
+        throw new Error("SearchPanelContent did not receive ingredientsPromise");
+    }
 
     const handleSearchButton = () => {
         onSearchButton();
@@ -40,7 +41,7 @@ export default function SearchPanelContent({
                 <h3 className='text-xl font-semibold text-left mt-4'>Filter by Ingredients</h3>
                 <div className='flex-1 mb-10'>
 
-                    <Suspense fallback={<p>Loading</p>}>
+                    <Suspense fallback={<InputSelectLoading placeholder='Select an item…' />}>
                         <InputMultiSelect<Ingredient, "name", "name">
                             itemsPromise={ingredientsPromise}
                             selectedValues={selectedIngredients}

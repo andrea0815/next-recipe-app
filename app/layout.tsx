@@ -6,6 +6,8 @@ import "./globals.css";
 import Header from "@/components/nav/Header";
 import Footer from "@/components/footer/Footer";
 import ToastProvider from "@/components/general/ToastProvider";
+import ScrollToTop from "@/components/general/ScrollTop";
+import { Suspense } from "react";
 
 const recursive = Recursive({
   variable: "--font-recursive",
@@ -13,7 +15,7 @@ const recursive = Recursive({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://recipeez.com"),
+  metadataBase: new URL("https://recipeez.andreawindisch.com"),
 
   title: {
     default: "Recipeez | Recipe Organizer",
@@ -37,9 +39,8 @@ export const metadata: Metadata = {
     type: "website",
     url: "/",
     siteName: "Recipeez",
-    title: "Recipeez",
-    description:
-      "Organize your recipes and share them with friends.",
+    title: "Recipeez | Recipe Organizer",
+    description: "Organize your recipes and share them with friends.",
     locale: "en_US",
     images: [
       {
@@ -53,15 +54,14 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Recipeez",
-    description:
-      "Organize your recipes and share them with friends.",
-    images: ["/twitter-image.png"],
+    title: "Recipeez | Recipe Organizer",
+    description: "Organize your recipes and share them with friends.",
+    images: ["/opengraph-image.png"],
   },
 
   robots: {
-    index: false,
-    follow: false,
+    index: true,
+    follow: true,
   },
 
   icons: {
@@ -81,9 +81,12 @@ export default function RootLayout({
         <body
           className={`${recursive.variable} text-text antialiased bg-greay-100 min-h-screen flex flex-col justify-between no-scrollbar`}
         >
-          <SignedIn>
-            <Header />
-          </SignedIn>
+          <Suspense fallback={null}>
+            <ScrollToTop />
+          </Suspense>
+
+          <Header />
+
           <main className="flex flex-col justify-start items-center flex-1 no-scrollbar">
             {children}
           </main>

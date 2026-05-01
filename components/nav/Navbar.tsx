@@ -3,6 +3,7 @@ import IconBook from '../icons/IconBook';
 import IconBag from '../icons/IconBag';
 import IconCompas from '../icons/IconCompas';
 import IconProfile from '../icons/IconProfile';
+import IconShoppingList from '../icons/IconShoppingList';
 
 export default function Navbar() {
   return (
@@ -12,7 +13,7 @@ export default function Navbar() {
 
         <div className='relative z-10 flex gap-2 justify-between w-full'>
           <NavbarItem icon={<IconBook />} text="Collection" link='/collection' />
-          <NavbarItem icon={<IconBag />} text="Shopping List" link='/shopping-list' />
+          <NavbarItem icon={<IconShoppingList />} text="Shopping List" link='/shopping-list' />
           <NavbarItem icon={<IconCompas />} text="Explore" link='/explore' />
           <NavbarItem icon={<IconProfile />} text="Profile" link='/profile' />
         </div>

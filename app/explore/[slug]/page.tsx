@@ -4,6 +4,7 @@ import { getRecipeBySlug } from "@/lib/db/recipes";
 import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
 import RecipeDetailSection from "@/components/recipe/RecipeDetailSection";
 import { RecipeListType } from "@/types/general";
@@ -12,15 +13,59 @@ import HeaderRecipeDetail from "@/components/nav/HeaderRecipeDetail";
 import { IngredientLineInput } from "@/types/recipe";
 
 
+type Props = {
+    params: Promise<{
+        slug: string;
+    }>;
+};
+
+export async function generateMetadata({
+    params,
+}: Props): Promise<Metadata> {
+    const { slug } = await params;
+    const recipe = await getRecipeBySlug(slug);
+
+    if (!recipe) {
+        return {
+            title: "Recipe not found",
+        };
+    }
+
+    const imageUrl = recipe.image_uri?.startsWith("http")
+        ? recipe.image_uri
+        : `${process.env.NEXT_PUBLIC_SITE_URL}${recipe.image_uri}`;
+
+    return {
+        title: recipe.name,
+        description: recipe.subtitle || `Check out this recipe: ${recipe.name}`,
+        openGraph: {
+            title: recipe.name,
+            description: recipe.subtitle || `Check out this recipe: ${recipe.name}`,
+            type: "article",
+            url: `${process.env.NEXT_PUBLIC_SITE_URL}/explore/${recipe.slug}`,
+            images: [
+                {
+                    url: imageUrl,
+                    width: 1200,
+                    height: 630,
+                    alt: recipe.name,
+                },
+            ],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: recipe.name,
+            description: recipe.subtitle || `Check out this recipe: ${recipe.name}`,
+            images: [imageUrl],
+        },
+    };
+}
+
 export default async function RecipePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const user = await getCurrentDbUser();
 
-    if (!user) {
-        throw new Error("You must be signed in.");
-    }
-
-    const recipe = await getRecipeBySlug(slug, user.id);
+    const recipe = await getRecipeBySlug(slug, user?.id ?? undefined);
 
     if (!recipe) {
         notFound();
@@ -41,7 +86,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
             return acc;
         }, {});
 
-    const isOwner = recipe.owner_id === user.id;
+    const isOwner = user?.id ? recipe.owner_id === user?.id : false;
 
     return (<>
         <HeaderRecipeDetail recipeId={recipe.id} isOwner={isOwner} mode={RecipeListType.EXPLORE} />

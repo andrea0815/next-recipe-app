@@ -44,6 +44,7 @@ function recipeFilters({
     ingredientNames?: string[] | undefined;
     ownRecipes: boolean;
 }) {
+
     return {
         ...(ownRecipes
             ? userId && { owner_id: userId }
@@ -130,6 +131,10 @@ export async function getUserRecipes({
     cursor?: string;
     take?: number;
 } = {}): Promise<PaginatedResult<RecipeListItem>> {
+
+    console.log("ingredientNames");
+    console.log(ingredientNames);
+
     const recipes: RecipeWithCategories[] = await prisma.recipes.findMany({
         where: recipeFilters({
             query,
@@ -323,8 +328,8 @@ export async function getRecipeBySlug(slug: string, userId?: string): Promise<Re
         ingredients: recipe.recipe_ingredients.map((ingredient) => ({
             id: ingredient.id,
             ingredient_id: ingredient.ingredient_id,
-            unit_id: ingredient.unit_id,
-            amount: Number(ingredient.amount),
+            unit_id: ingredient.unit_id ?? null,
+            amount: Number(ingredient.amount) ?? null,
             group_name: ingredient.group_name ?? "",
             owner_id: ingredient.owner_id ?? "",
             position: Number(ingredient.position ?? 0),
@@ -386,7 +391,7 @@ export async function addRecipe(
                 recipe_ingredients: {
                     create: ingredient_lines.map((line) => ({
                         ingredient_id: line.ingredient_id,
-                        unit_id: line.unit_id,
+                        unit_id: line.unit_id ?? null,
                         owner_id: line.owner_id,
                         amount: line.amount ? new Prisma.Decimal(line.amount) : null,
                         group_name: line.group_name,
@@ -454,7 +459,7 @@ export async function updateRecipe(
                 deleteMany: {},
                 create: ingredient_lines.map((line) => ({
                     ingredient_id: line.ingredient_id,
-                    unit_id: line.unit_id,
+                    unit_id: line.unit_id ?? null,
                     owner_id: line.owner_id,
                     amount: line.amount ? new Prisma.Decimal(line.amount) : null,
                     group_name: line.group_name,

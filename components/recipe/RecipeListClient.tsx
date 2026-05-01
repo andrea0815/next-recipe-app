@@ -26,7 +26,7 @@ export default function RecipeListClient({
 
     const [recipes, setRecipes] = useState<RecipeListItem[]>([]);
     const [nextCursor, setNextCursor] = useState<string | null>(null);
-    const [hasMore, setHasMore] = useState(false);
+    const [hasMore, setHasMore] = useState(false);    
 
     const [loadingInitial, setLoadingInitial] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);

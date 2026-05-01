@@ -6,11 +6,8 @@ import { getIngredients } from "@/lib/db/ingredients";
 import { getRecipeBySlug } from "@/lib/db/recipes";
 import { notFound } from "next/navigation";
 
-import type { Category } from '@/types/category';
-import type { Ingredient } from "@/types/ingredient";
-import type { Unit } from "@/types/unit";
 import type { RecipeDraft, RecipeGroupDraft, RecipeLineDraft } from '@/types/recipe';
-import { FormMode, RecipeListType } from '@/types/general';
+import { FormMode } from '@/types/general';
 
 
 import RecipeForm from '@/components/recipe/RecipeForm';
@@ -48,6 +45,7 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
             hasAmount: !!ingredientLine.amount,
             amount: Number(ingredientLine.amount) ?? 1,
             hasUnit: !!ingredientLine.unit_id,
+
             unit_id: ingredientLine.unit_id ?? "",
             ingredient_id: ingredientLine.ingredient_id,
         };

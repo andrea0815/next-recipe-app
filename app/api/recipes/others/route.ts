@@ -5,27 +5,18 @@ import { getCurrentDbUser } from "@/lib/auth/getCurrentDbUser";
 export async function GET(req: NextRequest) {
     const user = await getCurrentDbUser();
 
-    if (!user) {
-        return NextResponse.json(
-            {
-                errors: {
-                    form: "You must be signed in.",
-                },
-            },
-            { status: 401 }
-        );
-    }
-
     const searchParams = req.nextUrl.searchParams;
 
     const query = searchParams.get("query") ?? undefined;
     const cursor = searchParams.get("cursor") ?? undefined;
     const categoryNames = searchParams.getAll("category");
+    const ingredientNames = searchParams.getAll("ingredients");
 
     const data = await getOtherRecipes({
-        userId: user.id,
         categoryNames,
+        ingredientNames,
         take: 12,
+        ...(user?.id !== undefined ? { userId: user.id } : {}),
         ...(query !== undefined ? { query } : {}),
         ...(cursor !== undefined ? { cursor } : {}),
     });

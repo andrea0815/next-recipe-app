@@ -7,12 +7,13 @@ import type { Category } from '@/types/category';
 import type { ListItem } from '@/types/general';
 
 import CategorySection from "./CategorySection";
+import NotSignedIn from "@/components/general/NotSignedIn";
 
 export default async function CategorysPage() {
     const user = await getCurrentDbUser();
 
     if (!user) {
-        throw new Error("You must be signed in.");
+        return <NotSignedIn />
     }
 
     const categorys: Category[] = await getCategories(undefined, user?.id ?? undefined);

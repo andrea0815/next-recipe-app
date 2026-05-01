@@ -62,7 +62,6 @@ export default function RecipeForm({
         setHasFieldErros(Object.keys(state.fieldErrors ?? {}).length > 0)
     }, [state])
 
-
     // Heating Options
     const heatingOptions: HeatingMeta[] = Object.values(HEATING_META);
     const getHeatingMetaById = (id: string): HeatingMeta | null => {
@@ -140,8 +139,6 @@ export default function RecipeForm({
             static: "Save Changes",
             pending: "Saving Changes …"
         }
-
-
 
     function updateDraft<K extends keyof RecipeDraft>(
         field: K,
@@ -256,10 +253,10 @@ export default function RecipeForm({
                                 </div>
                                 <div className=''>
                                     <NumberSelect
-                                        portions={draft.time ?? 10}
+                                        value={draft.time}
                                         name='time'
                                         stretch={true}
-                                        onPortionChange={(valueOrUpdater) => {
+                                        onValueChange={(valueOrUpdater) => {
                                             const nextValue =
                                                 typeof valueOrUpdater === "function"
                                                     ? valueOrUpdater(draft.time ?? 0)
@@ -282,12 +279,12 @@ export default function RecipeForm({
                                 </div>
                                 <div className=''>
                                     <NumberSelect
-                                        portions={draft.temperature ?? 180}
+                                        value={draft.temperature}
                                         name='temperature'
                                         step={5}
                                         min={0}
                                         stretch={true}
-                                        onPortionChange={(valueOrUpdater) => {
+                                        onValueChange={(valueOrUpdater) => {
                                             const nextValue =
                                                 typeof valueOrUpdater === "function"
                                                     ? valueOrUpdater(draft.temperature ?? 0)
@@ -314,9 +311,9 @@ export default function RecipeForm({
 
                     <div className='mb-4'>
                         <NumberSelect
-                            portions={draft.portions}
+                            value={draft.portions}
                             name='portions'
-                            onPortionChange={(valueOrUpdater) => {
+                            onValueChange={(valueOrUpdater) => {
                                 const nextValue =
                                     typeof valueOrUpdater === "function"
                                         ? valueOrUpdater(draft.portions)

@@ -7,12 +7,13 @@ import type { Unit } from '@/types/unit';
 import type { ListItem } from '@/types/general';
 
 import UnitSection from "./UnitSection";
+import NotSignedIn from "@/components/general/NotSignedIn";
 
 export default async function UnitsPage() {
   const user = await getCurrentDbUser();
 
   if (!user) {
-    throw new Error("You must be signed in.");
+    return <NotSignedIn />
   }
 
   const units: Unit[] = await getUnits(undefined, user?.id ?? undefined);
