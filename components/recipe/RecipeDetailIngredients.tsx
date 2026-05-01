@@ -18,7 +18,7 @@ export default function RecipeDetailIngredients({
     portions: number,
     recipeId: string,
     groupsEnabled: boolean
-}) {    
+}) {
 
     const [portionsDisplay, setPortionsDisplay] = useState(portions);
 
@@ -66,14 +66,18 @@ export default function RecipeDetailIngredients({
                                     />
 
                                     <p className="py-1 min-w-10 text-right border-b border-gray-400">
-                                        {formatAmount(calculatedAmount)}
+                                        {calculatedAmount > 0 ?
+                                            formatAmount(calculatedAmount) : ""
+                                        }
                                     </p>
 
                                     <p className="py-1 border-b border-gray-400">
-                                        <UnitDisplay
-                                            amount={calculatedAmount}
-                                            unit={recipeIngredient.unit}
-                                        />
+                                        {recipeIngredient.unit ?
+                                            <UnitDisplay
+                                                amount={calculatedAmount}
+                                                unit={recipeIngredient.unit}
+                                            /> : ""
+                                        }
                                     </p>
 
                                     <p className="py-1 border-b border-gray-400 min-w-0">

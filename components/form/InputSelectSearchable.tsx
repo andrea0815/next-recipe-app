@@ -15,7 +15,7 @@ type InputSelectSearchableProps<
   labelName?: string;
   field: K;
   name?: string;
-  draftValue?: string;
+  draftValue?: string | null;
   updateDraftValue: (field: K, value: string) => void;
   customClass?: string;
   addButton?: ReactNode;
@@ -24,6 +24,7 @@ type InputSelectSearchableProps<
   searchPlaceholder?: string;
   valueKey: TValueKey;
   labelKey: TLabelKey;
+  disabled?: boolean;
 };
 
 export default function InputSelectSearchable<
@@ -46,6 +47,7 @@ export default function InputSelectSearchable<
   searchPlaceholder = "Search...",
   valueKey,
   labelKey,
+  disabled = false,
 }: InputSelectSearchableProps<TDraft, K, TItem, TValueKey, TLabelKey>) {
 
   const [open, setOpen] = useState(false);
@@ -116,12 +118,13 @@ export default function InputSelectSearchable<
         <button
           type="button"
           onClick={() => (open ? handleClose() : handleOpen())}
-          className="block group h-(--btn-h-sm) w-full rounded-lg border border-gray-500 bg-white p-2 text-left text-text overflow-clip cursor-pointer"
+          className="block group h-(--btn-h-sm) w-full rounded-lg border border-gray-500 bg-white p-2 text-left text-text overflow-clip disabled:opacity-50 disabled:cursor-auto cursor-pointer"
+          disabled={disabled}
         >
           {selectedItem ? String(selectedItem[labelKey]) : placeholder}
 
           <div
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg text-gray-500 bg-transparent group-hover:bg-gray-200 cursor-pointer p-1 transition-colors"
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg text-gray-500 bg-transparent group-hover:bg-gray-200 p-1 transition-colors"
           >
             <IconArrowDown />
           </div>

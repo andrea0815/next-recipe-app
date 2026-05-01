@@ -70,8 +70,6 @@ export default function RecipeForm({
     };
     const HeatingModeIcon = getHeatingMetaById(draft.heating_mode ?? "")?.icon
 
-    console.log(unitsPromise);
-    console.log(ingredientsPromise);
     // Ingredients
     const IngredientPanelRef = useRef<PanelRef>(null);
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
@@ -153,8 +151,6 @@ export default function RecipeForm({
             ...prev,
             [field]: value,
         }));
-
-        console.log(draft);
     }
 
     return (

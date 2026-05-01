@@ -15,8 +15,8 @@ import IconGrill from "@/components/icons/IconGrill";
 
 export type IngredientLineBase = {
     ingredient_id: string;
-    unit_id: string;
-    amount: number;
+    unit_id: string | null;
+    amount: number | null;
     position: number;
 };
 
@@ -79,8 +79,10 @@ export type RecipeListItem = Pick<
 };
 
 export type RecipeLineDraft = {
-    amount: number;
-    unit_id: string;
+    hasAmount: boolean;
+    amount: number | null;
+    hasUnit: boolean;
+    unit_id: string | null;
     ingredient_id: string;
 };
 

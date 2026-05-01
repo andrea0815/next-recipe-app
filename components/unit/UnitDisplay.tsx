@@ -7,7 +7,7 @@ export default function UnitDisplay({
   amount?: number;
   unit?: Unit;
 }) {
-  if (!unit) return <>No unit passed</>;
+  if (!unit) return null;
 
   // 1. Abbreviation hat immer Vorrang
   if (unit.abbreviation) {

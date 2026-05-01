@@ -83,7 +83,7 @@ export default function IngredientSection({
                                     />
 
                                     <p className="py-1 min-w-10 text-right border-b border-gray-400">
-                                        {formatAmount(calculatedAmount)}
+                                        {calculatedAmount > 0 ? formatAmount(calculatedAmount) : ""}
                                     </p>
 
                                     <p className="py-1 border-b border-gray-400">

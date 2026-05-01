@@ -168,7 +168,7 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
                                     </div>
 
                                     <p className={`py-2 border-b border-gray-300 transition-opacity ${rowClass}`}>
-                                        {Number(entry.totalAmount)}
+                                        {entry.totalAmount != null && entry.totalAmount > 0 ? Number(entry.totalAmount) : ""}
                                     </p>
 
                                     <p className={`py-2 border-b border-gray-300 transition-opacity ${rowClass}`}>
@@ -194,7 +194,7 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
                                 </div>
 
                                 <p className={`py-2 border-b border-gray-300 font-medium transition-opacity ${rowClass}`}>
-                                    {entry.totalAmount}
+                                    {entry.totalAmount != null && entry.totalAmount > 0 ? Number(entry.totalAmount) : ""}
                                 </p>
 
                                 <p className={`py-2 border-b border-gray-300 transition-opacity ${rowClass}`}>
@@ -220,7 +220,7 @@ export default function ShoppingList({ items }: { items: ShoppingItem[] }) {
                                         <React.Fragment key={item.id}>
                                             <div className="w-10" />
                                             <p className={`py-2 border-b border-gray-300 text-sm text-gray-500 transition-opacity ${rowClass}`}>
-                                                {Number(item.amount)}
+                                                {item.amount != null || item.amount > 0 ? Number(item.amount) : ""}
                                             </p>
                                             <p className={`py-2 border-b border-gray-300 text-sm text-gray-500 transition-opacity ${rowClass}`}>
                                                 <UnitDisplay amount={Number(item.amount)} unit={item.unit} />

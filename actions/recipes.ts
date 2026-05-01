@@ -191,8 +191,12 @@ export async function editRecipe(id: string, slug: string, prevState: ActionResu
     const portions = (formData.get("portions") as string | null)?.trim() ?? "";
     const all_group_names = (formData.getAll("all_group_names") as string[]).map((g) => g.trim());
     const group_names = (formData.getAll("group_names") as string[]).map((g) => g.trim());
-    const amounts = formData.getAll("amounts").map((p) => Number(p));
-    const unit_ids = formData.getAll("unit_ids") as string[];
+    const amounts = formData
+        .getAll("amounts")
+        .map((p) => p === "" ? null : Number(p));
+    const unit_ids = formData
+        .getAll("unit_ids")
+        .map((p) => p === "" ? null : String(p));
     const ingredient_ids = formData.getAll("ingredient_ids") as string[];
     const positions = formData.getAll("positions").map((p) => Number(p));
     const time = (formData.get("time") as number | null);
@@ -203,6 +207,9 @@ export async function editRecipe(id: string, slug: string, prevState: ActionResu
     const step_hints = (formData.getAll("step_hints") as string[]).map((s) => s.trim());
 
     const fieldErrors: Partial<RecipeFields> = {};
+
+    console.log(amounts);
+    console.log(unit_ids);
 
     if (!name) fieldErrors.name = "Name is required";
     if (!subtitle) fieldErrors.subtitle = "Subtitle is required";
@@ -278,6 +285,9 @@ export async function editRecipe(id: string, slug: string, prevState: ActionResu
         group_name: group_names[i]!,
         position: positions[i]!,
     }));
+
+    console.log(ingredient_lines);
+
 
     const steps = step_texts
         .filter((text) => text !== "")

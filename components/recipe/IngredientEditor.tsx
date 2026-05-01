@@ -1,12 +1,11 @@
 "use client";
 
-import { ReactNode, useMemo, use, Suspense } from "react";
+import { ReactNode, useMemo } from "react";
 import type { Unit } from "@/types/unit";
 import type { Ingredient } from "@/types/ingredient";
 import type { RecipeGroupDraft, RecipeLineDraft } from "@/types/recipe";
 
 import UnitDisplay from "@/components/unit/UnitDisplay";
-import InrgredientDisplay from "@/components/ingredient/InrgredientDisplay";
 import InputFieldText from "@/components/form/InputFieldText";
 import Switch from "../form/Switch";
 import Button from "../buttons/Button";
@@ -16,7 +15,6 @@ import IconAdd from "../icons/IconAdd";
 import IconClose from "../icons/IconClose";
 import ConfirmAction from "../errors/ConfirmaAction";
 import IngredientDisplay from "@/components/ingredient/InrgredientDisplay";
-import InputSelectSearchableAsync from "../form/InputSelectSearchableAsync";
 import InputSelectLoading from "../form/InputSelectLoading";
 
 export default function IngredientEditor({
@@ -60,14 +58,14 @@ export default function IngredientEditor({
         if (i !== groupIndex) return group;
 
         const { draft } = group;
-        if (!draft.amount || !draft.unit_id || !draft.ingredient_id) {
+        if (!draft.ingredient_id) {
           return group;
         }
 
         return {
           ...group,
           lines: [...group.lines, draft],
-          draft: { amount: 1, unit_id: "", ingredient_id: "" },
+          draft: { hasAmount: true, amount: 1, hasUnit: true, unit_id: "", ingredient_id: "" },
         };
       })
     );
@@ -111,7 +109,7 @@ export default function IngredientEditor({
       ...groups,
       {
         group_name: "",
-        draft: { amount: 1, unit_id: "", ingredient_id: "" },
+        draft: { hasAmount: true, amount: 1, hasUnit: true, unit_id: "", ingredient_id: "" },
         lines: [],
       },
     ]);
@@ -131,6 +129,25 @@ export default function IngredientEditor({
     );
   }
 
+  function updateDraftFields(
+    groupIndex: number,
+    values: Partial<RecipeLineDraft>
+  ) {
+    onGroupsChange(
+      groups.map((group, index) =>
+        index === groupIndex
+          ? {
+            ...group,
+            draft: {
+              ...group.draft,
+              ...values,
+            },
+          }
+          : group
+      )
+    );
+  }
+
   const visibleGroups = groupsEnabled ? groups : groups[0] ? [groups[0]] : [];
 
   return (
@@ -146,177 +163,243 @@ export default function IngredientEditor({
         />
       </div>
 
-      {visibleGroups.map((group, index) => (
-        <div key={index} className="border border-gray-500 p-4 rounded-2xl flex flex-col">
+      {visibleGroups.map((group, index) => {
+        const hasIngredient = !!group.draft.ingredient_id;
+        const hasAmount = group.draft.amount != null;
+        const hasSelectedUnit = !!group.draft.unit_id;
 
-          {groupsEnabled &&
+        const addDisabled =
+          !hasIngredient ||
+          (hasSelectedUnit && !hasAmount);
 
-            <div className=" mb-4">
+        return (
+          <div key={index} className="border border-gray-500 p-4 rounded-2xl flex flex-col">
 
-              <InputFieldText<RecipeGroupDraft, "group_name">
-                field="group_name"
-                name="all_group_names"
-                labelName="Group Name"
-                draftValue={group.group_name}
-                updateDraftValue={(_, value) => updateGroupName(index, value)}
-                placeholder="Group Name"
-                error={state?.errors?.group_names}
-              />
-            </div>
-          }
+            {groupsEnabled &&
 
-          <div className="">
-            {/* Draft input row */}
-            <div className="flex sm:flex-row flex-col gap-2 items-end justify-between bg-gray-300 px-2 py-3 rounded-lg">
+              <div className=" mb-4">
 
-              <InputFieldNumber<RecipeLineDraft, "amount">
-                labelName="Amount"
-                field="amount"
-                draftValue={group.draft.amount}
-                updateDraftValue={(_, value) => updateDraft(index, "amount", value)}
-                min={0}
-                step={0.1}
-                error={state?.errors?.amounts}
-                customClass="w-full sm:basis-[12%] sm:shrink-0 min-w-15"
-              />
-              {unitsLoading ? (
-                <InputSelectLoading labelName="Unit" placeholder="Select unit …" />
-              ) : (
-                <InputSelectSearchable<
-                  RecipeLineDraft,
-                  "unit_id",
-                  Unit,
-                  "id",
-                  "name"
-                >
-                  items={units}
-                  field="unit_id"
-                  labelName="Unit"
-                  placeholder="Select unit …"
-                  draftValue={group.draft.unit_id}
-                  addButton={addUnitButton}
-                  updateDraftValue={(_, value) => updateDraft(index, "unit_id", value)}
-                  customClass="w-full sm:basis-[20%] shrink-0"
-                  valueKey="id"
-                  labelKey="name"
+                <InputFieldText<RecipeGroupDraft, "group_name">
+                  field="group_name"
+                  name="all_group_names"
+                  labelName="Group Name"
+                  draftValue={group.group_name}
+                  updateDraftValue={(_, value) => updateGroupName(index, value)}
+                  placeholder="Group Name"
+                  error={state?.errors?.group_names}
                 />
-              )}
+              </div>
+            }
 
-              {ingredientsLoading ? (
-                <InputSelectLoading  labelName="Ingredient" placeholder="Select ingredient …" />
-              ) : (
-                <InputSelectSearchable<
-                  RecipeLineDraft,
-                  "ingredient_id",
-                  Ingredient,
-                  "id",
-                  "name"
-                >
-                  items={ingredients}
-                  field="ingredient_id"
-                  labelName="Ingredient"
-                  placeholder="Select ingredient …"
-                  draftValue={group.draft.ingredient_id}
-                  addButton={addIngredientButton}
-                  updateDraftValue={(_, value) =>
-                    updateDraft(index, "ingredient_id", value)
-                  }
-                  customClass="flex-1 w-full"
-                  valueKey="id"
-                  labelKey="name"
-                />
-              )}
+            <div className="">
+              {/* Draft input row */}
+              <div className="flex sm:flex-row flex-col gap-2 items-end justify-between bg-gray-300 px-2 py-3 rounded-lg">
 
-              <Button
-                onClick={() => addLine(index)}
-                disabled={!group.draft.amount || !group.draft.unit_id || !group.draft.ingredient_id}
-                priority="secondary"
-                size="small"
-                customClass="w-full sm:w-[inherit] mt-2 sm:mt-0"
-              ><IconAdd /></Button>
-            </div>
+                <>
+                  <input
+                    type="checkbox"
+                    name="hasAmount"
+                    checked={group.draft.hasAmount}
+                    onChange={(e) => {
+                      const hasAmount = e.target.checked;
 
+                      updateDraftFields(index, hasAmount
+                        ? {
+                          hasAmount: true,
+                          amount: group.draft.amount ?? 1,
+                        }
+                        : {
+                          hasAmount: false,
+                          amount: null,
+                          hasUnit: false,
+                          unit_id: null,
+                        }
+                      );
+                    }}
+                  />
 
-            {/* Added lines list */}
-            <div className="mt-3">
-              {group.lines.map((line, lineIndex) => {
-                const unit = unitById.get(line.unit_id);
-                const ing = ingredientById.get(line.ingredient_id);
+                  <InputFieldNumber<RecipeLineDraft, "amount">
+                    labelName="Amount"
+                    field="amount"
+                    draftValue={group.draft.amount}
+                    updateDraftValue={(_, value) => updateDraft(index, "amount", value)}
+                    min={0}
+                    step={0.1}
+                    error={state?.errors?.amounts}
+                    customClass="w-full sm:basis-[12%] sm:shrink-0 min-w-15"
+                    disabled={!group.draft.hasAmount}
+                  />
+                </>
 
-                return (
-                  <div
-                    key={`${line.ingredient_id}-${line.unit_id}-${index}`}
-                    className="flex items-center justify-between gap-2 p-2 border-b border-gray-400 last-of-type:border-b-0"
+                {unitsLoading ? (
+                  <InputSelectLoading labelName="Unit" placeholder="Select unit …" />
+                ) : (
+                  <>
+                    <input
+                      type="checkbox"
+                      name="hasUnit"
+                      checked={group.draft.hasUnit}
+                      disabled={!group.draft.hasAmount}
+                      onChange={(e) => {
+                        const hasUnit = e.target.checked;
+
+                        updateDraftFields(index, hasUnit
+                          ? {
+                            hasUnit: true,
+                            unit_id: group.draft.unit_id ?? "",
+                          }
+                          : {
+                            hasUnit: false,
+                            unit_id: null,
+                          }
+                        );
+                      }}
+                    />
+
+                    <InputSelectSearchable<
+                      RecipeLineDraft,
+                      "unit_id",
+                      Unit,
+                      "id",
+                      "name"
+                    >
+                      items={units}
+                      field="unit_id"
+                      labelName="Unit"
+                      placeholder="Select unit …"
+                      draftValue={group.draft.unit_id}
+                      addButton={addUnitButton}
+                      updateDraftValue={(_, value) => updateDraft(index, "unit_id", value)}
+                      customClass="w-full sm:basis-[20%] shrink-0"
+                      valueKey="id"
+                      labelKey="name"
+                      disabled={!group.draft.hasUnit || !group.draft.hasAmount}
+                    />
+                  </>
+                )}
+
+                {ingredientsLoading ? (
+                  <InputSelectLoading labelName="Ingredient" placeholder="Select ingredient …" />
+                ) : (
+                  <InputSelectSearchable<
+                    RecipeLineDraft,
+                    "ingredient_id",
+                    Ingredient,
+                    "id",
+                    "name"
                   >
-                    <div className="text-text">
-                      <span className="font-semibold">{line.amount}</span>{" "}
-                      {unit ? (
-                        <>
+                    items={ingredients}
+                    field="ingredient_id"
+                    labelName="Ingredient"
+                    placeholder="Select ingredient …"
+                    draftValue={group.draft.ingredient_id}
+                    addButton={addIngredientButton}
+                    updateDraftValue={(_, value) =>
+                      updateDraft(index, "ingredient_id", value)
+                    }
+                    customClass="flex-1 w-full"
+                    valueKey="id"
+                    labelKey="name"
+                  />
+                )}
+
+
+
+                <Button
+                  onClick={() => addLine(index)}
+                  disabled={addDisabled}
+                  priority="secondary"
+                  size="small"
+                  customClass="w-full sm:w-[inherit] mt-2 sm:mt-0"
+                >
+                  <IconAdd />
+                </Button>
+              </div>
+
+
+              {/* Added lines list */}
+              <div className="mt-3">
+                {group.lines.map((line, lineIndex) => {
+                  const unit = unitById.get(line.unit_id || "");
+                  const ing = ingredientById.get(line.ingredient_id);
+
+                  return (
+                    <div
+                      key={`${line.ingredient_id}-${line.unit_id}-${index}–${lineIndex}`}
+                      className="flex items-center justify-between gap-2 p-2 border-b border-gray-400 last-of-type:border-b-0"
+                    >
+                      <div className="text-text">
+                        {line.amount != null && line.amount > 0 &&
+                          <>
+                            <span className="font-semibold">{line.amount ?? ""}</span>{" "}
+                          </>
+                        }
+
+                        {unit && <>
                           <UnitDisplay amount={Number(line.amount)} unit={unit} />{" "}
                         </>
-                      ) : (
-                        <span>No unit </span>
-                      )}
+                        }
 
-                      {ing ? (
-                        <IngredientDisplay amount={Number(line.amount)} ingredient={ing} />
-                      ) : (
-                        <span>No ingredient</span>
-                      )}
+                        {ing ? (
+                          <IngredientDisplay amount={Number(line.amount)} ingredient={ing} />
+                        ) : (
+                          <span>No ingredient</span>
+                        )}
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => removeLine(index, lineIndex)}
+                        className="px-2 py-1 rounded bg-white/10 text-text hover:bg-white/20 cursor-pointer"
+                        title="Remove"
+                      >
+                        ✕
+                      </button>
+
+                      {/* Hidden inputs: THIS is what gets submitted */}
+                      <input type="hidden" name="amounts" value={line.amount ?? ""} />
+                      <input type="hidden" name="unit_ids" value={line.unit_id ?? ""} />
+                      <input type="hidden" name="ingredient_ids" value={line.ingredient_id} />
+                      <input type="hidden" name="group_names" value={group.group_name} />
+                      <input type="hidden" name="positions" value={lineIndex} />
                     </div>
+                  );
+                })}
+              </div>
 
-                    <button
-                      type="button"
-                      onClick={() => removeLine(index, lineIndex)}
-                      className="px-2 py-1 rounded bg-white/10 text-text hover:bg-white/20 cursor-pointer"
-                      title="Remove"
-                    >
-                      ✕
-                    </button>
-
-                    {/* Hidden inputs: THIS is what gets submitted */}
-                    <input type="hidden" name="amounts" value={line.amount} />
-                    <input type="hidden" name="unit_ids" value={line.unit_id} />
-                    <input type="hidden" name="ingredient_ids" value={line.ingredient_id} />
-                    <input type="hidden" name="group_names" value={group.group_name} />
-                    <input type="hidden" name="positions" value={lineIndex} />
-                  </div>
-                );
-              })}
             </div>
 
+            {/* Optional: show a message if no lines */}
+            {group.lines.length === 0 && (
+              <p className="text-text/70 text-sm text-center m-6">No ingredients added yet.</p>
+            )}
+
+            {groupsEnabled && (
+              <>
+                <ConfirmAction
+                  title="Delete group?"
+                  description="Deleting the group will delete all ingredients inside it."
+                  confirmText="Delete"
+                  onConfirm={() => removeGroup(index)}
+                  trigger={(openConfirm) => (
+                    <Button
+                      onClick={openConfirm}
+                      disabled={groups.length <= 1}
+                      priority="tertiary"
+                      color="red"
+                      yPadding={false}
+                      customClass="mt-3"
+                    >
+                      <IconClose /> Remove group
+                    </Button>
+                  )}
+                />
+              </>
+            )}
+
           </div>
-
-          {/* Optional: show a message if no lines */}
-          {group.lines.length === 0 && (
-            <p className="text-text/70 text-sm text-center m-6">No ingredients added yet.</p>
-          )}
-
-          {groupsEnabled && (
-            <>
-              <ConfirmAction
-                title="Delete group?"
-                description="Deleting the group will delete all ingredients inside it."
-                confirmText="Delete"
-                onConfirm={() => removeGroup(index)}
-                trigger={(openConfirm) => (
-                  <Button
-                    onClick={openConfirm}
-                    disabled={groups.length <= 1}
-                    priority="tertiary"
-                    color="red"
-                    yPadding={false}
-                    customClass="mt-3"
-                  >
-                    <IconClose /> Remove group
-                  </Button>
-                )}
-              />
-            </>
-          )}
-
-        </div>
-      ))}
+        )
+      })}
 
       {groupsEnabled &&
         <Button

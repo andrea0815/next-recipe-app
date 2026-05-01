@@ -20,10 +20,7 @@ export default async function AddRecipePage() {
 
   if (!user) {
     throw new Error("You must be signed in.");
-  }
-
-  console.log(user);
-  
+  }  
 
   const emptyDraft: RecipeDraft = {
     id: "",
@@ -42,7 +39,7 @@ export default async function AddRecipePage() {
     groups: [
       {
         group_name: "",
-        draft: { amount: 1, unit_id: "", ingredient_id: "" },
+        draft: { hasAmount: true, amount: null, hasUnit: true, unit_id: "", ingredient_id: "" },
         lines: [],
       },
     ],
@@ -59,10 +56,6 @@ export default async function AddRecipePage() {
   const categoriesPromise = getCategories(undefined, user?.id ?? undefined);
   const ingredientsPromise = getIngredients(undefined, user?.id ?? undefined);
   const unitsPromise = getUnits(undefined, user?.id ?? undefined);
-
-  console.log(unitsPromise);
-  console.log(ingredientsPromise);
-  
 
   return (<>
     <>
