@@ -18,7 +18,7 @@ export default function RecipeDetailIngredients({
     portions: number,
     recipeId: string,
     groupsEnabled: boolean
-}) {    
+}) {
 
     const [portionsDisplay, setPortionsDisplay] = useState(portions);
 
@@ -53,8 +53,9 @@ export default function RecipeDetailIngredients({
                         {ingredients.map((recipeIngredient, index) => {
                             const calculatedAmount =
                                 portions > 0
-                                    ? Number(recipeIngredient.amount) * (portionsDisplay / portions)
+                                    ? Number((Number(recipeIngredient.amount) * (portionsDisplay / portions)).toFixed(1))
                                     : 0;
+
 
                             return (
                                 <React.Fragment key={index}>

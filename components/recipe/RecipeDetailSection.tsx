@@ -31,7 +31,7 @@ export default function RecipeDetailSection({
 
     return (
         <>
-            <div className="w-full h-[50dvh] relative rounded-lg mb-6 overflow-hidden flex justify-center items-center">
+            <div className="w-full h-[50svh] relative rounded-lg mb-6 overflow-hidden flex justify-center items-center">
                 {recipe.image_uri && (
                     <img src={recipe.image_uri} alt={recipe.name} className="min-w-full min-h-full object-cover object-center" />
                 )}
