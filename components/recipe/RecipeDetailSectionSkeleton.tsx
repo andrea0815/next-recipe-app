@@ -1,4 +1,5 @@
 import SectionWrapper from "@/components/containers/SectionWrapper";
+import RecipeDetailIngredientsSkeleton from "./RecipeDetailIngredientsSkeleton";
 
 export default function RecipeDetailSectionSkeleton() {
 
@@ -18,10 +19,11 @@ export default function RecipeDetailSectionSkeleton() {
             </div>
 
             <div className="w-full flex lg:flex-row-reverse flex-col gap-10">
-                <SectionWrapper customClass="lg:self-start flex-1">
-                    <div className="w-full h-[50svh] relative rounded-lg mb-6 overflow-hidden flex justify-center items-center bg-gray-200 animate-pulse">
-                    </div>
-                </SectionWrapper>
+                <div className="flex flex-col gap-4 md:min-w-100">
+                    <SectionWrapper customClass="lg:self-start flex-1 w-full">
+                        <RecipeDetailIngredientsSkeleton/>
+                    </SectionWrapper>
+                </div>
 
 
                 <div className="flex-2 max-w-200 pb-15">

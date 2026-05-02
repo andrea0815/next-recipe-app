@@ -13,6 +13,7 @@ import RecipeDetailSection from "@/components/recipe/RecipeDetailSection";
 import GeneralSection from "@/components/containers/GeneralSection";
 import HeaderRecipeDetail from "@/components/nav/HeaderRecipeDetail";
 import RecipeToastHandler from "@/components/recipe/RecipeToastHandler";
+import RecipeDetailSectionSkeleton from "@/components/recipe/RecipeDetailSectionSkeleton";
 
 type Props = {
     params: Promise<{

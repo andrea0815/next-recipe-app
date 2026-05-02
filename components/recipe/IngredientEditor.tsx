@@ -293,7 +293,10 @@ export default function IngredientEditor({
                         placeholder="Select unit …"
                         draftValue={group.draft.unit_id}
                         addButton={addUnitButton}
-                        updateDraftValue={(_, value) => updateDraft(index, "unit_id", value)}
+                        updateDraftValue={(_, value) => {
+                          updateDraft(index, "unit_id", value)
+                          // close this tab and open the ingredient dropdown
+                        }}
                         customClass="w-full"
                         valueKey="id"
                         labelKey="name"
