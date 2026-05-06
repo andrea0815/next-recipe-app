@@ -10,6 +10,7 @@ type InputFieldNumberProps<TDraft, K extends keyof TDraft> = {
   labelName: string;
   draftValue: number | null;
   updateDraftValue: (field: K, value: number) => void;
+  openUnitInput: () => void;
   min?: number;
   step?: number;
   error?: string;
@@ -24,6 +25,7 @@ export default function InputFieldNumber<TDraft, K extends keyof TDraft>({
   labelName,
   draftValue,
   updateDraftValue,
+  openUnitInput,
   min = 0,
   step = 0.1,
   error,
@@ -41,8 +43,10 @@ export default function InputFieldNumber<TDraft, K extends keyof TDraft>({
 
   function commitValue(rawValue: string) {
     if (rawValue.trim() === "") {
-      setInputValue("0");
-      updateDraftValue(field, 0);
+      setInputValue("1");
+      updateDraftValue(field, 1);
+      openUnitInput();
+      console.log("updated amount");
       return;
     }
 
@@ -57,6 +61,15 @@ export default function InputFieldNumber<TDraft, K extends keyof TDraft>({
 
     setInputValue(String(clampedValue));
     updateDraftValue(field, clampedValue);
+    openUnitInput()
+    console.log("updated amount 2");
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key !== "Enter") return;
+
+    e.preventDefault();
+    commitValue(e.currentTarget.value);
   }
 
   return (
@@ -71,6 +84,7 @@ export default function InputFieldNumber<TDraft, K extends keyof TDraft>({
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onBlur={(e) => commitValue(e.target.value)}
+        onKeyDown={handleKeyDown}
         className={`block w-full h-(--btn-h-sm) p-2 bg-white text-text rounded-lg border border-gray-500 disabled:opacity-50 ${customClass ? customClass : ""
           }`}
         min={min}

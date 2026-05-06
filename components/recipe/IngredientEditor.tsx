@@ -17,6 +17,7 @@ import ConfirmAction from "../errors/ConfirmaAction";
 import IngredientDisplay from "@/components/ingredient/InrgredientDisplay";
 import InputSelectLoading from "../form/InputSelectLoading";
 import Checkbox from "../form/Checkbox";
+import { log } from "console";
 
 export default function IngredientEditor({
   state,
@@ -45,6 +46,8 @@ export default function IngredientEditor({
 }) {
 
   const ingredientSelectRefs = useRef<Record<number, InputSelectSearchableRef | null>>({});
+  const unitSelectRefs = useRef<Record<number, InputSelectSearchableRef | null>>({});
+  const addButtonRefs = useRef<Record<number, HTMLButtonElement | null>>({});
 
   const unitById = useMemo(
     () => new Map(units.map((u) => [u.id, u])),
@@ -68,7 +71,7 @@ export default function IngredientEditor({
         return {
           ...group,
           lines: [...group.lines, draft],
-          draft: { hasAmount: true, amount: 1, hasUnit: true, unit_id: "", ingredient_id: "" },
+          draft: { hasAmount: true, amount: 1, hasUnit: true, unit_id: "53119011-1e85-4b78-9e7d-bff63e3a7109", ingredient_id: "" },
         };
       })
     );
@@ -112,7 +115,7 @@ export default function IngredientEditor({
       ...groups,
       {
         group_name: "",
-        draft: { hasAmount: true, amount: 1, hasUnit: true, unit_id: "", ingredient_id: "" },
+        draft: { hasAmount: true, amount: 1, hasUnit: true, unit_id: "53119011-1e85-4b78-9e7d-bff63e3a7109", ingredient_id: "" },
         lines: [],
       },
     ]);
@@ -237,6 +240,7 @@ export default function IngredientEditor({
                     field="amount"
                     draftValue={group.draft.amount}
                     updateDraftValue={(_, value) => updateDraft(index, "amount", value)}
+                    openUnitInput={() => unitSelectRefs.current[index]?.open()}
                     min={0}
                     step={1}
                     error={state?.errors?.amounts}
@@ -289,6 +293,9 @@ export default function IngredientEditor({
                         "id",
                         "name"
                       >
+                        ref={(el) => {
+                          unitSelectRefs.current[index] = el;
+                        }}
                         items={units}
                         field="unit_id"
                         labelName="Unit"
@@ -327,9 +334,12 @@ export default function IngredientEditor({
                     placeholder="Select ingredient …"
                     draftValue={group.draft.ingredient_id}
                     addButton={addIngredientButton}
-                    updateDraftValue={(_, value) =>
+                    updateDraftValue={(_, value) => {
                       updateDraft(index, "ingredient_id", value)
-                    }
+                      addButtonRefs.current[index]?.focus();
+                      console.log(addButtonRefs.current[index]);
+
+                    }}
                     customClass="flex-1 w-full"
                     valueKey="id"
                     labelKey="name"
@@ -339,6 +349,9 @@ export default function IngredientEditor({
 
 
                 <Button
+                  ref={(el) => {
+                    addButtonRefs.current[index] = el;
+                  }}
                   onClick={() => addLine(index)}
                   disabled={addDisabled}
                   priority="secondary"
