@@ -1,8 +1,15 @@
 "use client";
 
-import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import {
+  ReactNode, useEffect, useMemo, useRef, useState, forwardRef,
+  useImperativeHandle,
+} from "react";
 import InputWrapper from "./InputWrapper";
 import IconArrowDown from "../icons/IconArrowDown";
+
+export type InputSelectSearchableRef = {
+  open: () => void;
+};
 
 type InputSelectSearchableProps<
   TDraft,
@@ -27,28 +34,31 @@ type InputSelectSearchableProps<
   disabled?: boolean;
 };
 
-export default function InputSelectSearchable<
+function InputSelectSearchableInner<
   TDraft,
   K extends keyof TDraft,
   TItem,
   TValueKey extends keyof TItem,
   TLabelKey extends keyof TItem
->({
-  items,
-  labelName,
-  field,
-  name,
-  draftValue,
-  updateDraftValue,
-  customClass = "",
-  addButton,
-  error,
-  placeholder = "Select an option...",
-  searchPlaceholder = "Search...",
-  valueKey,
-  labelKey,
-  disabled = false,
-}: InputSelectSearchableProps<TDraft, K, TItem, TValueKey, TLabelKey>) {
+>(
+  {
+    items,
+    labelName,
+    field,
+    name,
+    draftValue,
+    updateDraftValue,
+    customClass = "",
+    addButton,
+    error,
+    placeholder = "Select an option...",
+    searchPlaceholder = "Search...",
+    valueKey,
+    labelKey,
+    disabled = false,
+  }: InputSelectSearchableProps<TDraft, K, TItem, TValueKey, TLabelKey>,
+  ref: React.ForwardedRef<InputSelectSearchableRef>
+) {
 
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -72,16 +82,24 @@ export default function InputSelectSearchable<
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (!wrapperRef.current?.contains(event.target as Node)) {
-        setOpen(false);
-        setSearch("");
+        handleClose();
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        handleClose();
       }
     }
 
     document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
 
   function handleOpen() {
     setOpen(true);
@@ -101,6 +119,11 @@ export default function InputSelectSearchable<
     updateDraftValue(field, value);
     handleClose();
   }
+
+  useImperativeHandle(ref, () => ({
+    open: handleOpen,
+  }));
+
 
   return (
     <InputWrapper
@@ -176,4 +199,23 @@ export default function InputSelectSearchable<
       </div>
     </InputWrapper>
   );
-}
+};
+
+const InputSelectSearchable = forwardRef(InputSelectSearchableInner) as unknown as <
+  TDraft,
+  K extends keyof TDraft,
+  TItem,
+  TValueKey extends keyof TItem,
+  TLabelKey extends keyof TItem
+>(
+  props: InputSelectSearchableProps<
+    TDraft,
+    K,
+    TItem,
+    TValueKey,
+    TLabelKey
+  > &
+    React.RefAttributes<InputSelectSearchableRef>
+) => React.ReactElement;
+
+export default InputSelectSearchable;

@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useMemo, useRef } from "react";
 import type { Unit } from "@/types/unit";
 import type { Ingredient } from "@/types/ingredient";
 import type { RecipeGroupDraft, RecipeLineDraft } from "@/types/recipe";
@@ -10,7 +10,7 @@ import InputFieldText from "@/components/form/InputFieldText";
 import Switch from "../form/Switch";
 import Button from "../buttons/Button";
 import InputFieldNumber from "../form/InputFieldNumber";
-import InputSelectSearchable from "../form/InputSelectSearchable";
+import InputSelectSearchable, { InputSelectSearchableRef } from "../form/InputSelectSearchable";
 import IconAdd from "../icons/IconAdd";
 import IconClose from "../icons/IconClose";
 import ConfirmAction from "../errors/ConfirmaAction";
@@ -43,6 +43,8 @@ export default function IngredientEditor({
   onGroupsChange: (groups: RecipeGroupDraft[]) => void,
   onGroupsEnabledChange: (enabled: boolean) => void,
 }) {
+
+  const ingredientSelectRefs = useRef<Record<number, InputSelectSearchableRef | null>>({});
 
   const unitById = useMemo(
     () => new Map(units.map((u) => [u.id, u])),
@@ -196,7 +198,7 @@ export default function IngredientEditor({
               {/* Draft input row */}
               <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-end bg-gray-300 px-2 py-3 rounded-lg">
                 <div className="flex items-end gap-2 flex-row-reverse sm:flex-row w-full sm:basis-[14%] sm:shrink-0">
-                  <div className="h-[var(--btn-h-sm)] flex items-center justify-center shrink-0">
+                  <div className="h-(--btn-h-sm) flex items-center justify-center shrink-0">
                     <Checkbox
                       checked={group.draft.hasAmount}
                       onChange={(e) => {
@@ -236,7 +238,7 @@ export default function IngredientEditor({
                     draftValue={group.draft.amount}
                     updateDraftValue={(_, value) => updateDraft(index, "amount", value)}
                     min={0}
-                    step={0.1}
+                    step={1}
                     error={state?.errors?.amounts}
                     customClass="w-full min-w-15"
                     disabled={!group.draft.hasAmount}
@@ -248,7 +250,7 @@ export default function IngredientEditor({
                 ) : (
                   <>
                     <div className="flex items-end gap-2 flex-row-reverse sm:flex-row w-full sm:basis-[22%] sm:shrink-0">
-                      <div className="h-[var(--btn-h-sm)] flex items-center justify-center shrink-0">
+                      <div className="h-(--btn-h-sm) flex items-center justify-center shrink-0">
                         <Checkbox
                           checked={group.draft.hasUnit}
                           onChange={(e) => {
@@ -295,7 +297,7 @@ export default function IngredientEditor({
                         addButton={addUnitButton}
                         updateDraftValue={(_, value) => {
                           updateDraft(index, "unit_id", value)
-                          // close this tab and open the ingredient dropdown
+                          ingredientSelectRefs.current[index]?.open();
                         }}
                         customClass="w-full"
                         valueKey="id"
@@ -316,6 +318,9 @@ export default function IngredientEditor({
                     "id",
                     "name"
                   >
+                    ref={(el) => {
+                      ingredientSelectRefs.current[index] = el;
+                    }}
                     items={ingredients}
                     field="ingredient_id"
                     labelName="Ingredient"

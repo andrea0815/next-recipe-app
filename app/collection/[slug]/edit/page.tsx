@@ -58,7 +58,7 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
     const groups: RecipeGroupDraft[] = Array.from(groupsMap.entries()).map(
         ([group_name, lines]) => ({
             group_name,
-            draft: { hasAmount: true, amount: 1, hasUnit: true, unit_id: "", ingredient_id: "" },
+            draft: { hasAmount: true, amount: 1, hasUnit: true, unit_id: "53119011-1e85-4b78-9e7d-bff63e3a7109", ingredient_id: "" },
             lines,
         })
     );
