@@ -73,7 +73,7 @@ export async function createRecipe(
 
     if (!name) fieldErrors.name = "Name is required";
     if (!subtitle) fieldErrors.subtitle = "Subtitle is required";
-    if (!image_uri) fieldErrors.image_uri = "Image uri is required";
+    if (!image_uri) fieldErrors.image_uri = "No image is uploaded yet";
     if (!portions) fieldErrors.portions = "Portions are required";
 
     if (ingredient_ids.length === 0) {

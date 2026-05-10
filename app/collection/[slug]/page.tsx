@@ -14,6 +14,7 @@ import GeneralSection from "@/components/containers/GeneralSection";
 import HeaderRecipeDetail from "@/components/nav/HeaderRecipeDetail";
 import RecipeToastHandler from "@/components/recipe/RecipeToastHandler";
 import RecipeDetailSectionSkeleton from "@/components/recipe/RecipeDetailSectionSkeleton";
+import NotSignedIn from "@/components/general/NotSignedIn";
 
 type Props = {
     params: Promise<{
@@ -68,7 +69,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
     const user = await getCurrentDbUser();
 
     if (!user) {
-        throw new Error("You must be signed in.");
+       return <NotSignedIn />
     }
 
     const recipe = await getRecipeBySlug(slug, user.id);

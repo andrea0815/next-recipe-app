@@ -16,6 +16,7 @@ import HeaderBack from "@/components/nav/HeaderBack";
 import GeneralSection from "@/components/containers/GeneralSection";
 import HeaderRecipeDetail from "@/components/nav/HeaderRecipeDetail";
 import NoPermissionClient from "@/components/errors/NotPermissionClient";
+import NotSignedIn from "@/components/general/NotSignedIn";
 
 export default async function EditRecipePage({ params }: { params: Promise<{ slug: string }> }) {
 
@@ -23,7 +24,7 @@ export default async function EditRecipePage({ params }: { params: Promise<{ slu
     const user = await getCurrentDbUser();
 
     if (!user) {
-        throw new Error("You must be signed in.");
+        return <NotSignedIn />
     }
 
     const categoriesPromise = getCategories(undefined, user?.id ?? undefined);
